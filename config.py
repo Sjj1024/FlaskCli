@@ -23,3 +23,22 @@ class Config(object):
     SESSION_PERMANENT = False
     PERMANENT_SESSION_LIFETIME = 86400 * 2
     SECRET_KEY = "rIucD1qEuL3/iLaV5+6MbMjzHjlhvJBwgvtZi/A2tCmVoLmGTLCQYQ=="
+
+
+class DevelopMentConfig(Config):
+    DEBUG = True
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+
+class TestingConfig(Config):
+    DEBUG = True
+
+
+config = {
+    "dev": DevelopMentConfig,
+    "pro": ProductionConfig,
+    "test": TestingConfig
+}
