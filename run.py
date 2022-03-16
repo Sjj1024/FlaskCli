@@ -1,6 +1,4 @@
-from flask import session, current_app
 from flask_script import Manager
-import logging
 # 添加命令行支持，后面还要数据库迁移等功能
 from Info import *
 

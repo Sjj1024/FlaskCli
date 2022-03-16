@@ -8,8 +8,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from redis import StrictRedis
 
-from Info.moduls.index import index_blu
 from config import config
+
+# 给变量加注释，让其可以自动提示
+# redis_store = None  # type: StrictRedis
+# 下面这种也是一样的，变量提示，后面引入之后也可以自动获取提示
+redis_store: StrictRedis = None
 
 
 def setup_log(log_level):
@@ -48,11 +52,13 @@ def creat_app(con: str):
     # 日志等级配置
     setup_log(config[con].LOG_LEVEL)
     # 设置session保存位置: 配置对象里面的属性是类属性
+    global redis_store
     redis_store = StrictRedis(host=config[con].REDIS_HOST, port=config[con].REDIS_PORT)
     # 可以指定session的保存位置，要在app的config中配置
     Session(app)
     # 开启CSRF保护
     CSRFProtect(app)
-    # 注册蓝图
+    # 注册蓝图,放到这里就不会出现导入redis_store出错的问题
+    from Info.moduls.index import index_blu
     app.register_blueprint(index_blu)
     return app
