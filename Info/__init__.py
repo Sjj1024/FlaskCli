@@ -1,14 +1,34 @@
+import logging
 import os
+from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from redis import StrictRedis
+
 from config import config
 
 
-def creat_app(con:str):
+def setup_log(log_level):
+    # 没有日志文件夹就自动创建
+    path = os.path.join(os.getcwd(), "logs")
+    if not os.path.exists(path):
+        os.mkdir(path)
+    # 设置日志的记录等级
+    logging.basicConfig(level=log_level)  # 调试debug级
+    # 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、保存的日志文件个数上限
+    file_log_handler = RotatingFileHandler("logs/log", maxBytes=1024 * 1024 * 100, backupCount=10)
+    # 创建日志记录的格式 日志等级 输入日志信息的文件名 行数 日志信息
+    formatter = logging.Formatter('%(asctime)s [%(module)s] %(levelname)s [%(lineno)d] %(message)s')
+    # 为刚创建的日志记录器设置日志记录格式
+    file_log_handler.setFormatter(formatter)
+    # 为全局的日志工具对象（flask app使用的）添加日志记录器
+    logging.getLogger().addHandler(file_log_handler)
+
+
+def creat_app(con: str):
     # 将业务代码抽离出来
     app = Flask(__name__)
     # 可以通过设置环境变量配置不同的环境
@@ -19,6 +39,8 @@ def creat_app(con:str):
     # 初始化数据库
     db = SQLAlchemy()
     db.init_app(app)
+    # 日志等级配置
+    setup_log(config[con].LOG_LEVEL)
     # 设置session保存位置: 配置对象里面的属性是类属性
     redis_store = StrictRedis(host=config[con].REDIS_HOST, port=config[con].REDIS_PORT)
     # 可以指定session的保存位置，要在app的config中配置

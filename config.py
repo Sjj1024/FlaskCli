@@ -1,3 +1,5 @@
+import logging
+
 from redis import StrictRedis
 
 
@@ -7,6 +9,7 @@ class Config(object):
     """
 
     DEBUG = True
+    LOG_LEVEL = logging.DEBUG
     # 数据库配置
     SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
