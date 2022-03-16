@@ -1,8 +1,10 @@
 from flask import session
 from flask_script import Manager
+
 # 添加命令行支持，后面还要数据库迁移等功能
 from Info import *
 
+app = creat_app("pro")
 manager = Manager(app)
 
 
