@@ -3,10 +3,12 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from redis import StrictRedis
-
+from flask_script import Manager
 from config import Config
 
 app = Flask(__name__)
+# 添加命令行支持，后面还要数据库迁移等功能
+manager = Manager(app)
 
 app.config.from_object(Config)
 
@@ -28,4 +30,5 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    manager.run()
+    # app.run(host="0.0.0.0", port=5000)
