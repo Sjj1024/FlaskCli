@@ -11,9 +11,11 @@ from redis import StrictRedis
 from config import config
 
 # 给变量加注释，让其可以自动提示
-# redis_store = None  # type: StrictRedis
+redis_store = None  # type: StrictRedis
+
+
 # 下面这种也是一样的，变量提示，后面引入之后也可以自动获取提示
-redis_store: StrictRedis = None
+# redis_store: StrictRedis = None
 
 
 def setup_log(log_level):
@@ -58,7 +60,7 @@ def creat_app(con: str):
     Session(app)
     # 开启CSRF保护
     CSRFProtect(app)
-    # 注册蓝图,放到这里就不会出现导入redis_store出错的问题
+    # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
     from Info.moduls.index import index_blu
     app.register_blueprint(index_blu)
     return app
