@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, current_app
 from flask_script import Manager
 import logging
 # 添加命令行支持，后面还要数据库迁移等功能
@@ -16,6 +16,8 @@ def index():
     logging.error("error")
     logging.warning("warning")
     logging.debug("debug")
+    # 在flask程序中使用flask封装好的log模块current_app
+    current_app.logger.debug('debug')
     return "首页内容"
 
 
