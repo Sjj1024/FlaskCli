@@ -13,9 +13,10 @@ app.config.from_object(Config)
 # 初始化数据库
 db = SQLAlchemy()
 db.init_app(app)
-# 设置session保存位置
+# 设置session保存位置: 配置对象里面的属性是类属性
 redis_store = StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT)
 Session(app)
+# 开启CSRF保护
 CSRFProtect(app)
 
 @app.route("/")
@@ -25,4 +26,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
