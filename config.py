@@ -14,8 +14,12 @@ class Config(object):
     REDIS_HOST = "127.0.0.1"
     REDIS_PORT = 6379
 
+    # session博阿村配置
     SESSION_TYPE = "redis"
-    SESSION_USE_SIGNER = True
-    PERMANENT_SESSION_LIFETIME = 86400 * 2
+    # 指定session保存的位置
     SESSION_REDIS = StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
-    SECRET_KEY = "daasdasetasrysrywerywersdadfasdfasasfasdfasdfasdfasfds"
+    SESSION_KEY_PREFIX = "Session"
+    SESSION_USE_SIGNER = True
+    SESSION_PERMANENT = False
+    PERMANENT_SESSION_LIFETIME = 86400 * 2
+    SECRET_KEY = "rIucD1qEuL3/iLaV5+6MbMjzHjlhvJBwgvtZi/A2tCmVoLmGTLCQYQ=="

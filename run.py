@@ -15,12 +15,14 @@ db = SQLAlchemy()
 db.init_app(app)
 # 设置session保存位置: 配置对象里面的属性是类属性
 redis_store = StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT)
+# 可以指定session的保存位置，要在app的config中配置
 Session(app)
 # 开启CSRF保护
 CSRFProtect(app)
 
 @app.route("/")
 def index():
+    # 使用session存储session
     session["name"] = "song"
     return "首页"
 
