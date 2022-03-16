@@ -4,21 +4,9 @@ import logging
 # 添加命令行支持，后面还要数据库迁移等功能
 from Info import *
 
+# 创建的时候传递环境配置
 app = creat_app("pro")
 manager = Manager(app)
-
-
-@app.route("/")
-def index():
-    # 使用session存储session
-    session["name"] = "song"
-    logging.fatal("fatal")
-    logging.error("error")
-    logging.warning("warning")
-    logging.debug("debug")
-    # 在flask程序中使用flask封装好的log模块current_app
-    current_app.logger.debug('debug')
-    return "首页内容"
 
 
 if __name__ == '__main__':

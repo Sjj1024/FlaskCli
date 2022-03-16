@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from redis import StrictRedis
 
+from Info.moduls.index import index_blu
 from config import config
 
 
@@ -26,6 +27,11 @@ def setup_log(log_level):
     file_log_handler.setFormatter(formatter)
     # 为全局的日志工具对象（flask app使用的）添加日志记录器
     logging.getLogger().addHandler(file_log_handler)
+
+
+def regist_blu():
+    # 注册蓝图，不用手动导入
+    print("")
 
 
 def creat_app(con: str):
@@ -47,4 +53,6 @@ def creat_app(con: str):
     Session(app)
     # 开启CSRF保护
     CSRFProtect(app)
+    # 注册蓝图
+    app.register_blueprint(index_blu)
     return app
