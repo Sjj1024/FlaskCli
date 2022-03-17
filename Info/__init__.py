@@ -1,5 +1,6 @@
 import logging
 import os
+import pkgutil
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
@@ -37,12 +38,16 @@ def setup_log(log_level):
 
 def regist_blu():
     # 注册蓝图，不用手动导入
-    print("")
+    print(__path__, __name__ + ".")
+    pkg_list = pkgutil.walk_packages(__path__, __name__ + ".")
+    for _, name, ispkg in pkg_list:
+        print(name, ispkg)
 
 
 def creat_app(con: str):
     # 将业务代码抽离出来
     app = Flask(__name__)
+    regist_blu()
     # 可以通过设置环境变量配置不同的环境
     config_env = os.environ.get("config")
     if config_env is not None:
