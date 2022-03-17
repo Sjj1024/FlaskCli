@@ -1,9 +1,10 @@
 import logging
 import os
 import pkgutil
+import sys
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
@@ -36,18 +37,28 @@ def setup_log(log_level):
     logging.getLogger().addHandler(file_log_handler)
 
 
-def regist_blu():
-    # 注册蓝图，不用手动导入
-    print(__path__, __name__ + ".")
-    pkg_list = pkgutil.walk_packages(__path__, __name__ + ".")
-    for _, name, ispkg in pkg_list:
-        print(name, ispkg)
+def search_blueprint(app: Flask):
+  """
+  扫描蓝图，并自动注入app中
+  """
+  app_dict = {}
+  pkg_list = pkgutil.walk_packages(__path__, __name__ + ".")
+  for _, module_name, ispkg in pkg_list:
+    __import__(module_name)
+    module = sys.modules[module_name]
+    module_attrs = dir(module)
+    for name in module_attrs:
+      var_obj = getattr(module, name)
+      if isinstance(var_obj, Blueprint):
+        if app_dict.get(name) is None:
+          app_dict[name] = var_obj
+          app.register_blueprint(var_obj)
+          print(" * 注入 %s 模块 %s 成功" % (Blueprint.__name__, var_obj.__str__()))
 
 
 def creat_app(con: str):
     # 将业务代码抽离出来
     app = Flask(__name__)
-    regist_blu()
     # 可以通过设置环境变量配置不同的环境
     config_env = os.environ.get("config")
     if config_env is not None:
@@ -66,6 +77,5 @@ def creat_app(con: str):
     # 开启CSRF保护
     CSRFProtect(app)
     # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
-    from Info.moduls.index import index_blu
-    app.register_blueprint(index_blu)
+    search_blueprint(app)
     return app
