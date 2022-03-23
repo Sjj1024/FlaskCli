@@ -11,7 +11,8 @@ class Config(object):
     DEBUG = True
     LOG_LEVEL = logging.DEBUG
     # 数据库配置
-    SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
+    # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:8891/pgdbname"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     REDIS_HOST = "127.0.0.1"

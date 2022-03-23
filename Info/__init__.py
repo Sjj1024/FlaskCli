@@ -14,6 +14,7 @@ from config import config
 
 # 给变量加注释，让其可以自动提示
 redis_store = None  # type: StrictRedis
+db: SQLAlchemy = None
 
 
 # 下面这种也是一样的，变量提示，后面引入之后也可以自动获取提示
@@ -38,22 +39,22 @@ def setup_log(log_level):
 
 
 def search_blueprint(app: Flask):
-  """
-  扫描蓝图，并自动注入app中
-  """
-  app_dict = {}
-  pkg_list = pkgutil.walk_packages(__path__, __name__ + ".")
-  for _, module_name, ispkg in pkg_list:
-    __import__(module_name)
-    module = sys.modules[module_name]
-    module_attrs = dir(module)
-    for name in module_attrs:
-      var_obj = getattr(module, name)
-      if isinstance(var_obj, Blueprint):
-        if app_dict.get(name) is None:
-          app_dict[name] = var_obj
-          app.register_blueprint(var_obj)
-          print(" * 注入 %s 模块 %s 成功" % (Blueprint.__name__, var_obj.__str__()))
+    """
+    扫描蓝图，并自动注入app中
+    """
+    app_dict = {}
+    pkg_list = pkgutil.walk_packages(__path__, __name__ + ".")
+    for _, module_name, ispkg in pkg_list:
+        __import__(module_name)
+        module = sys.modules[module_name]
+        module_attrs = dir(module)
+        for name in module_attrs:
+            var_obj = getattr(module, name)
+            if isinstance(var_obj, Blueprint):
+                if app_dict.get(name) is None:
+                    app_dict[name] = var_obj
+                    app.register_blueprint(var_obj)
+                    print(" * 注入 %s 模块 %s 成功" % (Blueprint.__name__, var_obj.__str__()))
 
 
 def creat_app(con: str):
@@ -65,6 +66,7 @@ def creat_app(con: str):
         con = config_env
     app.config.from_object(config[con])
     # 初始化数据库
+    global db
     db = SQLAlchemy()
     db.init_app(app)
     # 日志等级配置
@@ -75,7 +77,7 @@ def creat_app(con: str):
     # 可以指定session的保存位置，要在app的config中配置
     Session(app)
     # 开启CSRF保护
-    CSRFProtect(app)
+    # CSRFProtect(app)
     # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
     search_blueprint(app)
     return app
