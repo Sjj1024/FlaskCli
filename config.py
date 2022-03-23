@@ -7,12 +7,16 @@ class Config(object):
     """
     项目配置
     """
-
     DEBUG = True
     LOG_LEVEL = logging.DEBUG
     # 数据库配置
+    USERNAME = "postgres"
+    PASSWORD = "postgres"
+    DATA_IP = "localhost"
+    DATA_PORT = 8891
+    DATABASE_NAME = "pgdbname"
     # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:8891/pgdbname"
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     REDIS_HOST = "127.0.0.1"
