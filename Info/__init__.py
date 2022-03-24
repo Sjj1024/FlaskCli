@@ -2,7 +2,7 @@ import logging
 import os
 import pkgutil
 import sys
-from logging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
 from flask import Flask, Blueprint
 from flask_session import Session
@@ -28,8 +28,13 @@ def setup_log(log_level):
         os.mkdir(path)
     # 设置日志的记录等级
     logging.basicConfig(level=log_level)  # 调试debug级
+    # 下面的日志处理二选一：RotatingFileHandler TimedRotatingFileHandler
     # 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、保存的日志文件个数上限
-    file_log_handler = RotatingFileHandler("logs/log", maxBytes=1024 * 1024 * 100, backupCount=10)
+    # file_log_handler = RotatingFileHandler("logs/log", maxBytes=1024, backupCount=3)
+
+    # 间隔5(S)创建新的名称为myLog%Y%m%d_%H%M%S.log的文件，并一直占用myLog文件。
+    file_log_handler = TimedRotatingFileHandler('logs/log', when='S', interval=5, backupCount=3)
+
     # 创建日志记录的格式 日志等级 输入日志信息的文件名 行数 日志信息
     formatter = logging.Formatter('%(asctime)s [%(module)s] %(levelname)s [%(lineno)d] %(message)s')
     # 为刚创建的日志记录器设置日志记录格式
