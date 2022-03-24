@@ -11,7 +11,7 @@ def index():
     # 使用session存储session
     print(redis_store)
     redis_store.set("name", "song")
-    res = db.session.execute("select nick_name from users;").fetchall()
+    res = db.session.execute("select nick_name from users").fetchall()
     emp_json_list = [dict(zip(item.keys(), item)) for item in res]
     print(emp_json_list)
     return "首页内容"
