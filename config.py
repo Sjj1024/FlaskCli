@@ -13,7 +13,7 @@ class Config(object):
     USERNAME = "postgres"
     PASSWORD = "postgres"
     DATA_IP = "localhost"
-    DATA_PORT = 8891
+    DATA_PORT = 5432
     DATABASE_NAME = "pgdbname"
     # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
