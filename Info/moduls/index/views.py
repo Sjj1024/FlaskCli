@@ -19,8 +19,6 @@ def index():
 
 @index_blu.route("/user")
 def query_user():
-    # 将数据库会话中的变动提交到数据库中,如果不Commit,数据库中是没有改动的
-    db.session.commit()
     # 返回所有用户保存到list中
     user_list = User.query.all()
     print(user_list)
@@ -35,4 +33,6 @@ def add_user():
     u.nick_name = "wang"
     # 将用户添加到数据库会话中
     db.session.add(u)
+    # 将数据库会话中的变动提交到数据库中,如果不Commit,数据库中是没有改动的
+    db.session.commit()
     return "添加成功"
