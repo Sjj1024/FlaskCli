@@ -64,6 +64,7 @@ def search_blueprint(app: Flask):
 
 def creat_app(con: str):
     # 将业务代码抽离出来
+    # 可以访问到静态资源是因为flaksk会自动生成静态文件路由，__name__就表示当前模块，所以会将静态文件也加载进去
     app = Flask(__name__)
     # 可以通过设置环境变量配置不同的环境
     config_env = os.environ.get("config")
