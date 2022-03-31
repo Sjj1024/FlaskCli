@@ -33,7 +33,7 @@ def setup_log(log_level):
     # file_log_handler = RotatingFileHandler("logs/log", maxBytes=1024, backupCount=3)
 
     # 间隔5(S)创建新的名称为myLog%Y%m%d_%H%M%S.log的文件，并一直占用myLog文件。
-    file_log_handler = TimedRotatingFileHandler('logs/log', when='S', interval=5, backupCount=3)
+    file_log_handler = TimedRotatingFileHandler('logs/log', when='S', interval=60, backupCount=3)
 
     # 创建日志记录的格式 日志等级 输入日志信息的文件名 行数 日志信息
     formatter = logging.Formatter('%(asctime)s [%(module)s] %(levelname)s [%(lineno)d] %(message)s')
@@ -83,6 +83,7 @@ def creat_app(con: str):
     # 可以指定session的保存位置，要在app的config中配置
     Session(app)
     # 开启CSRF保护
+    # TODO 开启保护
     # CSRFProtect(app)
     # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
     search_blueprint(app)
