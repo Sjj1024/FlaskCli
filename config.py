@@ -31,6 +31,13 @@ class Config(object):
     PERMANENT_SESSION_LIFETIME = 86400 * 2
     SECRET_KEY = "rIucD1qEuL3/iLaV5+6MbMjzHjlhvJBwgvtZi/A2tCmVoLmGTLCQYQ=="
 
+    # 163邮箱服务器地址
+    MAIL_HOST = 'smtp.163.com'
+    # 163用户名
+    MAIL_USER = 'sjjhub@163.com'
+    # 密码(部分邮箱为授权码)
+    MAIL_PASS = '521xiaoshen'
+
 
 class DevelopMentConfig(Config):
     DEBUG = True

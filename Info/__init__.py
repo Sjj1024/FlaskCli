@@ -2,12 +2,11 @@ import logging
 import os
 import pkgutil
 import sys
-from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 
 from flask import Flask, Blueprint
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import CSRFProtect
 from redis import StrictRedis
 
 from config import config
@@ -15,6 +14,9 @@ from config import config
 # 给变量加注释，让其可以自动提示
 redis_store = None  # type: StrictRedis
 db: SQLAlchemy = None
+
+# 全局配置类
+config_obj = None
 
 
 # 下面这种也是一样的，变量提示，后面引入之后也可以自动获取提示
@@ -71,6 +73,9 @@ def creat_app(con: str):
     if config_env is not None:
         con = config_env
     app.config.from_object(config[con])
+    # 设施配置类
+    global config_obj
+    config_obj = config[con]()
     # 初始化数据库
     global db
     db = SQLAlchemy()
@@ -79,7 +84,7 @@ def creat_app(con: str):
     setup_log(config[con].LOG_LEVEL)
     # 设置session保存位置: 配置对象里面的属性是类属性
     global redis_store
-    redis_store = StrictRedis(host=config[con].REDIS_HOST, port=config[con].REDIS_PORT)
+    redis_store = StrictRedis(host=config[con].REDIS_HOST, port=config[con].REDIS_PORT, decode_responses=True)
     # 可以指定session的保存位置，要在app的config中配置
     Session(app)
     # 开启CSRF保护
