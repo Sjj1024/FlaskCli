@@ -26,7 +26,16 @@ class User(db.Model, BaseModel):
     """用户"""
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)  # 用户编号
-    nick_name = db.Column(db.String(255), unique=True, nullable=False)  # 用户昵称
+    user_name = db.Column(db.String(255), unique=True, nullable=False)  # 用户名
+    password = db.Column(db.String(255), unique=False, nullable=True)  # 用户密码
+    nick_name = db.Column(db.String(255), unique=False, nullable=True)  # 用户昵称
+    email = db.Column(db.String(255), unique=False, nullable=True)  # 用户邮箱
+    phone = db.Column(db.String(255), unique=False, nullable=True)  # 用户手机号
+    gender = db.Column(db.String(255), unique=False, nullable=True)  # 用户性别
+    signature = db.Column(db.String(255), unique=False, nullable=True)  # 用户签名
+    head_img = db.Column(db.String(255), unique=False, nullable=True)  # 用户头像链接
+    creat_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 用户创建时间
+    role_id = db.Column(db.Integer, unique=True, nullable=False)  # 角色id
 
 
 class Categorys(db.Model, BaseModel):

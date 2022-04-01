@@ -1,3 +1,4 @@
+import logging
 import smtplib
 from email.mime.text import MIMEText
 
@@ -9,7 +10,6 @@ def send_email(title: str, content: str, email):
     sender = 'sjjhub@163.com'
     # 邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
     receivers = [email]
-    # 设置email信息
     # 邮件内容设置
     message = MIMEText(content, 'plain', 'utf-8')
     # 邮件主题
@@ -18,7 +18,6 @@ def send_email(title: str, content: str, email):
     message['From'] = sender
     # 接受方信息
     message['To'] = receivers[0]
-
     # 登录并发送邮件
     try:
         # 在阿里云上就要改为下面这种，本地和服务器都友好：
@@ -29,6 +28,5 @@ def send_email(title: str, content: str, email):
         smtpObj.sendmail(sender, receivers, message.as_string())
         # 退出
         smtpObj.quit()
-        print('success')
     except smtplib.SMTPException as e:
-        print('error', e)  # 打印错误
+        logging.error(f"发送邮件失败:{e}")

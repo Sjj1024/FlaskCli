@@ -1,8 +1,9 @@
 import logging
 
-from flask import request, make_response
+from flask import request, make_response, jsonify
 
-from Info import redis_store, constants
+from Info import redis_store, constants, db
+from Info.models import User
 from Info.moduls.register import passport_blu
 from Info.utils.captcha.captcha import captcha
 from Info.utils.common_util import send_email
@@ -13,10 +14,19 @@ def regist():
     logging.info("开始注册")
     # 1. 获取参数
     param_dict = request.json
+    user_name = param_dict.get("user_name")
     mobile = param_dict.get("mobile")
-    smscode = param_dict.get("smscode")
+    email = param_dict.get("email")
     password = param_dict.get("password")
-    return "sss"
+    user = User()
+    user.user_name = user_name
+    user.phone = mobile
+    user.password = password
+    user.email = email
+    user.role_id = 1
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(res_code=2000, res_msg="注册成功")
 
 
 @passport_blu.route("/imgcode")
@@ -46,6 +56,6 @@ def check_send_email():
     redis_img_code = redis_store.get(img_name)
     if redis_img_code and redis_img_code == img_code:
         send_email("欢迎注册", "恭喜您注册成功", email)
-        return "注册成功"
+        return jsonify(res_code=2100, res_msg="注册成功")
     else:
-        return "注册失败"
+        return jsonify(res_code=4100, res_msg="注册失败")
