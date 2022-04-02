@@ -1,6 +1,6 @@
 import logging
 
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, session
 
 from Info import redis_store, constants, db
 from Info.models import User
@@ -30,6 +30,27 @@ def regist():
         return jsonify(res_code=2000, res_msg="注册成功")
     except Exception as e:
         return jsonify(res_code=4300, res_msg=f"注册失败:{e}")
+
+
+@passport_blu.route("/login", methods=["POST"])
+def login():
+    logging.info("开始注册")
+    # 1. 获取参数
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    password = param_dict.get("password")
+    try:
+        user = User.query.filter(User.user_name == user_name).first()
+    except Exception as e:
+        logging.error(f"查询数据库错误{e}")
+        return jsonify(res_code=4300, res_msg=f"查询失败:{e}")
+    if not user:
+        return jsonify(res_code=4300, res_msg="用户不存在")
+    if not user.check_password(password):
+        return jsonify(res_code=4300, res_msg="密码错误")
+    session["user_id"] = user.id
+    session["user_name"] = user.user_name
+    return jsonify(res_code=2200, res_msg="登陆成功")
 
 
 @passport_blu.route("/imgcode")
