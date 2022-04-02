@@ -25,8 +25,11 @@ def regist():
     user.email = email
     user.role_id = 1
     db.session.add(user)
-    db.session.commit()
-    return jsonify(res_code=2000, res_msg="注册成功")
+    try:
+        db.session.commit()
+        return jsonify(res_code=2000, res_msg="注册成功")
+    except Exception as e:
+        return jsonify(res_code=4300, res_msg=f"注册失败:{e}")
 
 
 @passport_blu.route("/imgcode")

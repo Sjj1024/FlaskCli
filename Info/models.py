@@ -1,5 +1,6 @@
 import datetime
-
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from . import db
 
 
@@ -27,7 +28,7 @@ class User(db.Model, BaseModel):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)  # 用户编号
     user_name = db.Column(db.String(255), unique=True, nullable=False)  # 用户名
-    password = db.Column(db.String(255), unique=False, nullable=True)  # 用户密码
+    password_hash = db.Column(db.String(255), unique=False, nullable=True, name="password")  # 用户密码
     nick_name = db.Column(db.String(255), unique=False, nullable=True)  # 用户昵称
     email = db.Column(db.String(255), unique=False, nullable=True)  # 用户邮箱
     phone = db.Column(db.String(255), unique=False, nullable=True)  # 用户手机号
@@ -36,6 +37,20 @@ class User(db.Model, BaseModel):
     head_img = db.Column(db.String(255), unique=False, nullable=True)  # 用户头像链接
     creat_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 用户创建时间
     role_id = db.Column(db.Integer, unique=True, nullable=False)  # 角色id
+
+    @property
+    def password(self):
+        # 一定要有这个属性，即便这个属性不允许访问
+        raise Exception("密码不能被访问")
+
+    # 赋值password，则自动加密存储。
+    @password.setter
+    def password(self, value):
+        self.password_hash = generate_password_hash(value)
+
+    # 使用check_password,进行密码校验，返回True False。
+    def check_password(self, pasword):
+        return check_password_hash(self.password_hash, pasword)
 
 
 class Categorys(db.Model, BaseModel):
