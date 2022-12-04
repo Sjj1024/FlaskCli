@@ -2,6 +2,8 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 
+from jsonschema import validate
+
 from Info import config_obj
 
 
@@ -30,3 +32,15 @@ def send_email(title: str, content: str, email):
         smtpObj.quit()
     except smtplib.SMTPException as e:
         logging.error(f"发送邮件失败:{e}")
+
+
+# 编写校验函数
+def check_metadata(json_data, schema):
+    """
+    正确返回True 错误返回异常的日志
+    """
+    try:
+        validate(instance=json_data, schema=schema)
+        return True
+    except Exception as e:
+        return e
