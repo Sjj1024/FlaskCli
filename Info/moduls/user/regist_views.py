@@ -4,12 +4,12 @@ from flask import request, make_response, jsonify, session
 
 from Info import redis_store, constants, db
 from Info.models import User
-from Info.moduls.register import passport_blu
+from Info.moduls.user import passport_blu
 from Info.utils.captcha.captcha import captcha
 from Info.utils.common_util import send_email
 
 
-@passport_blu.route("/", methods=["POST"])
+@passport_blu.route("/regist", methods=["POST"])
 def regist():
     logging.info("开始注册")
     # 1. 获取参数
@@ -27,30 +27,30 @@ def regist():
     db.session.add(user)
     try:
         db.session.commit()
-        return jsonify(res_code=2000, res_msg="注册成功")
+        return jsonify(code=200, message="注册成功")
     except Exception as e:
-        return jsonify(res_code=4300, res_msg=f"注册失败:{e}")
+        return jsonify(code=430, message=f"注册失败:{e}")
 
 
 @passport_blu.route("/login", methods=["POST"])
 def login():
-    logging.info("开始注册")
+    logging.info("开始登陆")
     # 1. 获取参数
     param_dict = request.json
-    user_name = param_dict.get("user_name")
+    user_name = param_dict.get("username")
     password = param_dict.get("password")
     try:
         user = User.query.filter(User.user_name == user_name).first()
     except Exception as e:
         logging.error(f"查询数据库错误{e}")
-        return jsonify(res_code=4300, res_msg=f"查询失败:{e}")
+        return jsonify(code=430, message=f"查询失败:{e}")
     if not user:
-        return jsonify(res_code=4300, res_msg="用户不存在")
+        return jsonify(code=430, message="用户不存在")
     if not user.check_password(password):
-        return jsonify(res_code=4300, res_msg="密码错误")
+        return jsonify(code=430, message="密码错误")
     session["user_id"] = user.id
     session["user_name"] = user.user_name
-    return jsonify(res_code=2200, res_msg="登陆成功")
+    return jsonify(code=200, message="登陆成功")
 
 
 @passport_blu.route("/imgcode")
@@ -77,9 +77,10 @@ def check_send_email():
     img_name = param_dict.get("img_name")
     img_code = param_dict.get("img_code")
     email = param_dict.get("send_email")
-    redis_img_code = redis_store.get(img_name)
-    if redis_img_code and redis_img_code == img_code:
+    # redis_img_code = redis_store.get(img_name)
+    # if redis_img_code and redis_img_code == img_code:
+    if img_code:
         send_email("欢迎注册", "恭喜您注册成功", email)
-        return jsonify(res_code=2100, res_msg="注册成功")
+        return jsonify(code=200, message="注册成功")
     else:
-        return jsonify(res_code=4100, res_msg="注册失败")
+        return jsonify(code=410, message="注册失败")

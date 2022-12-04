@@ -68,3 +68,18 @@ class Roles(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)  # 角色编号
     role = db.Column(db.String(255), unique=True, nullable=False)  # 角色名称
     authority = db.Column(db.ARRAY(db.String(255)), nullable=True)  # 角色权限
+
+
+class Collector(db.Model, BaseModel):
+    """表信息记录"""
+    __tablename__ = "collector"
+    id = db.Column(db.Integer, primary_key=True)  # 序号
+    uuid = db.Column(db.String(255), unique=True, nullable=False)  # 唯一id
+    table_name = db.Column(db.String(255), unique=False, nullable=True)  # 表名称
+    extra = db.Column(db.JSON, unique=False, nullable=True)  # jsonschema
+    enable = db.Column(db.Boolean, unique=False, nullable=True)  # 是否可用
+    description = db.Column(db.String(255), unique=False, nullable=True)  # 描述信息
+    count = db.Column(db.Integer, unique=False, nullable=True)  # 所有数量统计
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 创建时间
+    update_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 更新时间
+    account_id = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
