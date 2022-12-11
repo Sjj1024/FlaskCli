@@ -6,7 +6,7 @@ from Info import redis_store, constants, db
 from Info.models import User
 from Info.moduls.user import passport_blu
 from Info.utils.captcha.captcha import captcha
-from Info.utils.common_util import send_email
+from Info.utils.common_util import send_email, create_token
 
 
 @passport_blu.route("/regist", methods=["POST"])
@@ -50,7 +50,21 @@ def login():
         return jsonify(code=430, message="密码错误")
     session["user_id"] = user.id
     session["user_name"] = user.user_name
-    return jsonify(code=200, message="登陆成功")
+    # 获取用户id，传入生成token的方法，并接收返回的token
+    token = create_token(user.id)
+    return jsonify(code=200, message="登陆成功", data={"token": token})
+
+
+@passport_blu.route("/info", methods=["GET"])
+def info():
+    user_info = {"name": "1024小神", "avatar": "https://img-blog.csdnimg.cn/53781995003f4706a2c50884c620c7ef.png"}
+    return jsonify(code=200, message="success", data=user_info)
+
+
+@passport_blu.route("/logout", methods=["GET", "POST"])
+def logout():
+    # user_info = {"name": "1024小神", "avatar": "https://img-blog.csdnimg.cn/53781995003f4706a2c50884c620c7ef.png"}
+    return jsonify(code=200, message="success")
 
 
 @passport_blu.route("/imgcode")
