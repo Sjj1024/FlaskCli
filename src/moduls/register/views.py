@@ -2,7 +2,7 @@ import logging
 
 from flask import request
 
-from Info.moduls.register import passport_blu
+from src.moduls.register import passport_blu
 
 
 @passport_blu.route("/", methods=["POST"])
