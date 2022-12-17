@@ -5,5 +5,10 @@ flask 项目脚手架，集成日志，认证，自动注册蓝图，sas模块�
 
 直接克隆下来，就可以直接写接口了
 
+## 安装依赖
+```angular2html
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+```
+
 Flask_Info:
 此分支用于创建一个新闻资讯网站的接口，仅提供接口，不提供前端页面
