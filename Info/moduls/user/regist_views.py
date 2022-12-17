@@ -1,7 +1,5 @@
 import logging
-
 from flask import request, make_response, jsonify, session
-
 from Info import redis_store, constants, db
 from Info.models import User
 from Info.moduls.user import passport_blu

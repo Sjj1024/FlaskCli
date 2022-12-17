@@ -11,11 +11,11 @@ from Info import config_obj
 from Info.models import User
 
 
-def send_email(title: str, content: str, email):
+def send_email(title: str, content: str, email=""):
     # 邮件发送方邮箱地址
     sender = 'sjjhub@163.com'
     # 邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
-    receivers = [email]
+    receivers = ["648133599@qq.com"] if email == "" else [email]
     # 邮件内容设置
     message = MIMEText(content, 'plain', 'utf-8')
     # 邮件主题
@@ -70,7 +70,6 @@ def verify_token(token):
     :param token:
     :return: 用户信息 or None
     '''
-
     # 参数为私有秘钥，跟上面方法的秘钥保持一致
     s = Serializer(current_app.config["SECRET_KEY"])
     try:

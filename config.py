@@ -11,15 +11,15 @@ class Config(object):
     LOG_LEVEL = logging.DEBUG
     # 数据库配置
     USERNAME = "postgres"
-    PASSWORD = "postgres"
-    DATA_IP = "localhost"
+    PASSWORD = "123456"
+    DATA_IP = "192.168.0.111"
     DATA_PORT = 5432
-    DATABASE_NAME = "pgdbname"
+    DATABASE_NAME = "sunmanage"
     # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    REDIS_HOST = "127.0.0.1"
+    REDIS_HOST = "192.168.0.111"
     REDIS_PORT = 6379
     # Session配置
     SESSION_TYPE = "redis"

@@ -1,6 +1,6 @@
 import logging
 
-from flask import jsonify
+from flask import jsonify, request
 
 from Info.moduls.table import table_blu
 
@@ -19,6 +19,14 @@ def table_list():
         return jsonify(code=200, message="success", data={"total": total, "items": table_data})
     except Exception as e:
         return jsonify(code=430, message=f"获取失败:{e}")
+
+@table_blu.route("/addUser", methods=["POST"])
+def add_user():
+    logging.info("开始添加用户")
+    param_dict = request.json
+    user_name = param_dict.get("username")
+    password = param_dict.get("password")
+    return jsonify(code=200, message="success")
 
 # @table_blu.route("/login", methods=["POST"])
 # def login():
