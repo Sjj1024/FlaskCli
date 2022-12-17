@@ -1,6 +1,6 @@
 # from flask_script import Manager
 # 添加命令行支持，后面还要数据库迁移等功能
-from Info import *
+from src import *
 
 # 创建的时候传递环境配置
 app = creat_app("pro")
