@@ -25,7 +25,7 @@ def add_file(path, content, message):
     url = f"{base_url}/repos/{username}/{repos}/contents/{path}"
     headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    base64_content = base64.b64encode("print(''11111)")
+    base64_content = base64.b64encode("print(''11111)".encode())
     print(base64_content)
     payload = json.dumps({
         "message": message,
@@ -52,7 +52,7 @@ def add_caoliu_task_py(file_name, user_info):
         print(message)
         return True, message
     elif "Bad credentials" in response.get("message"):
-        message = "py:Token已失效，请更换token"
+        message = "py:Github.Token已失效，请更换token"
         print(message)
         return False, message
     elif "supplied" in response.get("message"):

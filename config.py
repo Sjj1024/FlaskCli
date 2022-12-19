@@ -56,3 +56,46 @@ config = {
     "pro": ProductionConfig,
     "test": TestingConfig
 }
+
+
+# 数据库表创建
+"""
+DROP TABLE IF EXISTS "public"."users";
+CREATE TABLE "public"."users" (
+  "id" int4 NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+  "user_name" varchar(255) COLLATE "pg_catalog"."default",
+  "password" varchar(255) COLLATE "pg_catalog"."default",
+  "nick_name" varchar(255) COLLATE "pg_catalog"."default",
+  "email" varchar(255) COLLATE "pg_catalog"."default",
+  "phone" varchar(255) COLLATE "pg_catalog"."default",
+  "gender" varchar(255) COLLATE "pg_catalog"."default",
+  "signature" varchar(255) COLLATE "pg_catalog"."default",
+  "head_img" varchar(255) COLLATE "pg_catalog"."default",
+  "creat_time" date,
+  "role_id" int4
+);
+
+CREATE TABLE "public"."users" (
+  "id" int4 NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+  "user_name" varchar(255) COLLATE "pg_catalog"."default",
+  "password" varchar(255) COLLATE "pg_catalog"."default",
+  "nick_name" varchar(255) COLLATE "pg_catalog"."default",
+  "email" varchar(255) COLLATE "pg_catalog"."default",
+  "phone" varchar(255) COLLATE "pg_catalog"."default",
+  "gender" varchar(255) COLLATE "pg_catalog"."default",
+  "signature" varchar(255) COLLATE "pg_catalog"."default",
+  "head_img" varchar(255) COLLATE "pg_catalog"."default",
+  "creat_time" date,
+  "role_id" int4 DEFAULT 0,
+  "money" int4 DEFAULT 0,
+  "cookie" varchar(255) COLLATE "pg_catalog"."default",
+  "user_agent" varchar(255) COLLATE "pg_catalog"."default",
+  "contribute" int4 DEFAULT 0,
+  "weiwang" int4 DEFAULT 0,
+  "current_moey" int4 DEFAULT 0,
+  "regular_moey" int4 DEFAULT 0,
+  "able_invate" bool DEFAULT false,
+  "lease" bool DEFAULT false,
+  "article_number" int4 DEFAULT 0
+);
+"""

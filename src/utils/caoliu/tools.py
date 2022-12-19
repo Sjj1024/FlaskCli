@@ -2,14 +2,20 @@ import json
 from urllib.parse import urlencode
 import ddddocr
 import requests
+from bs4 import BeautifulSoup
+
+source_url = ""
 
 
+# 获取回家地址
 def get_source():
     print("获取源地址")
+    global source_url
+    if source_url:
+        return source_url
     url = "https://get.xunfs.com/app/listapp.php"
-    header = {"Content-Type": "application/x-www-form-urlencoded"}
     data = {"a": "get18", "system": "android"}
-    res = requests.post(url=url, headers=header, data=data)
+    res = requests.post(url=url, headers={}, data=data)
     res_json = json.loads(res.content.decode("utf-8"))
     # print(res_json)
     # 打印出地址信息和更新时间
@@ -18,15 +24,21 @@ def get_source():
         url = "https://" + i
         print(url)
         try:
-            res = requests.get(url, timeout=5)
+            res = requests.get(url, headers={
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"},
+                               timeout=5)
             if res.status_code == 200:
                 print(url)
+                source_url = url
                 return url
         except:
             continue
 
 
 def get_code():
+    """
+    获取验证码
+    """
     url = f"{get_source()}/require/codeimg.php"
     payload = {}
     headers = {
@@ -53,7 +65,9 @@ def get_code():
 
 
 def check_success(response):
-    # print(f"检查是否注册成功：{response}")
+    """
+    检查是否注册成功
+    """
     if response.find("恭喜您,完成註冊現在可以開始使用您的會員權利了") != -1:
         print("恭喜您,完成註冊現在可以開始使用您的會員權利了")
         return True
@@ -68,8 +82,36 @@ def check_success(response):
         raise Exception(f"异常：{response}")
 
 
+def get_soup(page_url, cl_cookie, user_agent):
+    # 获取单张我的评论页面中的所有评论过的文章id和标题
+    header = {
+        "user-agent": user_agent,
+        "cookie": cl_cookie,
+        "referer": get_source() + "/index.php"
+    }
+    try:
+        res = requests.get(page_url, headers=header, timeout=10)
+        html = res.content.decode()
+        soup = BeautifulSoup(html, "lxml")
+        return soup
+    except Exception as e:
+        print(f"get_soup有错误{e},请检查错误......")
+        return None
+
+
 def get_userinfo_by_cookie(cookie, user_agent):
     print("get_userinfo_bycookie-----")
+    # 获取下一页的链接, 有就返回，没有就返回false
+    url = get_source() + "/index.php"
+    soup = get_soup(url, cookie, user_agent)
+    if soup:
+        gread_span = soup.select(".tr3 td:first-child .s3")  # 如果没有找到，返回None
+        user_name = soup.select('div[colspan="2"] span')[0].get_text()
+        grader = gread_span[0].get_text()
+        print(f"您的用户名是：{user_name}, 您的等级是：{grader}")
+        return user_name, grader
+    else:
+        return "获取用户名失败", "0"
 
 
 def regist(user_name, yaoqingma, youxiang, validate):

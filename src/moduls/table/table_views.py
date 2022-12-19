@@ -3,6 +3,7 @@ import logging
 from flask import jsonify, request
 
 from src.moduls.table import table_blu
+from src.utils.caoliu.tools import get_userinfo_by_cookie
 from src.utils.github.apis import add_caoliu_task_py
 
 
@@ -26,7 +27,13 @@ def table_list():
 @table_blu.route("/addUser", methods=["POST"])
 def add_user():
     logging.info("开始添加用户")
-    # {'username': '1111111', 'password': '1024xiaoshen@gmail.com', 'email': '1024xiaoshen@gmail.com', 'invcode': '11111', 'token': '111111'}
+    # {'username': '11111',
+    #  'password': '1024xiaoshen@gmail.com',
+    #  'email': '1024xiaoshen@gmail.com',
+    #  'invcode': '2222222',
+    #  'cookie': '444444444444',
+    #  'userAgent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'}
+
     param_dict = request.json
     print(param_dict)
     return jsonify(code=200, message="success")
@@ -40,13 +47,21 @@ def del_user():
     print(param_dict)
     return jsonify(code=200, message="success")
 
+
 @table_blu.route("/queryUser", methods=["POST"])
 def query_user_by_cookie():
     print("通过cookie查询用户信息")
     param_dict = request.json
     cookie = param_dict.get("cookie")
-    UserAgent = param_dict.get("UserAgent")
-    return jsonify(code=200, message="success")
+    userAgent = param_dict.get("userAgent")
+    if "winduser" not in cookie:
+        return jsonify(code=511, message="fail", data={"userName": 'user_name', "grader": "0"})
+    user_name, grader = get_userinfo_by_cookie(cookie, userAgent)
+    if grader != "0":
+        return jsonify(code=200, message="success", data={"userName": user_name, "grader": grader})
+    else:
+        return jsonify(code=511, message="fail", data={"userName": user_name, "grader": grader})
+
 # @table_blu.route("/login", methods=["POST"])
 # def login():
 #     logging.info("开始登陆")
