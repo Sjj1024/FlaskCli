@@ -12,14 +12,14 @@ class Config(object):
     # 数据库配置
     USERNAME = "postgres"
     PASSWORD = "123456"
-    DATA_IP = "192.168.0.111"
+    DATA_IP = "192.168.0.105"
     DATA_PORT = 5432
     DATABASE_NAME = "sunmanage"
     # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    REDIS_HOST = "192.168.0.111"
+    REDIS_HOST = "192.168.0.105"
     REDIS_PORT = 6379
     # Session配置
     SESSION_TYPE = "redis"

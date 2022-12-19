@@ -4,3 +4,4 @@ from flask import Blueprint
 table_blu = Blueprint("tableblue", __name__, url_prefix='/api1/table')
 
 from . import table_views
+from . import github_views
