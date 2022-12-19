@@ -12,7 +12,8 @@ def table_list():
         table_data = []
         for i in range(1, 15):
             table_data.append(
-                {"id": i, "username": f"woshibiaoti{i}", "grade": f"新手上路{i}", "weiwang": f"song{i}", "gongxian": "2022-12-11",
+                {"id": i, "username": f"woshibiaoti{i}", "grade": f"新手上路{i}", "weiwang": f"song{i}",
+                 "gongxian": "2022-12-11",
                  "money": 300 + i, "publick": "12/12/22", "mazi": "yqsdfasdfasdfsdf",
                  "email": "1024sssssxiaoshen@gmail.com"})
         total = len(table_data) * 50
@@ -20,12 +21,22 @@ def table_list():
     except Exception as e:
         return jsonify(code=430, message=f"获取失败:{e}")
 
+
 @table_blu.route("/addUser", methods=["POST"])
 def add_user():
     logging.info("开始添加用户")
+    # {'username': '1111111', 'password': '1024xiaoshen@gmail.com', 'email': '1024xiaoshen@gmail.com', 'invcode': '11111', 'token': '111111'}
     param_dict = request.json
-    user_name = param_dict.get("username")
-    password = param_dict.get("password")
+    print(param_dict)
+    return jsonify(code=200, message="success")
+
+
+@table_blu.route("/delUser", methods=["DELETE"])
+def del_user():
+    logging.info("开始删除用户")
+    # {'username': '1111111', 'password': '1024xiaoshen@gmail.com', 'email': '1024xiaoshen@gmail.com', 'invcode': '11111', 'token': '111111'}
+    param_dict = request.json
+    print(param_dict)
     return jsonify(code=200, message="success")
 
 # @table_blu.route("/login", methods=["POST"])
