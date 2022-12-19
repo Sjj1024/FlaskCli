@@ -3,6 +3,7 @@ import logging
 from flask import jsonify, request
 
 from src.moduls.table import table_blu
+from src.utils.github.apis import add_caoliu_task_py
 
 
 @table_blu.route("/list", methods=["GET", "POST"])
@@ -39,6 +40,13 @@ def del_user():
     print(param_dict)
     return jsonify(code=200, message="success")
 
+@table_blu.route("/queryUser", methods=["POST"])
+def query_user_by_cookie():
+    print("通过cookie查询用户信息")
+    param_dict = request.json
+    cookie = param_dict.get("cookie")
+    UserAgent = param_dict.get("UserAgent")
+    return jsonify(code=200, message="success")
 # @table_blu.route("/login", methods=["POST"])
 # def login():
 #     logging.info("开始登陆")

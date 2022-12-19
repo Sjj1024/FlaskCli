@@ -10,7 +10,7 @@ import functools
 from src import config_obj
 from src.models import User
 
-
+# 发送邮件
 def send_email(title: str, content: str, email=""):
     # 邮件发送方邮箱地址
     sender = 'sjjhub@163.com'

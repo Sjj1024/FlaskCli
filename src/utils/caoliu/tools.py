@@ -68,6 +68,10 @@ def check_success(response):
         raise Exception(f"异常：{response}")
 
 
+def get_userinfo_by_cookie(cookie, user_agent):
+    print("get_userinfo_bycookie-----")
+
+
 def regist(user_name, yaoqingma, youxiang, validate):
     print("开始注册")
     paylod = {
