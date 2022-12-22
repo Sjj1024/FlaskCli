@@ -43,7 +43,7 @@ class Config(object):
     GIT_URL = "https://github.com"
     GIT_USERNAME = "Sjj1024"
     GIT_REPOS = "Sjj1024"
-    GIT_TOKEN = "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"
+    GIT_TOKEN = "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"
 
 
 class DevelopMentConfig(Config):
