@@ -270,8 +270,8 @@ if __name__ == '__main__':
     return str_to_base64(res_commit_py)
 
 
-def get_caoliu_task_yml(file_name, py_name):
-    caoliu_task_yml = f"""name: Commit{file_name.split(".")[0]}
+def get_caoliu_task_yml(file_name, user_info):
+    caoliu_task_yml = f"""name: Commit{file_name}
 
 on:
   schedule:
@@ -297,7 +297,7 @@ jobs:
     - name: StartCommit
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        python src/tasks/{py_name}
+        python src/tasks/auto_commit.py "{user_info.get('username')}" "{user_info.get('cookie')}" "{user_info.get('user_agent')}"
     """
     return str_to_base64(caoliu_task_yml)
 

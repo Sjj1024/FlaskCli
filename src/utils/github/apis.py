@@ -1,29 +1,27 @@
 import base64
 import json
-
 import requests
-
+from src import config_obj
 from src.moduls.table.template import get_caoliu_commit_py, get_caoliu_task_yml
-from src.utils.github.config import *
 
 
 def login():
-    headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    login = requests.get(f"{base_url}/user", headers=headers)
+    login = requests.get(f"{config_obj.GIT_API_URL}/user", headers=headers)
     print(login.json())
 
 
 def get_progect(id):
-    headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    login = requests.get(f"{base_url}/projects/{id}", headers=headers)
+    login = requests.get(f"{config_obj.GIT_API_URL}/projects/{id}", headers=headers)
     print(login.json())
 
 
 def add_file(path, content, message):
-    url = f"{base_url}/repos/{username}/{repos}/contents/{path}"
-    headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
+    url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{path}"
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     base64_content = base64.b64encode("print(''11111)".encode())
     print(base64_content)
@@ -35,22 +33,26 @@ def add_file(path, content, message):
     print(response.text)
 
 
-def add_caoliu_task_py(file_name, user_info):
-    print("创建一个草榴py文件")
-    url = f"{base_url}/repos/{username}/{repos}/contents/src/tasks/{file_name}"
-    headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
+def add_caoliu_task_file(file_name, user_info):
+    print("创建一个caoliuTask文件")
+    url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    base64_content = get_caoliu_commit_py(user_info)
+    if "py" in file_name:
+        base64_content = get_caoliu_commit_py(user_info)
+    elif "yml" in file_name:
+        base64_content = get_caoliu_task_yml(f"{user_info.get('username')}", user_info)
+    else:
+        return False, f"file类型错误:{file_name}"
     print(base64_content)
     payload = json.dumps({
-        "message": "add:caoliu.py",
+        "message": "add:caoliu Task File",
         "content": base64_content
     })
     response = requests.request("PUT", url, headers=headers, data=payload).json()
     if response.get("content", None):
-        message = "py:创建成功"
-        print(message)
-        return True, message
+        sha = response.get("content").get("sha")
+        return True, sha
     elif "Bad credentials" in response.get("message"):
         message = "py:Github.Token已失效，请更换token"
         print(message)
@@ -61,31 +63,57 @@ def add_caoliu_task_py(file_name, user_info):
         return False, message
 
 
-def add_caoliu_task_yml(file_name, py_name):
-    print("添加一个caoliu.yml文件")
-    url = f"{base_url}/repos/{username}/{repos}/contents/.github/workflows/{file_name}"
-    headers = {"Authorization": "token %s" % token, 'Accept': 'application/vnd.github.v3+json',
+def get_repo_action(user_name):
+    print("获取仓库workflowId")
+    url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows"
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    base64_content = get_caoliu_task_yml(file_name, py_name)
-    print(base64_content)
+    response = requests.request("GET", url, headers=headers).json()
+    workflows = response.get("workflows")
+    for work in workflows:
+        if user_name in work.get("name"):
+            return work
+    return {}
+
+
+def dispatches_workflow_run(user_name):
+    print(f"触发一个工作流运行{user_name}")
+    workflow = get_repo_action(user_name)
+    if workflow:
+        workflow_id = workflow.get("id")
+        url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/{workflow_id}/dispatches"
+        headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+                   'Content-Type': 'application/json'}
+        payload = json.dumps({"ref": "master", "inputs": {"tags": "sunmanage dispatch"}})
+        response = requests.request("POST", url, headers=headers, data=payload)
+        print(f"dispatches_workflow_run-{response.text}")
+        if not response.text:
+            return True
+    return True
+
+
+def del_caoliu_task_file(file_name, user_info):
+    print("删除一个草榴py文件")
+    url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
+    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+               'Content-Type': 'application/json'}
     payload = json.dumps({
-        "message": "add:caoliu.yml",
-        "content": base64_content
+        "message": "del caoliu task",
+        "sha": user_info.get("py_sha") if 'py' in file_name else user_info.get("yml_sha")
     })
-    response = requests.request("PUT", url, headers=headers, data=payload).json()
-    if response.get("content", None):
-        message = "yml:创建成功"
-        print("创建成功")
-        return True, message
+    response = requests.request("DELETE", url, headers=headers, data=payload).json()
+    if response.get("commit", None):
+        sha = response.get("commit").get("sha")
+        return True, sha
     elif "Bad credentials" in response.get("message"):
-        message = "yml:Token已失效，请更换token"
+        message = "py:Github.Token已失效，请更换token"
         print(message)
         return False, message
-    elif "supplied" in response.get("message"):
-        message = "yml:存在重名的文件，请修改或更改文件名"
-        print(message)
+    else:
+        message = "py:未知异常"
+        print(f"删除文件未知异常：{response}")
         return False, message
 
 
 if __name__ == '__main__':
-    get_progect("")
+    dispatches_workflow_run("CreatArticle")

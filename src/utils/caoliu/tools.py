@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 import ddddocr
 import requests
 from bs4 import BeautifulSoup
+import re
 
 source_url = ""
 
@@ -86,8 +87,7 @@ def get_soup(page_url, cl_cookie, user_agent):
     # 获取单张我的评论页面中的所有评论过的文章id和标题
     header = {
         "user-agent": user_agent,
-        "cookie": cl_cookie,
-        "referer": get_source() + "/index.php"
+        "cookie": cl_cookie
     }
     try:
         res = requests.get(page_url, headers=header, timeout=10)
@@ -102,16 +102,47 @@ def get_soup(page_url, cl_cookie, user_agent):
 def get_userinfo_by_cookie(cookie, user_agent):
     print("get_userinfo_bycookie-----")
     # 获取下一页的链接, 有就返回，没有就返回false
-    url = get_source() + "/index.php"
+    source_url = get_source()
+    url = source_url + "/profile.php"
     soup = get_soup(url, cookie, user_agent)
     if soup:
-        gread_span = soup.select(".tr3 td:first-child .s3")  # 如果没有找到，返回None
+        gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
+        email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         user_name = soup.select('div[colspan="2"] span')[0].get_text()
-        grader = gread_span[0].get_text()
-        print(f"您的用户名是：{user_name}, 您的等级是：{grader}")
-        return user_name, grader
+        info_url = f"{source_url}/{gread_span[0].get('href')}"
+        email_url = f"{source_url}/{email_span[0].get('href')}"
+        print(f"您的用户名是：{user_name}, 您的等级是：{info_url}")
+        info_soup = get_soup(info_url, cookie, user_agent)
+        email_soup = get_soup(email_url, cookie, user_agent)
+        if info_soup and email_soup:
+            email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form > div.t > table")[0].get_text()).group(1)
+            all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
+            user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
+            dengji = re.search(r'會員頭銜(.*?)\n', all_info).group(1)
+            jifen = re.search(r'綜合積分(.*?)\n', all_info).group(1)
+            fatie = re.search(r'發帖(.*?)\n', all_info).group(1)
+            weiwang = re.search(r'威望(.*?) 點\n', all_info).group(1)
+            money = re.search(r'金錢(.*?) USD\n', all_info).group(1)
+            gongxian = re.search(r'貢獻(.*?) 點\n', all_info).group(1)
+            gongxian_link = re.search(r'隨機生成\)(.*?)\n', all_info).group(1)
+            regist_time = re.search(r'註冊時間(.*?)\n', all_info).group(1)
+            return {
+                "user_name": user_name,
+                "user_id": user_id,
+                "dengji": dengji,
+                "jifen": jifen,
+                "fatie": fatie,
+                "weiwang": weiwang,
+                "money": money,
+                "gongxian": gongxian,
+                "gongxian_link": gongxian_link,
+                "regist_time": regist_time,
+                "email": email
+            }
+        else:
+            return {}
     else:
-        return "获取用户名失败", "0"
+        return {}
 
 
 def regist(user_name, yaoqingma, youxiang, validate):
@@ -164,4 +195,7 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    cookie = "PHPSESSID=360lp8uhp118bbnuj1dv8qohvp; 227c9_ck_info=/	; 227c9_winduser=UAMIAQ0KaApYDFVUB1IEClQPVwBdUg0LBVIMC1EHBgNUWgBZXlYNPg==; 227c9_groupid=8; 227c9_lastvisit=0	1671602251	/index.php?"
+    userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    res = get_userinfo_by_cookie(cookie, userAgent)
+    print(res)

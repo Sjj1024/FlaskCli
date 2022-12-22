@@ -3,21 +3,20 @@ import os
 import pkgutil
 import re
 import sys
-from logging.handlers import TimedRotatingFileHandler, RotatingFileHandler
-
+from logging.handlers import TimedRotatingFileHandler
 from flask import Flask, Blueprint
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
 
-from config import config
+from config import config, Config
 
 # 给变量加注释，让其可以自动提示
 redis_store = None  # type: StrictRedis
 db: SQLAlchemy = None
 
 # 全局配置类
-config_obj = None
+config_obj: Config = None
 
 
 # 下面这种也是一样的，变量提示，后面引入之后也可以自动获取提示
@@ -68,6 +67,15 @@ def search_blueprint(app: Flask):
                     print(" * 注入 %s 模块 %s 成功" % (Blueprint.__name__, var_obj.__str__()))
 
 
+def check_host():
+    global config_obj
+    host_list = [config_obj.REDIS_HOST, config_obj.DATA_IP, config_obj.GIT_API_URL, config_obj.GIT_URL]
+    for host in host_list:
+        f = os.popen(rf"ping -n 1 {host}", "r")
+        if "100% 丢失" in f.read():
+            print(f" * 地址异常:{host}")
+
+
 def creat_app(con: str):
     # 将业务代码抽离出来
     # 可以访问到静态资源是因为flaksk会自动生成静态文件路由，__name__就表示当前模块，所以会将静态文件也加载进去
@@ -96,4 +104,6 @@ def creat_app(con: str):
     # CSRFProtect(app)
     # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
     search_blueprint(app)
+    # 检查网络配置
+    check_host()
     return app

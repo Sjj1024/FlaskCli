@@ -1,10 +1,7 @@
 import logging
-
 from flask import jsonify, request
-
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie
-from src.utils.github.apis import add_caoliu_task_py
 
 
 @table_blu.route("/list", methods=["GET", "POST"])
@@ -55,12 +52,12 @@ def query_user_by_cookie():
     cookie = param_dict.get("cookie")
     userAgent = param_dict.get("userAgent")
     if "winduser" not in cookie:
-        return jsonify(code=511, message="fail", data={"userName": 'user_name', "grader": "0"})
-    user_name, grader = get_userinfo_by_cookie(cookie, userAgent)
-    if grader != "0":
-        return jsonify(code=200, message="success", data={"userName": user_name, "grader": grader})
+        return jsonify(code=511, message="fail", data={"user_name": 'cookie不正确', "grader": "0"})
+    user_info = get_userinfo_by_cookie(cookie, userAgent)
+    if user_info:
+        return jsonify(code=200, message="success", data=user_info)
     else:
-        return jsonify(code=511, message="fail", data={"userName": user_name, "grader": grader})
+        return jsonify(code=511, message="fail", data=user_info)
 
 # @table_blu.route("/login", methods=["POST"])
 # def login():

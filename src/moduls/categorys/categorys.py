@@ -1,8 +1,5 @@
 import logging
-
-from flask import request
 from flask import jsonify
-
 from src import db
 from src.models import Categorys
 from src.moduls.categorys import categorys_blu

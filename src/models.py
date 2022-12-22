@@ -20,6 +20,11 @@ class BaseModel(object):
         _dict = self.__dict__
         if "_sa_instance_state" in _dict:
             del _dict["_sa_instance_state"]
+        # 将创建时间和更新时间格式化
+        for (key, value) in _dict.items():
+            if isinstance(value, datetime.date):
+                # _dict[key] = value.strftime("%Y-%m-%d %H:%M:%S")
+                _dict[key] = value.strftime("%Y-%m-%d %H:%M")
         return _dict
 
 
@@ -83,3 +88,36 @@ class Collector(db.Model, BaseModel):
     create_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 创建时间
     update_time = db.Column(db.DateTime, default=datetime.datetime.now)  # 更新时间
     account_id = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
+
+
+class CaoliuUpdate(db.Model, BaseModel):
+    """表信息记录"""
+    __tablename__ = "caoliu_update"
+    id = db.Column(db.Integer, primary_key=True)  # 序号
+    user_name = db.Column(db.String(255), unique=True, nullable=False)  # 唯一id
+    user_id = db.Column(db.Integer, unique=False, nullable=True)  # 所有数量统计
+    password = db.Column(db.String(255), unique=False, nullable=True)  # 表名称
+    grade = db.Column(db.String(255), unique=False, nullable=True)  # jsonschema
+    email = db.Column(db.String(255), unique=False, nullable=True)  # 是否可用
+    weiwang = db.Column(db.String(255), unique=False, nullable=True)  # 描述信息
+    contribute = db.Column(db.String(255), unique=False, nullable=True)
+    desc = db.Column(db.String(255), unique=False, nullable=True)
+    target_weiwang = db.Column(db.String(255), unique=True, nullable=False)  # 创建时间
+    creat_time = db.Column(db.DateTime(), default=datetime.datetime.now)  # 更新时间
+    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
+    cookie = db.Column(db.String(255), unique=False, nullable=True)
+    user_agent = db.Column(db.String(255), unique=False, nullable=True)
+    current_money = db.Column(db.Integer, unique=False, nullable=True)
+    able_invate = db.Column(db.Boolean, unique=False, nullable=True)
+    lease = db.Column(db.Boolean, unique=False, nullable=True)
+    task_status = db.Column(db.String(255), unique=False, nullable=True)
+    task_link = db.Column(db.String(255), unique=False, nullable=True)
+    commit = db.Column(db.Integer, unique=False, nullable=True)
+    article_num = db.Column(db.Integer, unique=False, nullable=True)
+    py_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+    yml_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+
+
+if __name__ == '__main__':
+    update = CaoliuUpdate()
+    print(update)

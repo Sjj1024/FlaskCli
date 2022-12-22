@@ -38,6 +38,13 @@ class Config(object):
     # 密码(部分邮箱为授权码)
     MAIL_PASS = '521xiaoshen'
 
+    # Github配置
+    GIT_API_URL = "https://api.github.com"
+    GIT_URL = "https://github.com"
+    GIT_USERNAME = "Sjj1024"
+    GIT_REPOS = "Sjj1024"
+    GIT_TOKEN = "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"
+
 
 class DevelopMentConfig(Config):
     DEBUG = True
