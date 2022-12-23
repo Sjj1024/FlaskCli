@@ -117,5 +117,5 @@ def creat_app(con: str):
     # 注册蓝图,放到这里就不会出现导入redis_store出错的问题:什么时候使用，什么时候导入
     search_blueprint(app)
     # 检查网络配置
-    check_host()
+    # check_host()
     return app

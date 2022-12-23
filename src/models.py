@@ -90,6 +90,31 @@ class Collector(db.Model, BaseModel):
     account_id = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
 
 
+class CaoliuUsers(db.Model, BaseModel):
+    """表信息记录"""
+    __tablename__ = "caoliu_users"
+    id = db.Column(db.Integer, primary_key=True)  # 序号
+    user_name = db.Column(db.String(255), unique=True, nullable=False)  # 唯一id
+    user_id = db.Column(db.Integer, unique=False, nullable=True)  # 所有数量统计
+    password = db.Column(db.String(255), unique=False, nullable=True)  # 表名称
+    grade = db.Column(db.String(255), unique=False, nullable=True)  # jsonschema
+    email = db.Column(db.String(255), unique=False, nullable=True)  # 是否可用
+    weiwang = db.Column(db.String(255), unique=False, nullable=True)  # 描述信息
+    article_number = db.Column(db.Integer, unique=False, nullable=True)
+    contribute = db.Column(db.String(255), unique=False, nullable=True)
+    desc = db.Column(db.String(255), unique=False, nullable=True)
+    creat_time = db.Column(db.DateTime(), default=datetime.datetime.now)  # 更新时间
+    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
+    cookie = db.Column(db.String(255), unique=False, nullable=True)
+    user_agent = db.Column(db.String(255), unique=False, nullable=True)
+    current_money = db.Column(db.Integer, unique=False, nullable=True)
+    regular_money = db.Column(db.Integer, unique=False, nullable=True)
+    able_invate = db.Column(db.Boolean, unique=False, nullable=True)
+    lease = db.Column(db.Boolean, unique=False, nullable=True)
+    authentication = db.Column(db.String(255), unique=False, nullable=True)
+    contribute_link = db.Column(db.String(255), unique=False, nullable=True)
+
+
 class CaoliuUpdate(db.Model, BaseModel):
     """表信息记录"""
     __tablename__ = "caoliu_update"

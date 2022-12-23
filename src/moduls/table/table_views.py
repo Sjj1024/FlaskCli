@@ -1,22 +1,17 @@
 import logging
 from flask import jsonify, request
+from src.models import CaoliuUsers
 from src.moduls.table import table_blu
-from src.utils.caoliu.tools import get_userinfo_by_cookie
-
+from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu
+from src import db
 
 @table_blu.route("/list", methods=["GET", "POST"])
 def table_list():
     logging.info("开始获取列表内容")
     try:
-        table_data = []
-        for i in range(1, 15):
-            table_data.append(
-                {"id": i, "username": f"woshibiaoti{i}", "grade": f"新手上路{i}", "weiwang": f"song{i}",
-                 "gongxian": "2022-12-11",
-                 "money": 300 + i, "publick": "12/12/22", "mazi": "yqsdfasdfasdfsdf",
-                 "email": "1024sssssxiaoshen@gmail.com"})
-        total = len(table_data) * 50
-        return jsonify(code=200, message="success", data={"total": total, "items": table_data})
+        paginate = CaoliuUsers.query.paginate(1, 10)
+        result = [u.to_json() for u in paginate.items]
+        return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
         return jsonify(code=430, message=f"获取失败:{e}")
 
@@ -24,15 +19,48 @@ def table_list():
 @table_blu.route("/addUser", methods=["POST"])
 def add_user():
     logging.info("开始添加用户")
-    # {'username': '11111',
-    #  'password': '1024xiaoshen@gmail.com',
-    #  'email': '1024xiaoshen@gmail.com',
-    #  'invcode': '2222222',
-    #  'cookie': '444444444444',
-    #  'userAgent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'}
-
     param_dict = request.json
     print(param_dict)
+    username = param_dict.get("username")
+    password = param_dict.get("password")
+    email = param_dict.get("email")
+    invcode = param_dict.get("invcode")
+    cookie = param_dict.get("cookie")
+    userAgent = param_dict.get("userAgent")
+    desc = param_dict.get("desc")
+    if invcode:
+        print("注册逻辑")
+        res = regist_caoliu(username, invcode, email)
+        if res:
+            try:
+                caoliu_info = CaoliuUsers()
+                caoliu_info.user_name = username
+                caoliu_info.password = password
+                caoliu_info.grade = "新手上路"
+                caoliu_info.email = email
+                caoliu_info.weiwang = 1
+                caoliu_info.article_number = 0
+                caoliu_info.contribute = 0
+                caoliu_info.desc = desc
+                caoliu_info.money = 0
+                caoliu_info.cookie = cookie
+                caoliu_info.user_agent = userAgent
+                caoliu_info.able_invate = False
+                caoliu_info.lease = False
+                caoliu_info.authentication = ""
+                caoliu_info.contribute_link = ""
+                db.session.add(caoliu_info)
+                db.session.commit()
+            except Exception as e:
+                print(e)
+            return jsonify(code=200, message="success")
+        else:
+            return jsonify(code=205, message="注册异常")
+    elif cookie:
+        print("cookie逻辑")
+    else:
+        print("没有邀请码也没有cookie，逻辑错误")
+        return jsonify(code=205, message="没有邀请码也没有cookie")
     return jsonify(code=200, message="success")
 
 
@@ -58,6 +86,24 @@ def query_user_by_cookie():
         return jsonify(code=200, message="success", data=user_info)
     else:
         return jsonify(code=511, message="fail", data=user_info)
+
+
+@table_blu.route("/queryUsername", methods=["POST"])
+def query_username_available():
+    print("通过cookie查询用户信息")
+    param_dict = request.json
+    username = param_dict.get("username")
+    password = param_dict.get("password")
+    email = param_dict.get("email")
+    invcode = param_dict.get("invcode")
+    cookie = param_dict.get("cookie")
+    userAgent = param_dict.get("userAgent")
+    desc = param_dict.get("desc")
+    good, info = check_name_avliable(username)
+    if good:
+        return jsonify(code=200, message={"flag": good, "info": info})
+    else:
+        return jsonify(code=203, message={"flag": good, "info": info})
 
 # @table_blu.route("/login", methods=["POST"])
 # def login():
