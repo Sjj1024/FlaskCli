@@ -6,14 +6,14 @@ from src.moduls.table.template import get_caoliu_commit_py, get_caoliu_task_yml
 
 
 def login():
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     login = requests.get(f"{config_obj.GIT_API_URL}/user", headers=headers)
     print(login.json())
 
 
 def get_progect(id):
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     login = requests.get(f"{config_obj.GIT_API_URL}/projects/{id}", headers=headers)
     print(login.json())
@@ -21,7 +21,7 @@ def get_progect(id):
 
 def add_file(path, content, message):
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{path}"
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     base64_content = base64.b64encode("print(''11111)".encode())
     print(base64_content)
@@ -36,7 +36,7 @@ def add_file(path, content, message):
 def add_caoliu_task_file(file_name, user_info):
     print("创建一个caoliuTask文件")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     if "py" in file_name:
         base64_content = get_caoliu_commit_py(user_info)
@@ -66,7 +66,7 @@ def add_caoliu_task_file(file_name, user_info):
 def get_repo_action(user_name):
     print("获取仓库workflowId")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows"
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     response = requests.request("GET", url, headers=headers).json()
     workflows = response.get("workflows")
@@ -82,7 +82,7 @@ def dispatches_workflow_run(user_name):
     if workflow:
         workflow_id = workflow.get("id")
         url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/{workflow_id}/dispatches"
-        headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+        headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                    'Content-Type': 'application/json'}
         payload = json.dumps({"ref": "master", "inputs": {"tags": "sunmanage dispatch"}})
         response = requests.request("POST", url, headers=headers, data=payload)
@@ -95,7 +95,7 @@ def dispatches_workflow_run(user_name):
 def del_caoliu_task_file(file_name, user_info):
     print("删除一个草榴py文件")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
-    headers = {"Authorization": "token %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
     payload = json.dumps({
         "message": "del caoliu task",

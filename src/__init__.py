@@ -4,6 +4,7 @@ import pkgutil
 import re
 import sys
 from logging.handlers import TimedRotatingFileHandler
+
 from flask import Flask, Blueprint
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
@@ -67,11 +68,22 @@ def search_blueprint(app: Flask):
                     print(" * 注入 %s 模块 %s 成功" % (Blueprint.__name__, var_obj.__str__()))
 
 
+def get_platform():
+    import platform
+    sys_platform = platform.platform().lower()
+    if "windows" in sys_platform:
+        return "windows"
+    else:
+        return "macos"
+
+
 def check_host():
     global config_obj
     host_list = [config_obj.REDIS_HOST, config_obj.DATA_IP, config_obj.GIT_API_URL, config_obj.GIT_URL]
+    ping_str = "ping -n 1" if get_platform() == "windows" else "ping -c1"
     for host in host_list:
-        f = os.popen(rf"ping -n 1 {host}", "r")
+        host = host.replace("https://", "www.") if host.startswith("https") else host
+        f = os.popen(f"{ping_str} {host}", "r")
         if "100% 丢失" in f.read():
             print(f" * 地址异常:{host}")
 

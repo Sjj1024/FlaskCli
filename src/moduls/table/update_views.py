@@ -19,9 +19,9 @@ def add_git_file():
         "prefix": "caoliu_"
     }
     user_info = get_userinfo_by_cookie(paylod.get("cookie"), paylod.get("userAgent"))
-    user_name = user.get("username")
+    user_name = user_info.get("user_name")
     update_user = CaoliuUpdate()
-    update_user.user_name = user.get("username")
+    update_user.user_name = user_info.get("user_name")
     update_user.cookie = user.get("cookie")
     update_user.user_agent = user.get("user_agent")
     update_user.task_status = 0
