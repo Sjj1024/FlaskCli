@@ -1,12 +1,22 @@
-# from flask_script import Manager
-# 添加命令行支持，后面还要数据库迁移等功能
-from src import *
+from flask import Flask
+from flask import request
+import logging
+app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
 
-# 创建的时候传递环境配置
-app = creat_app("pro")
-# manager = Manager(app)
+@app.route('/',methods=['GET','POST'])
+def index():
+    return '欢迎来到我的主页'
+
+
+@app.route('/receive',methods=['GET','POST'])
+def receive():
+    if request.method == 'POST':
+        data = request.form
+        print(f"receive---{data}")
+        return f'success! {data}'
+    return 'fail!'
 
 
 if __name__ == '__main__':
-    # manager.run()
-    app.run(host="0.0.0.0", port=5000)
+    app.run(port=8888)
