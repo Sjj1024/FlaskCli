@@ -9,7 +9,7 @@ from src import db
 def table_list():
     logging.info("开始获取列表内容")
     try:
-        paginate = CaoliuUsers.query.paginate(1, 10)
+        paginate = CaoliuUsers.query.order_by(-CaoliuUsers.id).paginate(1, 10)
         result = [u.to_json() for u in paginate.items]
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
@@ -28,12 +28,12 @@ def add_user():
     cookie = param_dict.get("cookie")
     userAgent = param_dict.get("userAgent")
     desc = param_dict.get("desc")
+    caoliu_info = CaoliuUsers()
     if invcode:
         print("注册逻辑")
         res = regist_caoliu(username, invcode, email)
         if res:
             try:
-                caoliu_info = CaoliuUsers()
                 caoliu_info.user_name = username
                 caoliu_info.password = password
                 caoliu_info.grade = "新手上路"
@@ -53,15 +53,38 @@ def add_user():
                 db.session.commit()
             except Exception as e:
                 print(e)
+                return jsonify(code=205, message=f"注册异常:{e}")
             return jsonify(code=200, message="success")
         else:
             return jsonify(code=205, message="注册异常")
     elif cookie:
         print("cookie逻辑")
+        user_info = get_userinfo_by_cookie(param_dict.get("cookie"), param_dict.get("userAgent"))
+        caoliu_info.user_name = user_info.get("user_name")
+        caoliu_info.user_id = user_info.get("user_id")
+        caoliu_info.grade = user_info.get("dengji")
+        caoliu_info.email = user_info.get("email")
+        caoliu_info.weiwang = user_info.get("weiwang")
+        caoliu_info.article_number = user_info.get("fatie")
+        caoliu_info.contribute = user_info.get("gongxian")
+        caoliu_info.desc = desc
+        caoliu_info.money = user_info.get("money")
+        caoliu_info.cookie = cookie
+        caoliu_info.user_agent = userAgent
+        caoliu_info.able_invate = False
+        caoliu_info.lease = False
+        caoliu_info.authentication = ""
+        caoliu_info.contribute_link = user_info.get("gongxian_link")
+        try:
+            db.session.add(caoliu_info)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=205, message=f"注册异常:{e}")
+        return jsonify(code=200, message="success")
     else:
         print("没有邀请码也没有cookie，逻辑错误")
         return jsonify(code=205, message="没有邀请码也没有cookie")
-    return jsonify(code=200, message="success")
 
 
 @table_blu.route("/delUser", methods=["DELETE"])

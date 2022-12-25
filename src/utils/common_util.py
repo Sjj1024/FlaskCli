@@ -9,6 +9,9 @@ from jsonschema import validate
 import functools
 from src import config_obj
 from src.models import User
+import hashlib
+from urllib.parse import urlencode, unquote
+
 
 # 发送邮件
 def send_email(title: str, content: str, email=""):
@@ -80,6 +83,17 @@ def verify_token(token):
     # 拿到转换后的数据，根据模型类去数据库查询用户信息
     user = User.query.get(data["id"])
     return user
+
+
+# 构造签名函数
+def pay_sign(attributes, key):
+    attributes_list = list(attributes)
+    for a in attributes_list:
+        if attributes[a] == '':
+            attributes.pop(a)
+    attributes_new = {k: attributes[k] for k in sorted(attributes.keys())}
+    return hashlib.md5((unquote(urlencode(attributes_new)) + '&key=' + key)
+                       .encode(encoding='utf-8')).hexdigest().upper()
 
 
 def login_required(view_func):

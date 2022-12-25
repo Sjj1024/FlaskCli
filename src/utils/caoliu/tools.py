@@ -150,6 +150,39 @@ def get_soup(page_url, cl_cookie, user_agent):
         return None
 
 
+def login_get_cookie(username, password, userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"):
+    print("开始登陆并获取cookie")
+    url = f"{get_source()}/login.php?"
+    payload = {
+        "pwuser": username,
+        "pwpwd": password,
+        "hideid": 0,
+        "cktime": 31536000,
+        "forward": "https://cl.7801x.xyz/index.php",
+        "jumpurl": "https://cl.7801x.xyz/index.php",
+        "step": 2
+    }
+    payload = urlencode(payload)
+    headers = {
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+        'cache-control': 'max-age=0',
+        'content-type': 'application/x-www-form-urlencoded',
+        'cookie': '227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin',
+        'upgrade-insecure-requests': '1',
+        'user-agent': userAgent
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    if "您已經順利登錄" in response.text:
+        cookie_value = ""
+        for key, value in response.cookies.items():
+            cookie_value += key + '=' + value + ';'
+        print(cookie_value)
+        return cookie_value, userAgent
+    else:
+        print(response.text)
+        return ""
+
 def get_userinfo_by_cookie(cookie, user_agent):
     print("get_userinfo_bycookie-----")
     # 获取下一页的链接, 有就返回，没有就返回false
@@ -159,16 +192,17 @@ def get_userinfo_by_cookie(cookie, user_agent):
     if soup:
         gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
         email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
-        user_name = soup.select('div[colspan="2"] span')[0].get_text()
+        # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{source_url}/{gread_span[0].get('href')}"
         email_url = f"{source_url}/{email_span[0].get('href')}"
-        print(f"您的用户名是：{user_name}, 您的等级是：{info_url}")
+        print(f"您的用户名是：, 您的等级是：{info_url}")
         info_soup = get_soup(info_url, cookie, user_agent)
         email_soup = get_soup(email_url, cookie, user_agent)
         if info_soup and email_soup:
-            email = re.search(r"E-MAIL\n(.*?) \(",
-                              email_soup.select("#main > form > div.t > table")[0].get_text()).group(1)
+            email = re.search(r"E-MAIL\n(.*?)com",
+                              email_soup.select("#main > form")[0].get_text()).group(1) + "com"
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
+            user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
             user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
             dengji = re.search(r'會員頭銜(.*?)\n', all_info).group(1)
             jifen = re.search(r'綜合積分(.*?)\n', all_info).group(1)
@@ -242,16 +276,11 @@ def regist_caoliu(user_name, yaoqingma, youxiang):
 
 
 def run():
-    for i in range(0, 5):
-        user_name = "我的大宝贝1"
-        yaoqingma = "a79508224ea8dbc9"
-        youxiang = "1024xiaoshen@gmail.com"
-        validate = get_code()
-        check_name_avliable(user_name)
-        res = regist_caoliu(user_name, yaoqingma, youxiang)
-        # if res:
-        #     print("注册成功")
-        #     return
+    cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
+    # cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_lastvisit=0%091671851754%09%2Flogin.php%3F;227c9_winduser=VAsAV1daMFcAAQAAAwcEVAIBWg8JAlsHAVRRAgQOUwNTDQBVBlpVaA%3D%3D;"
+    useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    res = get_userinfo_by_cookie(cookie, useragent)
+    print(res)
 
 
 if __name__ == '__main__':
