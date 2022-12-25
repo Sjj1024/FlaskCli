@@ -2,7 +2,6 @@ import logging
 import time
 from urllib.parse import urlencode
 from flask import jsonify, request
-from src import db
 from src.moduls.pay import pay_blu
 from src.utils.common_util import pay_sign
 

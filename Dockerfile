@@ -14,5 +14,5 @@ COPY . .
 ENV FLASK_APP app
 # 设置环境变量，让flask run 命令能够找到启动文件的位置
 
-CMD ["flask","run","-h","0.0.0.0","-p","5060"]
+CMD ["flask","run","-h","0.0.0.0","-p","5000"]
 # 执行启动命名 flask run -h 0.0.0.0 -p 5000 列表中的每个元素之间代表空格
