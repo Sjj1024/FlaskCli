@@ -9,3 +9,6 @@ flask 项目脚手架，集成日志，认证，自动注册蓝图，sas模块�
 ```angular2html
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 ```
+
+### 简介
+一个集博客园为载体的博客平台，集github为文件存储的文件仓库
