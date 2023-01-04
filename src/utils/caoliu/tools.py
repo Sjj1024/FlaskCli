@@ -6,7 +6,7 @@ import ddddocr
 import requests
 from bs4 import BeautifulSoup
 
-source_url = ""
+source_url = "https://cl.2059z.xyz"
 
 
 # 获取回家地址
@@ -139,6 +139,7 @@ def check_success(response):
 
 def get_soup(page_url, cl_cookie, user_agent):
     # 获取单张我的评论页面中的所有评论过的文章id和标题
+    print(f"")
     header = {
         "user-agent": user_agent,
         "cookie": cl_cookie
@@ -307,12 +308,14 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
 
 
 def run():
-    cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
+    # cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
     # cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_lastvisit=0%091671851754%09%2Flogin.php%3F;227c9_winduser=VAsAV1daMFcAAQAAAwcEVAIBWg8JAlsHAVRRAgQOUwNTDQBVBlpVaA%3D%3D;"
     useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
     # res = get_userinfo_by_cookie(cookie, useragent)
     # print(res)
-    many_login_code()
+    # many_login_code()
+    res = get_code()
+    print(res)
 
 
 if __name__ == '__main__':

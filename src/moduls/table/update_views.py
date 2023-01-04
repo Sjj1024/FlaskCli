@@ -53,9 +53,13 @@ def get_new_userinfo():
     user_agent = paylod.get("userAgent")
     if cookie:
         user_info = get_userinfo_by_cookie(cookie, user_agent)
-    else:
+    elif password:
         cookie, user_agent = login_get_cookie(username, password)
+        if not cookie:
+            return jsonify(code=212, message="登陆失败，可能是登陆次数过多导致的")
         user_info = get_userinfo_by_cookie(cookie, user_agent)
+    else:
+        return jsonify(code=211, message="没有cookie和用户名密码")
     update_user_list = CaoliuUsers.query.filter_by(user_name=username)
     if update_user_list:
         update_user = {
