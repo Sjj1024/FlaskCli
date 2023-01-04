@@ -104,7 +104,7 @@ class CaoliuUsers(db.Model, BaseModel):
     contribute = db.Column(db.String(255), unique=False, nullable=True)
     desc = db.Column(db.String(255), unique=False, nullable=True)
     creat_time = db.Column(db.DateTime(), default=datetime.datetime.now)  # 更新时间
-    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有者id
+    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有的金钱
     cookie = db.Column(db.String(255), unique=False, nullable=True)
     user_agent = db.Column(db.String(255), unique=False, nullable=True)
     current_money = db.Column(db.Integer, unique=False, nullable=True)
@@ -113,6 +113,13 @@ class CaoliuUsers(db.Model, BaseModel):
     lease = db.Column(db.Boolean, unique=False, nullable=True)
     authentication = db.Column(db.String(255), unique=False, nullable=True)
     contribute_link = db.Column(db.String(255), unique=False, nullable=True)
+    task_link = db.Column(db.String(255), unique=False, nullable=True)
+    task_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+    check_link = db.Column(db.String(255), unique=False, nullable=True)
+    check_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+    new_passwd = db.Column(db.String(255), unique=False, nullable=True)
+    task_status = db.Column(db.String(255), unique=False, nullable=True)
+    check_status = db.Column(db.String(255), unique=False, nullable=True)
 
 
 class CaoliuUpdate(db.Model, BaseModel):

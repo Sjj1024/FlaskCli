@@ -2,18 +2,49 @@ import logging
 from flask import jsonify, request
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
-from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu
+from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie
 from src import db
+
 
 @table_blu.route("/list", methods=["GET", "POST"])
 def table_list():
     logging.info("开始获取列表内容")
     try:
-        paginate = CaoliuUsers.query.order_by(-CaoliuUsers.id).paginate(1, 10)
+        param_dict = request.json
+        print(param_dict)
+        page_num = param_dict.get("pageNum")
+        pageSize = param_dict.get("pageSize")
+        paginate = CaoliuUsers.query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
         return jsonify(code=430, message=f"获取失败:{e}")
+
+
+def get_caoliu_user(username="", password="", cookie="", user_agent="", desc=""):
+    if password:
+        cookie, user_agent = login_get_cookie(username, password)
+    user_info = get_userinfo_by_cookie(cookie, user_agent)
+    caoliu_info = CaoliuUsers()
+    caoliu_info.user_name = user_info.get("user_name")
+    caoliu_info.password = password
+    caoliu_info.user_id = user_info.get("user_id")
+    caoliu_info.grade = user_info.get("dengji")
+    caoliu_info.email = user_info.get("email")
+    caoliu_info.weiwang = user_info.get("weiwang")
+    caoliu_info.article_number = user_info.get("fatie")
+    caoliu_info.contribute = user_info.get("gongxian")
+    caoliu_info.desc = desc
+    caoliu_info.money = user_info.get("money")
+    caoliu_info.cookie = cookie
+    caoliu_info.user_agent = user_agent
+    caoliu_info.able_invate = False
+    caoliu_info.lease = False
+    caoliu_info.authentication = ""
+    caoliu_info.contribute_link = user_info.get("gongxian_link")
+    caoliu_info.task_status = "未开启"
+    caoliu_info.check_status = "未开启"
+    return caoliu_info
 
 
 @table_blu.route("/addUser", methods=["POST"])
@@ -21,66 +52,46 @@ def add_user():
     logging.info("开始添加用户")
     param_dict = request.json
     print(param_dict)
-    username = param_dict.get("username")
-    password = param_dict.get("password")
-    email = param_dict.get("email")
-    invcode = param_dict.get("invcode")
-    cookie = param_dict.get("cookie")
-    userAgent = param_dict.get("userAgent")
-    desc = param_dict.get("desc")
-    caoliu_info = CaoliuUsers()
+    username = param_dict.get("username", None)
+    password = param_dict.get("password", None)
+    email = param_dict.get("email", None)
+    invcode = param_dict.get("invcode", None)
+    cookie = param_dict.get("cookie", None)
+    userAgent = param_dict.get("userAgent", None)
+    desc = param_dict.get("desc", None)
     if invcode:
         print("注册逻辑")
-        res = regist_caoliu(username, invcode, email)
+        res = regist_caoliu(username, password, invcode, email)
         if res:
             try:
-                caoliu_info.user_name = username
-                caoliu_info.password = password
-                caoliu_info.grade = "新手上路"
-                caoliu_info.email = email
-                caoliu_info.weiwang = 1
-                caoliu_info.article_number = 0
-                caoliu_info.contribute = 0
-                caoliu_info.desc = desc
-                caoliu_info.money = 0
-                caoliu_info.cookie = cookie
-                caoliu_info.user_agent = userAgent
-                caoliu_info.able_invate = False
-                caoliu_info.lease = False
-                caoliu_info.authentication = ""
-                caoliu_info.contribute_link = ""
+                caoliu_info = get_caoliu_user(username, password, desc=desc)
                 db.session.add(caoliu_info)
                 db.session.commit()
             except Exception as e:
                 print(e)
-                return jsonify(code=205, message=f"注册异常:{e}")
+                return jsonify(code=205, message=f"注册逻辑异常:{e}")
             return jsonify(code=200, message="success")
         else:
             return jsonify(code=205, message="注册异常")
     elif cookie:
         print("cookie逻辑")
-        user_info = get_userinfo_by_cookie(param_dict.get("cookie"), param_dict.get("userAgent"))
-        caoliu_info.user_name = user_info.get("user_name")
-        caoliu_info.user_id = user_info.get("user_id")
-        caoliu_info.grade = user_info.get("dengji")
-        caoliu_info.email = user_info.get("email")
-        caoliu_info.weiwang = user_info.get("weiwang")
-        caoliu_info.article_number = user_info.get("fatie")
-        caoliu_info.contribute = user_info.get("gongxian")
-        caoliu_info.desc = desc
-        caoliu_info.money = user_info.get("money")
-        caoliu_info.cookie = cookie
-        caoliu_info.user_agent = userAgent
-        caoliu_info.able_invate = False
-        caoliu_info.lease = False
-        caoliu_info.authentication = ""
-        caoliu_info.contribute_link = user_info.get("gongxian_link")
+        caoliu_info = get_caoliu_user(cookie=cookie, user_agent=userAgent, desc=desc)
         try:
             db.session.add(caoliu_info)
             db.session.commit()
         except Exception as e:
             print(e)
-            return jsonify(code=205, message=f"注册异常:{e}")
+            return jsonify(code=205, message=f"cookie添加用户异常:{e}")
+        return jsonify(code=200, message="success")
+    elif password:
+        print("开始登陆逻辑")
+        caoliu_info = get_caoliu_user(username, password, desc=desc)
+        try:
+            db.session.add(caoliu_info)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=205, message=f"添加登陆用户异常:{e}")
         return jsonify(code=200, message="success")
     else:
         print("没有邀请码也没有cookie，逻辑错误")
@@ -90,10 +101,24 @@ def add_user():
 @table_blu.route("/delUser", methods=["DELETE"])
 def del_user():
     logging.info("开始删除用户")
-    # {'username': '1111111', 'password': '1024xiaoshen@gmail.com', 'email': '1024xiaoshen@gmail.com', 'invcode': '11111', 'token': '111111'}
     param_dict = request.json
-    print(param_dict)
+    logging.info(f"开始删除用户: {param_dict}")
+    CaoliuUsers.query.filter_by(id=param_dict.get("id")).delete()
+    db.session.commit()
     return jsonify(code=200, message="success")
+
+
+@table_blu.route("/getUserById", methods=["POST"])
+def get_user_by_id():
+    logging.info("开始查询用户详细信息")
+    param_dict = request.json
+    logging.info(f"开始查询用户: {param_dict}")
+    user = CaoliuUsers.query.get(param_dict.get("id"))
+    if user:
+        user_info = user.to_json()
+        return jsonify(code=200, message="success", data=user_info)
+    else:
+        return jsonify(code=210, message="未查找到用户信息")
 
 
 @table_blu.route("/queryUser", methods=["POST"])
@@ -116,12 +141,6 @@ def query_username_available():
     print("通过cookie查询用户信息")
     param_dict = request.json
     username = param_dict.get("username")
-    password = param_dict.get("password")
-    email = param_dict.get("email")
-    invcode = param_dict.get("invcode")
-    cookie = param_dict.get("cookie")
-    userAgent = param_dict.get("userAgent")
-    desc = param_dict.get("desc")
     good, info = check_name_avliable(username)
     if good:
         return jsonify(code=200, message={"flag": good, "info": info})

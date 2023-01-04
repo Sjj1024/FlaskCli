@@ -2,7 +2,7 @@ import base64
 import json
 import requests
 from src import config_obj
-from src.moduls.table.template import get_caoliu_commit_py, get_caoliu_task_yml
+from src.moduls.table.template import get_caoliu_commit_py, get_caoliu_task_yml, get_caoliu_check_yml
 
 
 def login():
@@ -33,15 +33,17 @@ def add_file(path, content, message):
     print(response.text)
 
 
-def add_caoliu_task_file(file_name, user_info):
+def add_caoliu_task_file(file_name, user_info, file_type="task"):
     print("创建一个caoliuTask文件")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
     headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
-    if "py" in file_name:
+    if file_type == "py":
         base64_content = get_caoliu_commit_py(user_info)
-    elif "yml" in file_name:
+    elif file_type == "task":
         base64_content = get_caoliu_task_yml(f"{user_info.get('username')}", user_info)
+    elif file_type == "check":
+        base64_content = get_caoliu_check_yml(f"{user_info.get('username')}", user_info)
     else:
         return False, f"file类型错误:{file_name}"
     print(base64_content)
@@ -93,7 +95,7 @@ def dispatches_workflow_run(user_name):
 
 
 def del_caoliu_task_file(file_name, user_info):
-    print("删除一个草榴py文件")
+    print("删除一个草榴文件")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_name}"
     headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
                'Content-Type': 'application/json'}
@@ -109,6 +111,10 @@ def del_caoliu_task_file(file_name, user_info):
         message = "py:Github.Token已失效，请更换token"
         print(message)
         return False, message
+    elif "Not Found" in response.get("message"):
+        message = f"del:未发现这个文件: {file_name}"
+        print(message)
+        return True, message
     else:
         message = "py:未知异常"
         print(f"删除文件未知异常：{response}")

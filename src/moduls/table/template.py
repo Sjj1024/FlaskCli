@@ -302,6 +302,38 @@ jobs:
     return str_to_base64(caoliu_task_yml)
 
 
+def get_caoliu_check_yml(file_name, user_info):
+    caoliu_task_yml = f"""name: Check{file_name}
+
+on:
+  schedule:
+      - cron: '*/15 * * * *'
+  # 手动触发一个工作流
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: StartCheck
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python src/tasks/check_task.py "{user_info.get('username')}" "{user_info.get('cookie')}" "{user_info.get('user_agent')}" "{user_info.get('password')}" "{user_info.get('new_password')}"
+        """
+    return str_to_base64(caoliu_task_yml)
+
+
 if __name__ == '__main__':
     # user = {
     #     "username": "将赏日落",

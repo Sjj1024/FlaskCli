@@ -127,10 +127,13 @@ def check_success(response):
         print("驗證碼不正確，請重新填寫")
         return 1
     elif response.find("此用戶名已經被註冊,請選擇其它用戶名") != -1:
+        print("此用戶名已經被註冊,請選擇其它用戶名")
         return 2
     elif response.find("邀請碼錯誤") != -1:
+        print(f"邀請碼錯誤")
         return 3
     else:
+        print(response)
         raise Exception(f"异常：{response}")
 
 
@@ -150,7 +153,8 @@ def get_soup(page_url, cl_cookie, user_agent):
         return None
 
 
-def login_get_cookie(username, password, userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"):
+def login_get_cookie(username, password,
+                     userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"):
     print("开始登陆并获取cookie")
     url = f"{get_source()}/login.php?"
     payload = {
@@ -158,8 +162,8 @@ def login_get_cookie(username, password, userAgent="Mozilla/5.0 (Macintosh; Inte
         "pwpwd": password,
         "hideid": 0,
         "cktime": 31536000,
-        "forward": "https://cl.7801x.xyz/index.php",
-        "jumpurl": "https://cl.7801x.xyz/index.php",
+        "forward": f"{get_source()}/index.php",
+        "jumpurl": f"{get_source()}/index.php",
         "step": 2
     }
     payload = urlencode(payload)
@@ -179,12 +183,37 @@ def login_get_cookie(username, password, userAgent="Mozilla/5.0 (Macintosh; Inte
             cookie_value += key + '=' + value + ';'
         print(cookie_value)
         return cookie_value, userAgent
+    elif "您登录尝试次数过多，需要输入验证码才能继续" in response.text:
+        print("登陆次数过多")
+        return "", ""
     else:
         print(response.text)
-        return ""
+        return "", ""
+
+
+def many_login_code():
+    url = f"{get_source()}/login.php"
+    payload = {
+        "validate": get_code()
+    }
+    payload = urlencode(payload)
+    headers = {
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+        'cache-control': 'max-age=0',
+        'content-type': 'application/x-www-form-urlencoded',
+        'cookie': '227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    if "" in response.text:
+        print(f"成功")
+
 
 def get_userinfo_by_cookie(cookie, user_agent):
-    print("get_userinfo_bycookie-----")
+    print(f"get_userinfo_bycookie：{cookie}, {user_agent}")
     # 获取下一页的链接, 有就返回，没有就返回false
     source_url = get_source()
     url = source_url + "/profile.php"
@@ -231,13 +260,13 @@ def get_userinfo_by_cookie(cookie, user_agent):
         return {}
 
 
-def regist_caoliu(user_name, yaoqingma, youxiang):
+def regist_caoliu(user_name, password, yaoqingma, youxiang):
     print("开始注册")
     while True:
         paylod = {
             "regname": user_name,
-            "regpwd": youxiang,
-            "regpwdrepeat": youxiang,
+            "regpwd": password,
+            "regpwdrepeat": password,
             "regemail": youxiang,
             "invcode": yaoqingma,
             "validate": get_code(),
@@ -268,10 +297,12 @@ def regist_caoliu(user_name, yaoqingma, youxiang):
         response = requests.request("POST", url, headers=headers, data=encode_paylod)
         res = check_success(response.text)
         if res == 0:
+            print("注册成功")
             return True
         elif res == 1:
             print("验证码不正确")
         else:
+            print(response.text)
             return False
 
 
@@ -279,8 +310,9 @@ def run():
     cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
     # cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_lastvisit=0%091671851754%09%2Flogin.php%3F;227c9_winduser=VAsAV1daMFcAAQAAAwcEVAIBWg8JAlsHAVRRAgQOUwNTDQBVBlpVaA%3D%3D;"
     useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    res = get_userinfo_by_cookie(cookie, useragent)
-    print(res)
+    # res = get_userinfo_by_cookie(cookie, useragent)
+    # print(res)
+    many_login_code()
 
 
 if __name__ == '__main__':
