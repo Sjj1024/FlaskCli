@@ -37,6 +37,8 @@ class Config(object):
     MAIL_USER = 'lanxingsjj@163.com'
     # 密码(部分邮箱为授权码)
     MAIL_PASS = 'QULRMYHTUVMHYVGM'
+    # 微信消息Key
+    SERVER_KEY = "SCT129459TSLjGr1Y09gU9jmaKauzjEmMe"
 
     # Github配置
     GIT_API_URL = "https://api.github.com"

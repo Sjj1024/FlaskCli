@@ -77,6 +77,10 @@ def get_platform():
         return "macos"
 
 
+def import_corn_task():
+    import src.moduls.corntask.task
+
+
 def check_host():
     global config_obj
     host_list = [config_obj.REDIS_HOST, config_obj.DATA_IP, config_obj.GIT_API_URL, config_obj.GIT_URL]
@@ -118,4 +122,6 @@ def creat_app(con: str):
     search_blueprint(app)
     # 检查网络配置
     # check_host()
+    # 注入定时任务
+    import_corn_task()
     return app

@@ -1,6 +1,9 @@
 import logging
 import smtplib
 from email.mime.text import MIMEText
+from urllib import parse
+
+import requests
 # 导入依赖包
 from flask import request, jsonify, current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -11,6 +14,32 @@ from src import config_obj
 from src.models import User
 import hashlib
 from urllib.parse import urlencode, unquote
+
+
+def send_weixin(title, msg):
+    content = str(msg)
+    server_key = config_obj.SERVER_KEY
+    url = f"https://sctapi.ftqq.com/{server_key}.send"
+    title_encode = parse.quote(title)
+    msg_encode = parse.quote(content)
+    payload = f"title={title_encode}&desp={msg_encode}"
+    headers = {
+        'authority': 'sctapi.ftqq.com',
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'origin': 'https://sct.ftqq.com',
+        'referer': 'https://sct.ftqq.com/',
+        'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-site',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(f"server_send:{response.json()}")
 
 
 # 发送邮件
@@ -112,4 +141,5 @@ def login_required(view_func):
         except Exception:
             return jsonify(code=4101, msg="登录已过期")
         return view_func(*args, **kwargs)
+
     return verify_token
