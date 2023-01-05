@@ -9,6 +9,7 @@ class Config(object):
     """
     DEBUG = True
     LOG_LEVEL = logging.DEBUG
+    SQLALCHEMY_ECHO = True
     # 数据库配置
     USERNAME = "postgres"
     PASSWORD = "123456"

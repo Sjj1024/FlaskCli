@@ -14,7 +14,19 @@ def table_list():
         print(param_dict)
         page_num = param_dict.get("pageNum")
         pageSize = param_dict.get("pageSize")
-        paginate = CaoliuUsers.query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
+        username = param_dict.get("username")
+        weiwang = param_dict.get("weiwang")
+        level = param_dict.get("level")
+        # status = param_dict.get("status")
+        # yaoqing = param_dict.get("yaoqing")
+        query = CaoliuUsers.query
+        if username:
+            query = query.filter(CaoliuUsers.user_name == username)
+        if weiwang:
+            query = query.filter(CaoliuUsers.weiwang >= weiwang)
+        if level:
+            query = query.filter(CaoliuUsers.grade == level)
+        paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:

@@ -78,7 +78,7 @@ def get_platform():
 
 
 def import_corn_task():
-    import src.moduls.corntask.task
+    import src.moduls.corntask.index
 
 
 def check_host():

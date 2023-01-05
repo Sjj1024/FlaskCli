@@ -2,7 +2,7 @@ import base64
 import json
 import requests
 from src import config_obj
-from src.moduls.table.template import get_caoliu_commit_py, get_caoliu_task_yml, get_caoliu_check_yml
+from src.utils.caoliu.template import get_caoliu_commit_py, get_caoliu_task_yml, get_caoliu_check_yml
 
 
 def login():
@@ -73,7 +73,7 @@ def get_repo_action(user_name, file_type="Commit"):
     response = requests.request("GET", url, headers=headers).json()
     workflows = response.get("workflows")
     for work in workflows:
-        if user_name in work.get("name") and file_type in work.get("name"):
+        if f"{file_type}{user_name}" == work.get("name"):
             return work
     return {}
 

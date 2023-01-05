@@ -31,7 +31,8 @@ def add_check_file():
     }
     flag_yml, message_yml = add_caoliu_task_file(f".github/workflows/Check{user_name}.yml", user, file_type="check")
     if flag_yml:
-        check_user["check_link"] = f"{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/Check{user_name}.yml"
+        check_user[
+            "check_link"] = f"{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/Check{user_name}.yml"
         check_user["check_file_sha"] = message_yml
         check_user["check_status"] = "已开启"
         try:
@@ -42,6 +43,16 @@ def add_check_file():
         return jsonify(code=200, message="success")
     else:
         return jsonify(code=501, message={"message_yml": message_yml})
+
+
+@table_blu.route("/saveUserInfo", methods=["POST"])
+def save_userinfo():
+    logging.info("开始保存用户信息...")
+    user_data = request.json
+    update_user_list = CaoliuUsers.query.filter_by(user_name=user_data.get("user_name"))
+    update_user_list.update(user_data)
+    db.session.commit()
+    return jsonify(code=200, message="success")
 
 
 @table_blu.route("/updateUserInfo", methods=["POST"])
@@ -62,7 +73,7 @@ def get_new_userinfo():
     else:
         return jsonify(code=211, message="没有cookie和用户名密码")
     update_user_list = CaoliuUsers.query.filter_by(user_name=username)
-    if update_user_list:
+    if update_user_list and user_info:
         user_caoliu = update_user_list.all()[0].to_json()
         user_caoliu["article_number"] = user_info.get("fatie")
         user_caoliu["cookie"] = cookie
@@ -73,12 +84,12 @@ def get_new_userinfo():
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
     else:
-        return jsonify(code=207, message="没有查找到该用户")
+        return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情
     if not user_caoliu.get("task_file_sha"):
         task_workflow = get_repo_action(username, "Commit")
         if task_workflow:
-            task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/","")}'
+            task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/", "")}'
             task_file_sha = get_file_sha(task_workflow.get("path"))
             task_status = "已开启"
             user_caoliu["task_link"] = task_link
@@ -91,7 +102,7 @@ def get_new_userinfo():
     if not user_caoliu.get("check_file_sha"):
         check_workflow = get_repo_action(username, "Check")
         if check_workflow:
-            check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/","")}'
+            check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/", "")}'
             check_file_sha = get_file_sha(check_workflow.get("path"))
             check_status = "已开启"
             user_caoliu["check_link"] = check_link
@@ -132,7 +143,8 @@ def add_git_file():
     }
     flag_yml, message_yml = add_caoliu_task_file(f".github/workflows/{user_name}.yml", user, "task")
     if flag_yml:
-        update_user["task_link"] = f"{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/{user_name}.yml"
+        update_user[
+            "task_link"] = f"{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows/{user_name}.yml"
         update_user["task_file_sha"] = message_yml
         update_user["task_status"] = "已开启"
         try:

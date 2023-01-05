@@ -110,7 +110,7 @@ class CaoliuUsers(db.Model, BaseModel):
     current_money = db.Column(db.Integer, unique=False, nullable=True)
     regular_money = db.Column(db.Integer, unique=False, nullable=True)
     able_invate = db.Column(db.Boolean, unique=False, nullable=True)
-    lease = db.Column(db.Boolean, unique=False, nullable=True)
+    lease = db.Column(db.String(255), unique=False, nullable=True)
     authentication = db.Column(db.String(255), unique=False, nullable=True)
     contribute_link = db.Column(db.String(255), unique=False, nullable=True)
     task_link = db.Column(db.String(255), unique=False, nullable=True)
