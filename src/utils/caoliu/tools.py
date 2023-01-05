@@ -1,7 +1,6 @@
 import json
 import re
 from urllib.parse import urlencode
-
 import ddddocr
 import requests
 from bs4 import BeautifulSoup
@@ -307,6 +306,26 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             return False
 
 
+def check_invode():
+    url = "https://cl.2059x.xyz/register.php?"
+    use_code = [1, 3, 4, 5, 6, 7, 8, 9, 0, 'a', "b", "c", "d", "e", "f"]
+    for i in use_code:
+        invcode = "*94659020e*fb*d9".replace("*", str(i))
+        payload = f'reginvcode={invcode}&validate={get_code()}&action=reginvcodeck'
+        headers = {
+            'authority': 'cl.2059x.xyz',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+            'cache-control': 'max-age=0',
+            'content-type': 'application/x-www-form-urlencoded',
+            'origin': 'https://cl.2059x.xyz',
+            'referer': 'https://cl.2059x.xyz/register.php',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+        }
+        response = requests.request("POST", url, headers=headers, data=payload)
+        print(f"{invcode}: {response.text}")
+
+
 def run():
     # cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
     # cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_lastvisit=0%091671851754%09%2Flogin.php%3F;227c9_winduser=VAsAV1daMFcAAQAAAwcEVAIBWg8JAlsHAVRRAgQOUwNTDQBVBlpVaA%3D%3D;"
@@ -314,8 +333,8 @@ def run():
     # res = get_userinfo_by_cookie(cookie, useragent)
     # print(res)
     # many_login_code()
-    res = get_code()
-    print(res)
+    # res = get_code()
+    check_invode()
 
 
 if __name__ == '__main__':
