@@ -6,7 +6,7 @@ import ddddocr
 import requests
 from bs4 import BeautifulSoup
 
-source_url = ""
+source_url = "https://cl.2059z.xyz"
 
 
 # 获取回家地址
