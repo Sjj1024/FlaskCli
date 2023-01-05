@@ -224,7 +224,6 @@ def get_userinfo_by_cookie(cookie, user_agent):
         # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{source_url}/{gread_span[0].get('href')}"
         email_url = f"{source_url}/{email_span[0].get('href')}"
-        print(f"您的用户名是：, 您的等级是：{info_url}")
         info_soup = get_soup(info_url, cookie, user_agent)
         email_soup = get_soup(email_url, cookie, user_agent)
         if info_soup and email_soup:
@@ -241,7 +240,7 @@ def get_userinfo_by_cookie(cookie, user_agent):
             gongxian = re.search(r'貢獻(.*?) 點\n', all_info).group(1)
             gongxian_link = re.search(r'隨機生成\)(.*?)\n', all_info).group(1)
             regist_time = re.search(r'註冊時間(.*?)\n', all_info).group(1)
-            return {
+            user_info = {
                 "user_name": user_name,
                 "user_id": user_id,
                 "dengji": dengji,
@@ -254,6 +253,8 @@ def get_userinfo_by_cookie(cookie, user_agent):
                 "regist_time": regist_time,
                 "email": email
             }
+            print(f"获取的用户信息:{user_info}")
+            return user_info
         else:
             return {}
     else:
