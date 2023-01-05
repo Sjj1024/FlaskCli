@@ -20,13 +20,11 @@ def update_caoliu_info():
             user_agent = cao_info.get("user_agent")
             if cookie:
                 user_info = get_userinfo_by_cookie(cookie, user_agent)
-            elif password:
+            else:
                 cookie, user_agent = login_get_cookie(username, password)
                 if not cookie:
                     print(f"{username} : 登陆失败，可能是登陆次数过多导致的")
                 user_info = get_userinfo_by_cookie(cookie, user_agent)
-            else:
-                return jsonify(code=211, message="没有cookie和用户名密码")
             update_user_list = CaoliuUsers.query.filter_by(user_name=username)
             user_caoliu = {}
             if update_user_list and user_info:
@@ -67,8 +65,9 @@ def update_caoliu_info():
                 else:
                     check_status = "未开启"
                     user_caoliu["check_status"] = check_status
-            update_user_list.update(user_caoliu)
-            db.session.commit()
+            if user_caoliu:
+                update_user_list.update(user_caoliu)
+                db.session.commit()
         except Exception as e:
             print(e)
     return jsonify(code=200, message="正常")
