@@ -34,9 +34,9 @@ class Config(object):
     # 163邮箱服务器地址
     MAIL_HOST = 'smtp.163.com'
     # 163用户名
-    MAIL_USER = 'sjjhub@163.com'
+    MAIL_USER = 'lanxingsjj@163.com'
     # 密码(部分邮箱为授权码)
-    MAIL_PASS = '521xiaoshen'
+    MAIL_PASS = 'QULRMYHTUVMHYVGM'
 
     # Github配置
     GIT_API_URL = "https://api.github.com"

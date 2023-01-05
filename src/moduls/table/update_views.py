@@ -2,7 +2,8 @@ import logging
 from flask import jsonify, request
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, login_get_cookie
-from src.utils.github.apis import add_caoliu_task_file, del_caoliu_task_file, dispatches_workflow_run
+from src.utils.github.apis import add_caoliu_task_file, del_caoliu_task_file, dispatches_workflow_run, get_repo_action, \
+    get_file_sha
 from src.models import CaoliuUpdate, CaoliuUsers
 from src import db, config_obj
 
@@ -43,14 +44,14 @@ def add_check_file():
         return jsonify(code=501, message={"message_yml": message_yml})
 
 
-@table_blu.route("/newUserInfo", methods=["POST"])
+@table_blu.route("/updateUserInfo", methods=["POST"])
 def get_new_userinfo():
-    logging.info("开始获取新的用户信息...")
+    logging.info("开始更新用户信息...")
     paylod = request.json
     username = paylod.get("user_name")
     password = paylod.get("password")
     cookie = paylod.get("cookie")
-    user_agent = paylod.get("userAgent")
+    user_agent = paylod.get("user_agent")
     if cookie:
         user_info = get_userinfo_by_cookie(cookie, user_agent)
     elif password:
@@ -74,6 +75,32 @@ def get_new_userinfo():
         }
     else:
         return jsonify(code=207, message="没有查找到该用户")
+    # 如果工作流存储为空，则获取工作流详情
+    if user_info.get("task_file_sha"):
+        task_workflow = get_repo_action(username, "Commit")
+        if task_workflow:
+            task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/","")}'
+            task_file_sha = get_file_sha(task_workflow.get("path"))
+            task_status = "已开启"
+            update_user["task_link"] = task_link
+            update_user["task_file_sha"] = task_file_sha
+            update_user["task_status"] = task_status
+        else:
+            task_status = "未开启"
+            update_user["task_status"] = task_status
+    # 如果工作流存储为空，则获取工作流详情
+    if user_info.get("check_file_sha"):
+        check_workflow = get_repo_action(username, "Check")
+        if check_workflow:
+            check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/","")}'
+            check_file_sha = get_file_sha(check_workflow.get("path"))
+            check_status = "已开启"
+            update_user["check_link"] = check_link
+            update_user["check_file_sha"] = check_file_sha
+            update_user["check_status"] = check_status
+        else:
+            check_status = "未开启"
+            update_user["check_status"] = check_status
     try:
         update_user_list.update(update_user)
         db.session.commit()

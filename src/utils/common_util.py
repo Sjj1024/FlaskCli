@@ -16,7 +16,7 @@ from urllib.parse import urlencode, unquote
 # 发送邮件
 def send_email(title: str, content: str, email=""):
     # 邮件发送方邮箱地址
-    sender = 'sjjhub@163.com'
+    sender = config_obj.MAIL_USER
     # 邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
     receivers = ["648133599@qq.com"] if email == "" else [email]
     # 邮件内容设置

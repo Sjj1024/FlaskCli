@@ -65,7 +65,7 @@ def add_caoliu_task_file(file_name, user_info, file_type="task"):
         return False, message
 
 
-def get_repo_action(user_name):
+def get_repo_action(user_name, file_type="Commit"):
     print("获取仓库workflowId")
     url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/workflows"
     headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
@@ -73,8 +73,21 @@ def get_repo_action(user_name):
     response = requests.request("GET", url, headers=headers).json()
     workflows = response.get("workflows")
     for work in workflows:
-        if user_name in work.get("name"):
+        if user_name in work.get("name") and file_type in work.get("name"):
             return work
+    return {}
+
+
+def get_file_sha(file_path):
+    print(f"获取仓库workflowId")
+    url = f"{config_obj.GIT_API_URL}/repos/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/contents/{file_path}"
+    headers = {"Authorization": "Bearer %s" % config_obj.GIT_TOKEN, 'Accept': 'application/vnd.github.v3+json',
+               'Content-Type': 'application/json'}
+    response = requests.request("GET", url, headers=headers).json()
+    res_path = response.get("path")
+    res_sha = response.get("sha")
+    if res_path == file_path:
+        return res_sha
     return {}
 
 
@@ -122,4 +135,5 @@ def del_caoliu_task_file(file_name, user_info):
 
 
 if __name__ == '__main__':
-    dispatches_workflow_run("CreatArticle")
+    # dispatches_workflow_run("CreatArticle")
+    get_repo_action("曹操的女儿")
