@@ -4,12 +4,10 @@ import pkgutil
 import re
 import sys
 from logging.handlers import TimedRotatingFileHandler
-
 from flask import Flask, Blueprint
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
-
 from config import config, Config
 
 # 给变量加注释，让其可以自动提示
@@ -123,5 +121,5 @@ def creat_app(con: str):
     # 检查网络配置
     # check_host()
     # 注入定时任务
-    import_corn_task()
+    # import_corn_task()
     return app

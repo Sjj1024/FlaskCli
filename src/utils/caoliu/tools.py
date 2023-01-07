@@ -52,7 +52,7 @@ def get_code():
         response = requests.request("GET", url, headers=headers, data=payload)
         with open("test.jpg", "wb") as f:
             f.write(response.content)
-        ocr = ddddocr.DdddOcr(beta=True)
+        ocr = ddddocr.DdddOcr(beta=True, show_ad=False)
         res = ocr.classification(response.content)
         print(f"获取一个验证码：{res}")
         if len(res) == 4:
@@ -218,15 +218,18 @@ def get_userinfo_by_cookie(cookie, user_agent):
     source_url = get_source()
     url = source_url + "/profile.php"
     soup = get_soup(url, cookie, user_agent)
+    liangbu_renzheng = "已設置 停用" in soup.select("#main")[0].get_text()
     if soup:
         gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
         email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{source_url}/{gread_span[0].get('href')}"
         email_url = f"{source_url}/{email_span[0].get('href')}"
+        invcode_url = f"{source_url}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
         email_soup = get_soup(email_url, cookie, user_agent)
-        if info_soup and email_soup:
+        invcode_soup = get_soup(invcode_url, cookie, user_agent)
+        if info_soup and email_soup and invcode_soup:
             email = re.search(r"E-MAIL\n(.*?)com", email_soup.select("#main > form")[0].get_text()).group(1) + "com"
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
             user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
@@ -239,11 +242,26 @@ def get_userinfo_by_cookie(cookie, user_agent):
             gongxian = re.search(r'貢獻(.*?) 點\n', all_info).group(1)
             gongxian_link = re.search(r'隨機生成\)(.*?)\n', all_info).group(1)
             regist_time = re.search(r'註冊時間(.*?)\n', all_info).group(1)
+            invcode_auth = re.search(r'是否有权限购买\s*(.*)\r', invcode_soup.select("#main")[0].get_text()).group(1)
+            if liangbu_renzheng:
+                authentication = "已启用："
+                if invcode_auth == "有":
+                    if int(gongxian) > 300:
+                        invcode_flag = "可以购买"
+                    else:
+                        invcode_flag = "贡献不足"
+                else:
+                    invcode_flag = "无权限"
+            else:
+                invcode_flag = "两步认证未启用"
+                authentication = "未启用"
             # 判断是否永久禁言在里面
             desc = ""
             if "禁止發言" in all_info:
                 dengji = re.search(r'系統頭銜(.*?)\r\n', all_info).group(1)
                 desc = re.search(r'\(於(.*?)\)', all_info).group(1)
+                if "永久禁言" in desc:
+                    invcode_flag = "否:被永久禁言"
             user_info = {
                 "user_name": user_name,
                 "user_id": user_id,
@@ -256,7 +274,9 @@ def get_userinfo_by_cookie(cookie, user_agent):
                 "gongxian_link": gongxian_link,
                 "regist_time": regist_time,
                 "email": email,
-                "desc": desc
+                "desc": desc,
+                "able_invate": invcode_flag,
+                "authentication": authentication
             }
             print(f"获取的用户信息:{user_info}")
             return user_info
@@ -266,22 +286,60 @@ def get_userinfo_by_cookie(cookie, user_agent):
         return {}
 
 
+def pay_some_invcode(cookie, user_agent, num):
+    print(f"购买邀请码：{num} 个")
+    url = f"{source_url}/hack.php?H_name=invite"
+    payload = f'action=buy&step=3&invnum={num}'
+    headers = {
+        'authority': 'cl.2059x.xyz',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+        'cache-control': 'max-age=0',
+        'content-type': 'application/x-www-form-urlencoded',
+        'cookie': cookie,
+        'referer': f'{source_url}/hack.php?H_name=invite&action=buy',
+        'user-agent': user_agent
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    if "操作完成" in response.text:
+        return True
+    else:
+        print(f"购买邀请码失败: {response.text}")
+        return False
+
+
 def get_invcode_list(cookie, user_agent, page):
     url = f"{source_url}/hack.php?H_name=invite&page={page}"
     soup = get_soup(url, cookie, user_agent)
-    res_list = soup.select('tr[class="tr3"]')[10:]
-    last = soup.select('#last')
+    if "購買日期" in soup.get_text():
+        res_list = soup.select('tr[class="tr3"]')[10:]
+    else:
+        res_list = soup.select('tr[class="tr3"]')[8:] if page == 1 else soup.select('tr[class="tr3"]')[1:]
+    last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
     if last:
         total_number = soup.select('#last')[0].get("href").split("&")[1].replace("page=", "")
     else:
-        total_number = 0
+        total_number = page
+    if len(res_list) <= 2:
+        return {"total": 0, "items": []}
     invcode_list = []
     for node in res_list:
-        invcode = node.select("td")[0].get_text().replace("邀請碼：", "")
-        paydate = node.select("td")[1].get_text().replace("\xa0\xa0\xa0\xa0購買日期：", "")
-        username = node.select("td")[2].get_text()
-        registdate = node.select("td")[3].get_text()
-        status = node.select("td")[4].get_text()
+        if "購買日期" in node.get_text():
+            # PC端过滤
+            invcode = node.select("td")[0].get_text().replace("邀請碼：", "")
+            paydate = node.select("td")[1].get_text().replace("\xa0\xa0\xa0\xa0購買日期：", "")
+            username = node.select("td")[2].get_text()
+            registdate = node.select("td")[3].get_text()
+            status = node.select("td")[4].get_text()
+        else:
+            # 手机端过滤
+            node_text = node.get_text().split(" ")
+            paydate = node_text[0].replace("\n", "") + " " + node_text[1]
+            invcode = node_text[2].split("\r\n\r\n")[0]
+            status = node_text[2].split("\r\n\r\n")[1].replace("[", "").replace("]", "")
+            username = node_text[2].split("\xa0")[1] if "已邀请" in node_text[2] else ""
+            registdate = node_text[3] + " " + node_text[4].replace("\n", "") if "已邀请" in node_text[2] else ""
         invcode_list.append({
             "invcode": invcode,
             "paydate": paydate,

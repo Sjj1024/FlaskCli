@@ -5,7 +5,7 @@ from sqlalchemy import or_
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie, \
-    get_invcode_list
+    get_invcode_list, pay_some_invcode
 from src import db
 
 
@@ -151,6 +151,23 @@ def get_user_invcode_list():
         user_info = user.to_json()
         invcodes = get_invcode_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
         return jsonify(code=200, message="success", data=invcodes)
+    else:
+        return jsonify(code=210, message="未查找到用户信息")
+
+
+@table_blu.route("/payInvcode", methods=["POST"])
+def pay_some_invcode_list():
+    logging.info("开始购买邀请码invnum")
+    user_id = request.json.get('id')
+    invnum = request.json.get('invnum')
+    user = CaoliuUsers.query.get(user_id)
+    if user:
+        user_info = user.to_json()
+        invcodes = pay_some_invcode(user_info.get("cookie"), user_info.get("user_agent"), invnum)
+        if invcodes:
+            return jsonify(code=200, message="success", data=invcodes)
+        else:
+            return jsonify(code=211, message="操作失败", data=invcodes)
     else:
         return jsonify(code=210, message="未查找到用户信息")
 
