@@ -227,8 +227,7 @@ def get_userinfo_by_cookie(cookie, user_agent):
         info_soup = get_soup(info_url, cookie, user_agent)
         email_soup = get_soup(email_url, cookie, user_agent)
         if info_soup and email_soup:
-            email = re.search(r"E-MAIL\n(.*?)com",
-                              email_soup.select("#main > form")[0].get_text()).group(1) + "com"
+            email = re.search(r"E-MAIL\n(.*?)com", email_soup.select("#main > form")[0].get_text()).group(1) + "com"
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
             user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
             user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
@@ -240,6 +239,11 @@ def get_userinfo_by_cookie(cookie, user_agent):
             gongxian = re.search(r'貢獻(.*?) 點\n', all_info).group(1)
             gongxian_link = re.search(r'隨機生成\)(.*?)\n', all_info).group(1)
             regist_time = re.search(r'註冊時間(.*?)\n', all_info).group(1)
+            # 判断是否永久禁言在里面
+            desc = ""
+            if "禁止發言" in all_info:
+                dengji = re.search(r'系統頭銜(.*?)\r\n', all_info).group(1)
+                desc = re.search(r'\(於(.*?)\)', all_info).group(1)
             user_info = {
                 "user_name": user_name,
                 "user_id": user_id,
@@ -251,7 +255,8 @@ def get_userinfo_by_cookie(cookie, user_agent):
                 "gongxian": gongxian,
                 "gongxian_link": gongxian_link,
                 "regist_time": regist_time,
-                "email": email
+                "email": email,
+                "desc": desc
             }
             print(f"获取的用户信息:{user_info}")
             return user_info
@@ -259,6 +264,35 @@ def get_userinfo_by_cookie(cookie, user_agent):
             return {}
     else:
         return {}
+
+
+def get_invcode_list(cookie, user_agent, page):
+    url = f"{source_url}/hack.php?H_name=invite&page={page}"
+    soup = get_soup(url, cookie, user_agent)
+    res_list = soup.select('tr[class="tr3"]')[10:]
+    last = soup.select('#last')
+    if last:
+        total_number = soup.select('#last')[0].get("href").split("&")[1].replace("page=", "")
+    else:
+        total_number = 0
+    invcode_list = []
+    for node in res_list:
+        invcode = node.select("td")[0].get_text().replace("邀請碼：", "")
+        paydate = node.select("td")[1].get_text().replace("\xa0\xa0\xa0\xa0購買日期：", "")
+        username = node.select("td")[2].get_text()
+        registdate = node.select("td")[3].get_text()
+        status = node.select("td")[4].get_text()
+        invcode_list.append({
+            "invcode": invcode,
+            "paydate": paydate,
+            "username": username,
+            "registdate": registdate,
+            "status": status
+        })
+    print(invcode_list)
+    if total_number:
+        return {"total": int(total_number) * 10, "items": invcode_list}
+    return {"total": 0, "items": invcode_list}
 
 
 def regist_caoliu(user_name, password, yaoqingma, youxiang):

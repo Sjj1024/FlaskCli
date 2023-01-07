@@ -1,8 +1,11 @@
 import logging
 from flask import jsonify, request
+from sqlalchemy import or_
+
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
-from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie
+from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie, \
+    get_invcode_list
 from src import db
 
 
@@ -17,19 +20,24 @@ def table_list():
         username = param_dict.get("username")
         weiwang = param_dict.get("weiwang")
         level = param_dict.get("level")
-        # status = param_dict.get("status")
+        status = param_dict.get("status")
         # yaoqing = param_dict.get("yaoqing")
-        query = CaoliuUsers.query
+        query = CaoliuUsers.query.filter(or_(CaoliuUsers.isDeleted.is_(None), CaoliuUsers.isDeleted == False))
         if username:
             query = query.filter(CaoliuUsers.user_name == username)
         if weiwang:
             query = query.filter(CaoliuUsers.weiwang >= weiwang)
         if level:
             query = query.filter(CaoliuUsers.grade == level)
+        if "禁言" in status:
+            query = query.filter(CaoliuUsers.desc.like(f'%{status}%'))
+        if "正常" in status:
+            query = query.filter(~CaoliuUsers.desc.contains('禁言'))
         paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
+        print(f"查询异常： {e}")
         return jsonify(code=430, message=f"获取失败:{e}")
 
 
@@ -46,7 +54,7 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     caoliu_info.weiwang = user_info.get("weiwang")
     caoliu_info.article_number = user_info.get("fatie")
     caoliu_info.contribute = user_info.get("gongxian")
-    caoliu_info.desc = desc
+    caoliu_info.desc = desc + user_info.get("desc")
     caoliu_info.money = user_info.get("money")
     caoliu_info.cookie = cookie
     caoliu_info.user_agent = user_agent
@@ -115,7 +123,7 @@ def del_user():
     logging.info("开始删除用户")
     param_dict = request.json
     logging.info(f"开始删除用户: {param_dict}")
-    CaoliuUsers.query.filter_by(id=param_dict.get("id")).delete()
+    CaoliuUsers.query.filter_by(id=param_dict.get("id")).update({"isDeleted": True})
     db.session.commit()
     return jsonify(code=200, message="success")
 
@@ -129,6 +137,20 @@ def get_user_by_id():
     if user:
         user_info = user.to_json()
         return jsonify(code=200, message="success", data=user_info)
+    else:
+        return jsonify(code=210, message="未查找到用户信息")
+
+
+@table_blu.route("/getInvcodeList", methods=["POST"])
+def get_user_invcode_list():
+    logging.info("开始查找邀请码列表")
+    user_id = request.json.get('id')
+    pageNum = request.json.get('pageNum')
+    user = CaoliuUsers.query.get(user_id)
+    if user:
+        user_info = user.to_json()
+        invcodes = get_invcode_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
+        return jsonify(code=200, message="success", data=invcodes)
     else:
         return jsonify(code=210, message="未查找到用户信息")
 

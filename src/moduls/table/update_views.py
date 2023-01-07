@@ -83,6 +83,7 @@ def get_new_userinfo():
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
+        user_caoliu["desc"] = user_info["desc"] + user_info.get("desc")
     else:
         return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情

@@ -120,6 +120,7 @@ class CaoliuUsers(db.Model, BaseModel):
     new_passwd = db.Column(db.String(255), unique=False, nullable=True)
     task_status = db.Column(db.String(255), unique=False, nullable=True)
     check_status = db.Column(db.String(255), unique=False, nullable=True)
+    isDeleted = db.Column(db.Boolean, unique=False, nullable=True)
 
 
 class CaoliuUpdate(db.Model, BaseModel):
