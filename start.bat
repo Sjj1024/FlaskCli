@@ -1,8 +1,9 @@
 :start
     git pull > tmp.txt
-    set tmp_var=<tmp.txt
-    echo %tmp_var%| findstr fatal >nul && (
-        echo 'time out reGet...'
+    set tmp_var = <tmp.txt
+    set b = fatal
+    echo %tmp_var%| findstr %b% >nul && (
+        echo 'time out re run get pull...'
     ) || (
         echo 'success, start run App...'
         goto :runApp
