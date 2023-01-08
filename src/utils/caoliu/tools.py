@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from urllib.parse import urlencode
 import ddddocr
 import requests
@@ -35,7 +36,7 @@ def get_source():
             continue
 
 
-def get_code():
+def get_code(cookie):
     """
     获取验证码
     """
@@ -45,8 +46,8 @@ def get_code():
         headers = {
             'accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
-            'cookie': 'PHPSESSID=f90v70mknlmihgb3o8q75jj8sm; 227c9_lastvisit=0%091671197001%09%2Fregister.php%3F; 227c9_lastvisit=0%091671197149%09%2Fregister.php%3F',
-            'referer': 'https://cl.7801x.xyz/register.php',
+            'cookie': cookie,
+            'referer': f"{get_source()}/register.php",
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("GET", url, headers=headers, data=payload)
@@ -65,7 +66,8 @@ def check_name_avliable(name):
         url = f"{get_source()}/register.php?"
         payload = {
             "username": name,
-            "validate": get_code(),
+            "validate": get_code(
+                "PHPSESSID=f90v70mknlmihgb3o8q75jj8sm; 227c9_lastvisit=0%091671197001%09%2Fregister.php%3F"),
             "action": "regnameck",
         }
         payload = urlencode(payload)
@@ -153,8 +155,8 @@ def get_soup(page_url, cl_cookie, user_agent):
         return None
 
 
-def login_get_cookie(username, password,
-                     userAgent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"):
+def login_get_cookie(username, password, cookie="",
+                     user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'):
     print("开始登陆并获取cookie")
     url = f"{get_source()}/login.php?"
     payload = {
@@ -172,29 +174,31 @@ def login_get_cookie(username, password,
         'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
         'cache-control': 'max-age=0',
         'content-type': 'application/x-www-form-urlencoded',
-        'cookie': '227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin',
+        'cookie': cookie,
         'upgrade-insecure-requests': '1',
-        'user-agent': userAgent
+        'user-agent': user_agent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    cookie_value = ""
+    for key, value in response.cookies.items():
+        cookie_value += key + '=' + value + ';'
+    print(cookie_value)
     if "您已經順利登錄" in response.text:
-        cookie_value = ""
-        for key, value in response.cookies.items():
-            cookie_value += key + '=' + value + ';'
-        print(cookie_value)
-        return cookie_value, userAgent
+        return cookie_value, user_agent
     elif "您登录尝试次数过多，需要输入验证码才能继续" in response.text:
         print("登陆次数过多")
-        return "", ""
+        cookie, useragent = many_login_code(cookie_value, user_agent)
+        return login_get_cookie(username, password, cookie, useragent)
+        # return cookie_value, "登陆次数过多"
     else:
         print(response.text)
-        return "", ""
+        return cookie_value, "异常登陆"
 
 
-def many_login_code():
+def many_login_code(cookie, useragent):
     url = f"{get_source()}/login.php"
     payload = {
-        "validate": get_code()
+        "validate": get_code(cookie)
     }
     payload = urlencode(payload)
     headers = {
@@ -202,14 +206,21 @@ def many_login_code():
         'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
         'cache-control': 'max-age=0',
         'content-type': 'application/x-www-form-urlencoded',
-        'cookie': '227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin',
+        'cookie': cookie,
         'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+        'user-agent': useragent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
-    if "" in response.text:
-        print(f"成功")
+    if "驗證碼不正確，請重新填寫" in response.text:
+        return many_login_code(cookie, useragent)
+    elif "刷新不要快於" in response.text:
+        time.sleep(3)
+        print("論壇設置:刷新不要快於 2 秒")
+        return many_login_code(cookie, useragent)
+    else:
+        print(response.text)
+        print(f"验证成功")
+        return cookie, useragent
 
 
 def get_userinfo_by_cookie(cookie, user_agent):
@@ -362,7 +373,7 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             "regpwdrepeat": password,
             "regemail": youxiang,
             "invcode": yaoqingma,
-            "validate": get_code(),
+            "validate": get_code("PHPSESSID=4nh5edfvkj472orqp471q9rs4b;227c9_lastvisit=0%091673152222%09%2Fregister.php%3F"),
             "forward": "",
             "step": "2",
         }
@@ -374,17 +385,9 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cache-control': 'max-age=0',
             'content-type': 'application/x-www-form-urlencoded',
-            'origin': 'https://cl.7801x.xyz',
-            "cookie": "PHPSESSID=f90v70mknlmihgb3o8q75jj8sm; 227c9_lastvisit=0%091671197001%09%2Fregister.php%3F",
-            'referer': 'https://cl.7801x.xyz/register.php',
-            'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"macOS"',
-            'sec-fetch-dest': 'document',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-user': '?1',
-            'upgrade-insecure-requests': '1',
+            'origin': f"{get_source()}",
+            "cookie": "PHPSESSID=4nh5edfvkj472orqp471q9rs4b;227c9_lastvisit=0%091673152222%09%2Fregister.php%3F",
+            'referer': f"{get_source()}/register.php",
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("POST", url, headers=headers, data=encode_paylod)
@@ -393,18 +396,18 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             print("注册成功")
             return True
         elif res == 1:
-            print("验证码不正确")
+            print("验证码不正确, 开始循环注册...")
         else:
             print(response.text)
             return False
 
 
 def check_invode():
-    url = "https://cl.2059x.xyz/register.php?"
+    url = f"{get_source()}/register.php?"
     use_code = [1, 3, 4, 5, 6, 7, 8, 9, 0, 'a', "b", "c", "d", "e", "f"]
     for i in use_code:
         invcode = "*94659020e*fb*d9".replace("*", str(i))
-        payload = f'reginvcode={invcode}&validate={get_code()}&action=reginvcodeck'
+        payload = f'reginvcode={invcode}&validate={get_code("")}&action=reginvcodeck'
         headers = {
             'authority': 'cl.2059x.xyz',
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -427,7 +430,10 @@ def run():
     # print(res)
     # many_login_code()
     # res = get_code()
-    check_invode()
+    # check_invode()
+    res, user_agent = login_get_cookie("奶可真好看", "1024xiaoshen@gmail.com")
+    print(f"res: {res}")
+    print(f"user: {user_agent}")
 
 
 if __name__ == '__main__':

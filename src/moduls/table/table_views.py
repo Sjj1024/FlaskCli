@@ -22,7 +22,10 @@ def table_list():
         level = param_dict.get("level")
         status = param_dict.get("status")
         # yaoqing = param_dict.get("yaoqing")
-        query = CaoliuUsers.query.filter(or_(CaoliuUsers.isDeleted.is_(None), CaoliuUsers.isDeleted == False))
+        if status == "已被删除":
+            query = CaoliuUsers.query.filter(CaoliuUsers.isDeleted == True)
+        else:
+            query = CaoliuUsers.query.filter(or_(CaoliuUsers.isDeleted.is_(None), CaoliuUsers.isDeleted == False))
         if username:
             query = query.filter(CaoliuUsers.user_name == username)
         if weiwang:
