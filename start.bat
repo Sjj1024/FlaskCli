@@ -3,7 +3,7 @@
     git pull > tmp.txt
     set tmp_var=<tmp.txt
     del tmp.txt
-    echo %tmp_var%| findstr out >nul && (
+    echo %tmp_var%| findstr 'fatal' >nul && (
         echo 'time out reGet...'
     ) || (
         echo 'success, start run App...'
