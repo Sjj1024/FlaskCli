@@ -119,7 +119,8 @@ def get_new_userinfo():
         db.session.commit()
     except Exception as e:
         print(e)
-    return jsonify(code=200, message="success")
+        return jsonify(code=212, message="更新数据库操作失败", data=e)
+    return jsonify(code=200, message="success", data=user_caoliu)
 
 
 @table_blu.route("/addUpdateUser", methods=["POST"])
