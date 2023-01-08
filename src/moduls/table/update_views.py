@@ -1,3 +1,4 @@
+import datetime
 import logging
 from flask import jsonify, request
 from src.moduls.table import table_blu
@@ -83,9 +84,11 @@ def get_new_userinfo():
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
-        user_caoliu["desc"] = user_info.get("desc") if "永久禁言" in user_info["desc"] else user_info["desc"] + user_info.get("desc")
+        user_caoliu["desc"] = user_info.get("desc") if "永久禁言" in user_info["desc"] else user_caoliu["desc"] + user_info.get("desc")
         user_caoliu["able_invate"] = user_info.get("able_invate")
         user_caoliu["authentication"] = user_info.get("authentication")
+        user_caoliu["regist_time"] = user_info.get("regist_time")
+        user_caoliu["update_time"] = datetime.datetime.now()
     else:
         return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情
