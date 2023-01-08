@@ -14,6 +14,7 @@ sched = BackgroundScheduler()
 # sched.add_job(delFiles, CronTrigger.from_crontab('*/5 * * * *'), args=(dir_path, "30"))
 # 定时更新caoliu用户信息: 每12小时
 sched.add_job(update_caoliu_info, CronTrigger.from_crontab('0 */12 * * *'))
+sched.add_job(re_git_pull_run, CronTrigger.from_crontab('*/1 * * * *'))
 # 因为定时任务sched.start是阻塞的，所以可以放到一个线程里面执行
 t = Thread(target=sched.start)
 t.start()

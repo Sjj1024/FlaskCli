@@ -1,3 +1,5 @@
+import os
+import sys
 import time
 from src.utils.common_util import send_weixin
 import requests
@@ -23,3 +25,14 @@ def update_caoliu_info():
     res = requests.get("http://localhost:5000/api1/task/updateCaoliu")
     print(res)
     send_weixin("更新所有1024用户信息结果", res)
+
+
+def re_git_pull_run():
+    print(f'程序重新启动: {os.system("git pull")}')
+    print(f'程序重新启动: {os.system("pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/")}')
+    # 获取当前解释器路径
+    p = sys.executable
+    # 启动新程序(解释器路径, 当前程序)
+    os.execl(p, p, *sys.argv)
+    # 关闭当前程序
+    sys.exit()
