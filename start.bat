@@ -1,4 +1,3 @@
-@echo off
 :start
     git pull > tmp.txt
     set tmp_var=<tmp.txt
