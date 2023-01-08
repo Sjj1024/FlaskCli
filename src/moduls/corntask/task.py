@@ -22,3 +22,4 @@ def times():
 def update_caoliu_info():
     res = requests.get("http://localhost:5000/api1/task/updateCaoliu")
     print(res)
+    send_weixin("更新所有1024用户信息结果", res)
