@@ -36,6 +36,18 @@ def get_source():
             continue
 
 
+def get_all_caoliu_home():
+    print("获取源地址")
+    url = "https://get.xunfs.com/app/listapp.php"
+    data = {"a": "get18", "system": "android"}
+    res = requests.post(url=url, headers={}, data=data)
+    res_json = json.loads(res.content.decode("utf-8"))
+    # 打印出地址信息和更新时间
+    urls = [res_json["url1"], res_json["url2"], res_json["url3"]]
+    home_urls = ["https://" + i for i in urls]
+    return home_urls
+
+
 def get_code(cookie):
     """
     获取验证码
@@ -139,8 +151,6 @@ def check_success(response):
 
 
 def get_soup(page_url, cl_cookie, user_agent):
-    # 获取单张我的评论页面中的所有评论过的文章id和标题
-    print(f"")
     header = {
         "user-agent": user_agent,
         "cookie": cl_cookie
@@ -326,7 +336,7 @@ def pay_some_invcode(cookie, user_agent, num):
 def get_invcode_list(cookie, user_agent, page):
     url = f"{source_url}/hack.php?H_name=invite&page={page}"
     soup = get_soup(url, cookie, user_agent)
-    if "購買日期" in soup.get_text():
+    if soup and "購買日期" in soup.get_text():
         res_list = soup.select('tr[class="tr3"]')[10:]
     else:
         res_list = soup.select('tr[class="tr3"]')[8:] if page == 1 else soup.select('tr[class="tr3"]')[1:]
@@ -376,7 +386,8 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             "regpwdrepeat": password,
             "regemail": youxiang,
             "invcode": yaoqingma,
-            "validate": get_code("PHPSESSID=4nh5edfvkj472orqp471q9rs4b;227c9_lastvisit=0%091673152222%09%2Fregister.php%3F"),
+            "validate": get_code(
+                "PHPSESSID=4nh5edfvkj472orqp471q9rs4b;227c9_lastvisit=0%091673152222%09%2Fregister.php%3F"),
             "forward": "",
             "step": "2",
         }
