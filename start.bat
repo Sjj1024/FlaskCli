@@ -3,9 +3,9 @@
     set tmp_var = <tmp.txt
     set b = fatal
     echo %tmp_var%| findstr %b% >nul && (
-        echo 'time out re run get pull...'
+        echo time out re run get pull...
     ) || (
-        echo 'success, start run App...'
+        echo success, start run App...
         goto :runApp
     )
 :runApp
