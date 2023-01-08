@@ -190,6 +190,9 @@ def login_get_cookie(username, password, cookie="",
         cookie, useragent = many_login_code(cookie_value, user_agent)
         return login_get_cookie(username, password, cookie, useragent)
         # return cookie_value, "登陆次数过多"
+    elif "密碼錯誤" in response.text:
+        print(f"密码错误了")
+        return cookie_value, "密码错误"
     else:
         print(response.text)
         return cookie_value, "异常登陆"
