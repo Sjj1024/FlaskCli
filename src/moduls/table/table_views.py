@@ -21,9 +21,11 @@ def table_list():
         weiwang = param_dict.get("weiwang")
         level = param_dict.get("level")
         status = param_dict.get("status")
-        # yaoqing = param_dict.get("yaoqing")
+        yaoqing = param_dict.get("yaoqing")
         if status == "已被删除":
             query = CaoliuUsers.query.filter(CaoliuUsers.isDeleted == True)
+        elif len(status) == 1:
+            query = CaoliuUsers.query.filter(CaoliuUsers.important == int(status))
         else:
             query = CaoliuUsers.query.filter(or_(CaoliuUsers.isDeleted.is_(None), CaoliuUsers.isDeleted == False))
         if username:
@@ -36,6 +38,11 @@ def table_list():
             query = query.filter(CaoliuUsers.desc.like(f'%{status}%'))
         if "正常" in status:
             query = query.filter(~CaoliuUsers.desc.contains('禁言'))
+        if yaoqing == "可以购买":
+            query = query.filter(CaoliuUsers.able_invate == yaoqing)
+        else:
+            query = query.filter(~CaoliuUsers.able_invate.contains('可以购买'))
+        query = query.order_by(CaoliuUsers.important)
         paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})

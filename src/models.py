@@ -123,6 +123,7 @@ class CaoliuUsers(db.Model, BaseModel):
     task_status = db.Column(db.String(255), unique=False, nullable=True)
     check_status = db.Column(db.String(255), unique=False, nullable=True)
     isDeleted = db.Column(db.Boolean, unique=False, nullable=True)
+    important = db.Column(db.Integer, unique=False, nullable=True)
 
 
 class CaoliuUpdate(db.Model, BaseModel):
