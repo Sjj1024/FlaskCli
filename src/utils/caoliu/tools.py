@@ -377,6 +377,50 @@ def get_invcode_list(cookie, user_agent, page):
     return {"total": 0, "items": invcode_list}
 
 
+def get_article_list(cookie, user_agent, page):
+    url = f"{source_url}/hack.php?H_name=invite&page={page}"
+    soup = get_soup(url, cookie, user_agent)
+    if soup and "購買日期" in soup.get_text():
+        res_list = soup.select('tr[class="tr3"]')[10:]
+    else:
+        res_list = soup.select('tr[class="tr3"]')[8:] if page == 1 else soup.select('tr[class="tr3"]')[1:]
+    last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
+    if last:
+        total_number = soup.select('#last')[0].get("href").split("&")[1].replace("page=", "")
+    else:
+        total_number = page
+    if len(res_list) <= 2:
+        return {"total": 0, "items": []}
+    invcode_list = []
+    for node in res_list:
+        if "購買日期" in node.get_text():
+            # PC端过滤
+            invcode = node.select("td")[0].get_text().replace("邀請碼：", "")
+            paydate = node.select("td")[1].get_text().replace("\xa0\xa0\xa0\xa0購買日期：", "")
+            username = node.select("td")[2].get_text()
+            registdate = node.select("td")[3].get_text()
+            status = node.select("td")[4].get_text()
+        else:
+            # 手机端过滤
+            node_text = node.get_text().split(" ")
+            paydate = node_text[0].replace("\n", "") + " " + node_text[1]
+            invcode = node_text[2].split("\r\n\r\n")[0]
+            status = node_text[2].split("\r\n\r\n")[1].replace("[", "").replace("]", "")
+            username = node_text[2].split("\xa0")[1] if "已邀请" in node_text[2] else ""
+            registdate = node_text[3] + " " + node_text[4].replace("\n", "") if "已邀请" in node_text[2] else ""
+        invcode_list.append({
+            "invcode": invcode,
+            "paydate": paydate,
+            "username": username,
+            "registdate": registdate,
+            "status": status
+        })
+    print(invcode_list)
+    if total_number:
+        return {"total": int(total_number) * 10, "items": invcode_list}
+    return {"total": 0, "items": invcode_list}
+
+
 def regist_caoliu(user_name, password, yaoqingma, youxiang):
     print("开始注册")
     while True:

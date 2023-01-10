@@ -5,7 +5,7 @@ from sqlalchemy import or_
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie, \
-    get_invcode_list, pay_some_invcode
+    get_invcode_list, pay_some_invcode, get_article_list
 from src import db
 
 
@@ -40,11 +40,12 @@ def table_list():
             query = query.filter(~CaoliuUsers.desc.contains('禁言'))
         if yaoqing == "可以购买":
             query = query.filter(CaoliuUsers.able_invate == yaoqing)
-        else:
+        elif yaoqing == "不可以":
             query = query.filter(~CaoliuUsers.able_invate.contains('可以购买'))
         query = query.order_by(CaoliuUsers.important)
         paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
+        print(result)
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
         print(f"查询异常： {e}")
@@ -68,6 +69,7 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     caoliu_info.contribute = user_info.get("gongxian")
     caoliu_info.desc = desc + user_info.get("desc")
     caoliu_info.money = user_info.get("money")
+    caoliu_info.regist_time = user_info.get("regist_time")
     caoliu_info.cookie = cookie
     caoliu_info.user_agent = user_agent
     caoliu_info.able_invate = False
@@ -90,6 +92,7 @@ def add_user():
     invcode = param_dict.get("invcode", None)
     cookie = param_dict.get("cookie", None)
     userAgent = param_dict.get("userAgent", None)
+    important = param_dict.get("important", None)
     desc = param_dict.get("desc", None)
     if invcode:
         print("注册逻辑")
@@ -97,6 +100,7 @@ def add_user():
         if res:
             try:
                 caoliu_info = get_caoliu_user(username, password, desc=desc)
+                caoliu_info.important = important
                 db.session.add(caoliu_info)
                 db.session.commit()
             except Exception as e:
@@ -108,6 +112,7 @@ def add_user():
     elif cookie:
         print("cookie逻辑")
         caoliu_info = get_caoliu_user(cookie=cookie, user_agent=userAgent, desc=desc)
+        caoliu_info.important = important
         try:
             db.session.add(caoliu_info)
             db.session.commit()
@@ -118,6 +123,7 @@ def add_user():
     elif password:
         print("开始登陆逻辑")
         caoliu_info = get_caoliu_user(username, password, desc=desc)
+        caoliu_info.important = important
         if not caoliu_info:
             return jsonify(code=214, message="用户密码错误，请更换密码后再试")
         try:
@@ -164,6 +170,20 @@ def get_user_invcode_list():
     if user:
         user_info = user.to_json()
         invcodes = get_invcode_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
+        return jsonify(code=200, message="success", data=invcodes)
+    else:
+        return jsonify(code=210, message="未查找到用户信息")
+
+
+@table_blu.route("/getArticleList", methods=["POST"])
+def get_user_article_list():
+    logging.info("开始获取用户文章列表")
+    user_id = request.json.get('id')
+    pageNum = request.json.get('pageNum')
+    user = CaoliuUsers.query.get(user_id)
+    if user:
+        user_info = user.to_json()
+        invcodes = get_article_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
         return jsonify(code=200, message="success", data=invcodes)
     else:
         return jsonify(code=210, message="未查找到用户信息")
