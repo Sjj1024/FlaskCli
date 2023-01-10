@@ -1,7 +1,6 @@
 import logging
 from flask import jsonify, request
 from sqlalchemy import or_
-
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie, \
@@ -55,8 +54,8 @@ def table_list():
 def get_caoliu_user(username="", password="", cookie="", user_agent="", desc=""):
     if password:
         cookie, user_agent = login_get_cookie(username, password)
-    if "密码错误" in user_agent:
-        return {}
+    if len(user_agent) < 10:
+        return user_agent
     user_info = get_userinfo_by_cookie(cookie, user_agent)
     caoliu_info = CaoliuUsers()
     caoliu_info.user_name = user_info.get("user_name")
@@ -100,6 +99,8 @@ def add_user():
         if res:
             try:
                 caoliu_info = get_caoliu_user(username, password, desc=desc)
+                if isinstance(caoliu_info, str):
+                    return jsonify(code=205, message=f"注册异常:{caoliu_info}")
                 caoliu_info.important = important
                 db.session.add(caoliu_info)
                 db.session.commit()
@@ -112,6 +113,8 @@ def add_user():
     elif cookie:
         print("cookie逻辑")
         caoliu_info = get_caoliu_user(cookie=cookie, user_agent=userAgent, desc=desc)
+        if isinstance(caoliu_info, str):
+            return jsonify(code=205, message=f"cookie逻辑:{caoliu_info}")
         caoliu_info.important = important
         try:
             db.session.add(caoliu_info)
@@ -123,6 +126,8 @@ def add_user():
     elif password:
         print("开始登陆逻辑")
         caoliu_info = get_caoliu_user(username, password, desc=desc)
+        if isinstance(caoliu_info, str):
+            return jsonify(code=205, message=f"登陆逻辑异常:{caoliu_info}")
         caoliu_info.important = important
         if not caoliu_info:
             return jsonify(code=214, message="用户密码错误，请更换密码后再试")
@@ -183,8 +188,8 @@ def get_user_article_list():
     user = CaoliuUsers.query.get(user_id)
     if user:
         user_info = user.to_json()
-        invcodes = get_article_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
-        return jsonify(code=200, message="success", data=invcodes)
+        articles = get_article_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
+        return jsonify(code=200, message="success", data=articles)
     else:
         return jsonify(code=210, message="未查找到用户信息")
 

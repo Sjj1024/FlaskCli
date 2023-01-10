@@ -203,8 +203,11 @@ def login_get_cookie(username, password, cookie="",
     elif "密碼錯誤" in response.text:
         print(f"密码错误了")
         return cookie_value, "密码错误"
+    elif "該賬號已開啟兩步驗證" in response.text:
+        print(f"启用了两步验证")
+        return cookie_value, "启用了两步认证"
     else:
-        print(response.text)
+        print(f"登陆异常:{response.text}")
         return cookie_value, "异常登陆"
 
 
@@ -378,47 +381,49 @@ def get_invcode_list(cookie, user_agent, page):
 
 
 def get_article_list(cookie, user_agent, page):
-    url = f"{source_url}/hack.php?H_name=invite&page={page}"
+    url = f"{source_url}/personal.php?action=&keyword=&page={page}"
     soup = get_soup(url, cookie, user_agent)
-    if soup and "購買日期" in soup.get_text():
-        res_list = soup.select('tr[class="tr3"]')[10:]
+    if soup and "所在版塊" in soup.get_text():
+        # web端
+        res_list = soup.select("tr.tr3.tac")
     else:
-        res_list = soup.select('tr[class="tr3"]')[8:] if page == 1 else soup.select('tr[class="tr3"]')[1:]
+        # 手机端
+        res_list = soup.select("tr.tr3")[1:]
     last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
     if last:
-        total_number = soup.select('#last')[0].get("href").split("&")[1].replace("page=", "")
+        total_number = soup.select('#last')[0].get("href").split("page=")[1]
     else:
         total_number = page
-    if len(res_list) <= 2:
-        return {"total": 0, "items": []}
-    invcode_list = []
+    article_list = []
     for node in res_list:
-        if "購買日期" in node.get_text():
+        if "時間" not in node.get_text():
             # PC端过滤
-            invcode = node.select("td")[0].get_text().replace("邀請碼：", "")
-            paydate = node.select("td")[1].get_text().replace("\xa0\xa0\xa0\xa0購買日期：", "")
-            username = node.select("td")[2].get_text()
-            registdate = node.select("td")[3].get_text()
-            status = node.select("td")[4].get_text()
+            title = node.select("a.a2")[1].get_text()
+            link = node.select("a.a2")[1].get("href")
+            category = node.select("a")[2].get_text()
+            replay = node.select("td")[2].get_text()
+            like = node.select("td")[3].get_text()
+            pub_time = node.select("td")[4].get_text()
         else:
             # 手机端过滤
-            node_text = node.get_text().split(" ")
-            paydate = node_text[0].replace("\n", "") + " " + node_text[1]
-            invcode = node_text[2].split("\r\n\r\n")[0]
-            status = node_text[2].split("\r\n\r\n")[1].replace("[", "").replace("]", "")
-            username = node_text[2].split("\xa0")[1] if "已邀请" in node_text[2] else ""
-            registdate = node_text[3] + " " + node_text[4].replace("\n", "") if "已邀请" in node_text[2] else ""
-        invcode_list.append({
-            "invcode": invcode,
-            "paydate": paydate,
-            "username": username,
-            "registdate": registdate,
-            "status": status
+            title = node.select("a.a2")[1].get_text()
+            link = node.select("a.a2")[1].get("href")
+            category = node.select("a.tac")[0].get_text()
+            replay = node.select("span")[0].get_text().split("時間")[1].split("回")[1].replace(": ", "")
+            like = "*"
+            pub_time = node.select("span")[0].get_text().split("時間")[1].split("回")[0].replace(": ", "")
+        article_list.append({
+            "title": title,
+            "link": link,
+            "category": category,
+            "replay": replay,
+            "like": like,
+            "pub_time": pub_time
         })
-    print(invcode_list)
+    print(article_list)
     if total_number:
-        return {"total": int(total_number) * 10, "items": invcode_list}
-    return {"total": 0, "items": invcode_list}
+        return {"total": int(total_number) * 10, "items": article_list}
+    return {"total": 0, "items": article_list}
 
 
 def regist_caoliu(user_name, password, yaoqingma, youxiang):
@@ -482,16 +487,9 @@ def check_invode():
 
 def run():
     # cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
-    # cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_lastvisit=0%091671851754%09%2Flogin.php%3F;227c9_winduser=VAsAV1daMFcAAQAAAwcEVAIBWg8JAlsHAVRRAgQOUwNTDQBVBlpVaA%3D%3D;"
-    useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    # res = get_userinfo_by_cookie(cookie, useragent)
-    # print(res)
-    # many_login_code()
-    # res = get_code()
-    # check_invode()
-    res, user_agent = login_get_cookie("奶可真好看", "1024xiaoshen@gmail.com")
-    print(f"res: {res}")
-    print(f"user: {user_agent}")
+    cookie = "PHPSESSID=bqbdj0j4qm8rtqcgdio1k224ok; 227c9_ck_info=/	; 227c9_groupid=6; ismob=1; 227c9_winduser=DwAHDwdcaAUEBQQBBwkMAAdRClQLBAcHBFdSVg4GUwldUFsKWAAGPgRXWAMFBVIDBQxaWlFSCVMKVgABWVBQUQVXB1xcVAYG; 227c9_lastvisit=0	1673354713	/index.php?"
+    useragent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/108.0.0.0"
+    get_article_list(cookie, useragent, 1)
 
 
 if __name__ == '__main__':
