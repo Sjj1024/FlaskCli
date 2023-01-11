@@ -1,4 +1,6 @@
 import logging
+
+import requests
 from flask import jsonify, request
 from sqlalchemy import or_
 from src.models import CaoliuUsers
@@ -97,17 +99,9 @@ def add_user():
         print("注册逻辑")
         res = regist_caoliu(username, password, invcode, email)
         if res:
-            try:
-                caoliu_info = get_caoliu_user(username, password, desc=desc)
-                if isinstance(caoliu_info, str):
-                    return jsonify(code=205, message=f"注册异常:{caoliu_info}")
-                caoliu_info.important = important
-                db.session.add(caoliu_info)
-                db.session.commit()
-            except Exception as e:
-                print(e)
-                return jsonify(code=205, message=f"注册逻辑异常:{e}")
-            return jsonify(code=200, message="success")
+            caoliu_info = get_caoliu_user(username, password, desc=desc)
+            if isinstance(caoliu_info, str):
+                return jsonify(code=205, message=f"注册异常:{caoliu_info}")
         else:
             return jsonify(code=205, message="注册异常")
     elif cookie:
@@ -115,32 +109,25 @@ def add_user():
         caoliu_info = get_caoliu_user(cookie=cookie, user_agent=userAgent, desc=desc)
         if isinstance(caoliu_info, str):
             return jsonify(code=205, message=f"cookie逻辑:{caoliu_info}")
-        caoliu_info.important = important
-        try:
-            db.session.add(caoliu_info)
-            db.session.commit()
-        except Exception as e:
-            print(e)
-            return jsonify(code=205, message=f"cookie添加用户异常:{e}")
-        return jsonify(code=200, message="success")
     elif password:
         print("开始登陆逻辑")
         caoliu_info = get_caoliu_user(username, password, desc=desc)
         if isinstance(caoliu_info, str):
             return jsonify(code=205, message=f"登陆逻辑异常:{caoliu_info}")
-        caoliu_info.important = important
         if not caoliu_info:
             return jsonify(code=214, message="用户密码错误，请更换密码后再试")
-        try:
-            db.session.add(caoliu_info)
-            db.session.commit()
-        except Exception as e:
-            print(e)
-            return jsonify(code=205, message=f"添加登陆用户异常:{e}")
-        return jsonify(code=200, message="success")
     else:
         print("没有邀请码也没有cookie，逻辑错误")
         return jsonify(code=205, message="没有邀请码也没有cookie")
+    try:
+        caoliu_info.important = important
+        caoliu_info.original = caoliu_info.to_dict()
+        db.session.add(caoliu_info)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        return jsonify(code=205, message=f"添加登陆用户异常:{e}")
+    return jsonify(code=200, message="success")
 
 
 @table_blu.route("/delUser", methods=["DELETE"])
@@ -148,6 +135,11 @@ def del_user():
     logging.info("开始删除用户")
     param_dict = request.json
     logging.info(f"开始删除用户: {param_dict}")
+    # 如果有action任务，把任务删除
+    if param_dict.get("task_file_sha"):
+        requests.delete("http://localhost:5000/api1/table/delUpdateUser", json=param_dict)
+    if param_dict.get("check_file_sha"):
+        requests.delete("http://localhost:5000/api1/table/delCheckUser", json=param_dict)
     CaoliuUsers.query.filter_by(id=param_dict.get("id")).update({"isDeleted": True})
     db.session.commit()
     return jsonify(code=200, message="success")

@@ -1,4 +1,5 @@
 import datetime
+from copy import deepcopy
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from . import db
@@ -17,7 +18,7 @@ class BaseModel(object):
         """
         为了转json提供的方法
         """
-        _dict = self.__dict__
+        _dict = deepcopy(self.__dict__)
         if "_sa_instance_state" in _dict:
             del _dict["_sa_instance_state"]
         # 将创建时间和更新时间格式化
@@ -25,6 +26,15 @@ class BaseModel(object):
             if isinstance(value, datetime.date):
                 # _dict[key] = value.strftime("%Y-%m-%d %H:%M:%S")
                 _dict[key] = value.strftime("%Y-%m-%d %H:%M")
+        return _dict
+
+    def to_dict(self):
+        """
+        为了转json提供的方法
+        """
+        _dict = deepcopy(self.__dict__)
+        if "_sa_instance_state" in _dict:
+            del _dict["_sa_instance_state"]
         return _dict
 
 
@@ -124,6 +134,7 @@ class CaoliuUsers(db.Model, BaseModel):
     check_status = db.Column(db.String(255), unique=False, nullable=True)
     isDeleted = db.Column(db.Boolean, unique=False, nullable=True)
     important = db.Column(db.Integer, unique=False, nullable=True)
+    original = db.Column(db.JSON, unique=False, nullable=True)
 
 
 class CaoliuUpdate(db.Model, BaseModel):
