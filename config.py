@@ -20,7 +20,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    REDIS_HOST = "192.168.191.244"
+    REDIS_HOST = DATA_IP
     REDIS_PORT = 6379
     # Session配置
     SESSION_TYPE = "redis"
@@ -47,6 +47,8 @@ class Config(object):
     GIT_USERNAME = "Sjj1024"
     GIT_REPOS = "Sjj1024"
     GIT_TOKEN = "ghp_888grzs67MqxbZUH3wmIFKzecaKB0cTLy3ICBkl".replace("888", "")
+    # 1024请求延时
+    TIME_SLEEP = 2
 
 
 class DevelopMentConfig(Config):

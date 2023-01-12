@@ -62,15 +62,16 @@ def get_new_userinfo():
     paylod = request.json
     username = paylod.get("user_name")
     password = paylod.get("password")
+    email = paylod.get("email")
     cookie = paylod.get("cookie")
     user_agent = paylod.get("user_agent")
     if cookie:
-        user_info = get_userinfo_by_cookie(cookie, user_agent)
+        user_info = get_userinfo_by_cookie(cookie, user_agent, email)
     elif password:
         cookie, user_agent = login_get_cookie(username, password)
         if not cookie:
             return jsonify(code=212, message="登陆失败，可能是登陆次数过多导致的")
-        user_info = get_userinfo_by_cookie(cookie, user_agent)
+        user_info = get_userinfo_by_cookie(cookie, user_agent, email)
     else:
         return jsonify(code=211, message="没有cookie和用户名密码")
     update_user_list = CaoliuUsers.query.filter_by(user_name=username)
@@ -133,8 +134,7 @@ def add_git_file():
     # 先添加一个caoliu.py文件
     cookie = paylod.get("cookie")
     user_agent = paylod.get("userAgent")
-    user_info = get_userinfo_by_cookie(cookie, user_agent)
-    user_name = user_info.get("user_name")
+    user_name = paylod.get("username")
     update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
     if update_user_list:
         update_user = update_user_list.all()[0].to_json()

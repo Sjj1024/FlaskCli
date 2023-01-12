@@ -6,7 +6,8 @@ import ddddocr
 import requests
 from bs4 import BeautifulSoup
 
-source_url = "https://cl.2059z.xyz"
+source_url = "https://cl.5206x.xyz"
+time_sleep = 2
 
 
 # 获取回家地址
@@ -63,6 +64,7 @@ def get_code(cookie):
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("GET", url, headers=headers, data=payload)
+        time.sleep(time_sleep)
         with open("test.jpg", "wb") as f:
             f.write(response.content)
         ocr = ddddocr.DdddOcr(beta=True, show_ad=False)
@@ -103,6 +105,7 @@ def check_name_avliable(name):
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("POST", url, headers=headers, data=payload).text
+        time.sleep(time_sleep)
         print(response)
         name_langth = """<script language="JavaScript1.2">parent.retmsg('0');</script>"""
         name_teshu = """<script language="JavaScript1.2">parent.retmsg('1');</script>"""
@@ -151,18 +154,39 @@ def check_success(response):
 
 
 def get_soup(page_url, cl_cookie, user_agent):
+    # header = {
+    #     "user-agent": user_agent,
+    #     "cookie": cl_cookie
+    # }
     header = {
-        "user-agent": user_agent,
-        "cookie": cl_cookie
+        'authority': 'cl.2059x.xyz',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+        'cache-control': 'max-age=0',
+        'content-type': 'application/x-www-form-urlencoded',
+        'cookie': cl_cookie,
+        'origin': get_source(),
+        'referer': f'{get_source()}/hack.php?H_name=invite&action=buy',
+        'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': user_agent
     }
+
     try:
         res = requests.get(page_url, headers=header, timeout=10)
         html = res.content.decode()
         soup = BeautifulSoup(html, "lxml")
+        time.sleep(time_sleep)
         return soup
     except Exception as e:
         print(f"get_soup有错误{e},请检查错误......")
-        return None
+        return f"get_soup有错误{e},请检查错误......"
 
 
 def login_get_cookie(username, password, cookie="",
@@ -173,7 +197,7 @@ def login_get_cookie(username, password, cookie="",
         "pwuser": username,
         "pwpwd": password,
         "hideid": 0,
-        "cktime": 31536000,
+        "cktime": 31646000,
         "forward": f"{get_source()}/index.php",
         "jumpurl": f"{get_source()}/index.php",
         "step": 2
@@ -185,10 +209,10 @@ def login_get_cookie(username, password, cookie="",
         'cache-control': 'max-age=0',
         'content-type': 'application/x-www-form-urlencoded',
         'cookie': cookie,
-        'upgrade-insecure-requests': '1',
         'user-agent': user_agent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    time.sleep(time_sleep)
     cookie_value = ""
     for key, value in response.cookies.items():
         cookie_value += key + '=' + value + ';'
@@ -227,10 +251,11 @@ def many_login_code(cookie, useragent):
         'user-agent': useragent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    time.sleep(time_sleep)
     if "驗證碼不正確，請重新填寫" in response.text:
         return many_login_code(cookie, useragent)
     elif "刷新不要快於" in response.text:
-        time.sleep(3)
+        time.sleep(time_sleep)
         print("論壇設置:刷新不要快於 2 秒")
         return many_login_code(cookie, useragent)
     else:
@@ -239,12 +264,14 @@ def many_login_code(cookie, useragent):
         return cookie, useragent
 
 
-def get_userinfo_by_cookie(cookie, user_agent):
+def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
     print(f"get_userinfo_bycookie：{cookie}, {user_agent}")
     # 获取下一页的链接, 有就返回，没有就返回false
     source_url = get_source()
     url = source_url + "/profile.php"
     soup = get_soup(url, cookie, user_agent)
+    if isinstance(soup, str):
+        return soup
     liangbu_renzheng = "已設置 停用" in soup.select("#main")[0].get_text()
     if soup:
         gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
@@ -254,10 +281,13 @@ def get_userinfo_by_cookie(cookie, user_agent):
         email_url = f"{source_url}/{email_span[0].get('href')}"
         invcode_url = f"{source_url}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
-        email_soup = get_soup(email_url, cookie, user_agent)
+        if not has_email:
+            email_soup = get_soup(email_url, cookie, user_agent)
+            email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
+        else:
+            email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
-        if info_soup and email_soup and invcode_soup:
-            email = re.search(r"E-MAIL\n(.*?)com", email_soup.select("#main > form")[0].get_text()).group(1) + "com"
+        if info_soup and invcode_soup:
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
             user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
             user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
@@ -328,6 +358,7 @@ def pay_some_invcode(cookie, user_agent, num):
         'user-agent': user_agent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    time.sleep(time_sleep)
     print(response.text)
     if "操作完成" in response.text:
         return True
@@ -339,6 +370,8 @@ def pay_some_invcode(cookie, user_agent, num):
 def get_invcode_list(cookie, user_agent, page):
     url = f"{source_url}/hack.php?H_name=invite&page={page}"
     soup = get_soup(url, cookie, user_agent)
+    if isinstance(soup, str):
+        return soup
     if soup and "購買日期" in soup.get_text():
         res_list = soup.select('tr[class="tr3"]')[10:]
     else:
@@ -383,6 +416,100 @@ def get_invcode_list(cookie, user_agent, page):
 def get_article_list(cookie, user_agent, page):
     url = f"{source_url}/personal.php?action=&keyword=&page={page}"
     soup = get_soup(url, cookie, user_agent)
+    if isinstance(soup, str):
+        return soup
+    if soup and "所在版塊" in soup.get_text():
+        # web端
+        res_list = soup.select("tr.tr3.tac")
+    else:
+        # 手机端
+        res_list = soup.select("tr.tr3")[1:]
+    last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
+    if last:
+        total_number = soup.select('#last')[0].get("href").split("page=")[1]
+    else:
+        total_number = page
+    article_list = []
+    for node in res_list:
+        if "時間" not in node.get_text():
+            # PC端过滤
+            title = node.select("a.a2")[1].get_text()
+            link = node.select("a.a2")[1].get("href")
+            category = node.select("a")[2].get_text()
+            replay = node.select("td")[2].get_text()
+            like = node.select("td")[3].get_text()
+            pub_time = node.select("td")[4].get_text()
+        else:
+            # 手机端过滤
+            title = node.select("a.a2")[1].get_text()
+            link = node.select("a.a2")[1].get("href")
+            category = node.select("a.tac")[0].get_text()
+            replay = node.select("span")[0].get_text().split("時間")[1].split("回")[1].replace(": ", "")
+            like = "*"
+            pub_time = node.select("span")[0].get_text().split("時間")[1].split("回")[0].replace(": ", "")
+        article_list.append({
+            "title": title,
+            "link": link,
+            "category": category,
+            "replay": replay,
+            "like": like,
+            "pub_time": pub_time
+        })
+    print(article_list)
+    if total_number:
+        return {"total": int(total_number) * 10, "items": article_list}
+    return {"total": 0, "items": article_list}
+
+
+def get_commit_list(cookie, user_agent, page):
+    # 获取评论列表
+    url = f"{source_url}/personal.php?action=post&page={page}"
+    soup = get_soup(url, cookie, user_agent)
+    if isinstance(soup, str):
+        return soup
+    if soup and "Mobile" not in soup.decode():
+        # web端
+        res_list = soup.select("tr > td > div")[2:]
+    else:
+        # 手机端
+        res_list = soup.select("tr > td > div")[4:]
+    last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
+    if last:
+        total_number = soup.select('#last')[0].get("href").split("page=")[1]
+    else:
+        total_number = page
+    article_list = []
+    for node in res_list:
+        if "上一頁" in node.get_text() or not node.get_text():
+            continue
+        title = node.select("a")[1].get_text()
+        link = node.select("a")[1].get("href")
+        author = node.select("a")[2].get_text()
+        author_link = node.select("a")[2].get("href")
+        category = node.select("div.fr")[0].get_text()
+        replay = node.select("div")[2].get_text()
+        pub_time = node.select("div.fl")[0].get_text()
+        article_list.append({
+            "title": title,
+            "link": link,
+            "author": author,
+            "author_link": author_link,
+            "category": category,
+            "replay": replay,
+            "pub_time": pub_time
+        })
+    print(article_list)
+    if total_number:
+        return {"total": int(total_number) * 10, "items": article_list}
+    return {"total": 0, "items": article_list}
+
+
+def get_ref_commit_list(cookie, user_agent, page):
+    # 获取点评列表
+    url = f"{source_url}/personal.php?action=&keyword=&page={page}"
+    soup = get_soup(url, cookie, user_agent)
+    if isinstance(soup, str):
+        return soup
     if soup and "所在版塊" in soup.get_text():
         # web端
         res_list = soup.select("tr.tr3.tac")
@@ -454,6 +581,7 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("POST", url, headers=headers, data=encode_paylod)
+        time.sleep(time_sleep)
         res = check_success(response.text)
         if res == 0:
             print("注册成功")
@@ -482,14 +610,15 @@ def check_invode():
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
         }
         response = requests.request("POST", url, headers=headers, data=payload)
+        time.sleep(time_sleep)
         print(f"{invcode}: {response.text}")
 
 
 def run():
     # cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
-    cookie = "PHPSESSID=bqbdj0j4qm8rtqcgdio1k224ok; 227c9_ck_info=/	; 227c9_groupid=6; ismob=1; 227c9_winduser=DwAHDwdcaAUEBQQBBwkMAAdRClQLBAcHBFdSVg4GUwldUFsKWAAGPgRXWAMFBVIDBQxaWlFSCVMKVgABWVBQUQVXB1xcVAYG; 227c9_lastvisit=0	1673354713	/index.php?"
-    useragent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/108.0.0.0"
-    get_article_list(cookie, useragent, 1)
+    cookie = "PHPSESSID=953tur4p5dpurfmgt63hs66483;227c9_ck_info=%2F%09;227c9_winduser=UwcPAQwFaFUJAF8GVFACC1RdBwYNAV0KVAcIWwRQVA9RCQULV1NdPg9VWAANDFdXVlUFAFUBVQUBD1gBBwMBX1UFBA9RAAgP;227c9_groupid=8;227c9_lastvisit=0%091673531924%09%2Findex.php%3F"
+    useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+    get_userinfo_by_cookie(cookie, useragent)
 
 
 if __name__ == '__main__':
