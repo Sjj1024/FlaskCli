@@ -304,11 +304,14 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
                 authentication = "已启用："
                 if invcode_auth == "有":
                     if int(gongxian) > 300:
-                        invcode_flag = "可以购买"
+                        if dengji not in ["禁止發言", "新手上路"]:
+                            invcode_flag = "可以购买"
+                        else:
+                            invcode_flag = "等级不足"
                     else:
                         invcode_flag = "贡献不足"
                 else:
-                    invcode_flag = "无权限"
+                    invcode_flag = "无权限购买"
             else:
                 invcode_flag = "两步认证未启用"
                 authentication = "未启用"
@@ -506,16 +509,16 @@ def get_commit_list(cookie, user_agent, page):
 
 def get_ref_commit_list(cookie, user_agent, page):
     # 获取点评列表
-    url = f"{source_url}/personal.php?action=&keyword=&page={page}"
+    url = f"{source_url}/personal.php?action=comment&page={page}"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup
-    if soup and "所在版塊" in soup.get_text():
+    if soup and "Mobile" not in soup.decode():
         # web端
-        res_list = soup.select("tr.tr3.tac")
+        res_list = soup.select("tr > td > div")[2:]
     else:
         # 手机端
-        res_list = soup.select("tr.tr3")[1:]
+        res_list = soup.select("tr > td > div")[4:]
     last = "page" in soup.select('#last')[0].get("href") if soup.select('#last') else soup.select('#last')
     if last:
         total_number = soup.select('#last')[0].get("href").split("page=")[1]
@@ -523,28 +526,20 @@ def get_ref_commit_list(cookie, user_agent, page):
         total_number = page
     article_list = []
     for node in res_list:
-        if "時間" not in node.get_text():
-            # PC端过滤
-            title = node.select("a.a2")[1].get_text()
-            link = node.select("a.a2")[1].get("href")
-            category = node.select("a")[2].get_text()
-            replay = node.select("td")[2].get_text()
-            like = node.select("td")[3].get_text()
-            pub_time = node.select("td")[4].get_text()
-        else:
-            # 手机端过滤
-            title = node.select("a.a2")[1].get_text()
-            link = node.select("a.a2")[1].get("href")
-            category = node.select("a.tac")[0].get_text()
-            replay = node.select("span")[0].get_text().split("時間")[1].split("回")[1].replace(": ", "")
-            like = "*"
-            pub_time = node.select("span")[0].get_text().split("時間")[1].split("回")[0].replace(": ", "")
+        if "上一頁" in node.get_text() or not node.get_text():
+            continue
+        title = node.select("a")[1].get_text()
+        link = node.select("a")[1].get("href")
+        category = node.select("div.fr")[0].get_text()
+        re_replay = node.select("div")[2].select("i")[0].get_text()
+        replay = node.select("div")[2].get_text().replace(re_replay, "")
+        pub_time = node.select("div.fl")[0].get_text().strip()
         article_list.append({
             "title": title,
             "link": link,
             "category": category,
+            "re_replay": re_replay,
             "replay": replay,
-            "like": like,
             "pub_time": pub_time
         })
     print(article_list)
@@ -616,9 +611,10 @@ def check_invode():
 
 def run():
     # cookie = login_get_cookie("我真的很爱你", "1024xiaoshen@gmail.com")
-    cookie = "PHPSESSID=953tur4p5dpurfmgt63hs66483;227c9_ck_info=%2F%09;227c9_winduser=UwcPAQwFaFUJAF8GVFACC1RdBwYNAV0KVAcIWwRQVA9RCQULV1NdPg9VWAANDFdXVlUFAFUBVQUBD1gBBwMBX1UFBA9RAAgP;227c9_groupid=8;227c9_lastvisit=0%091673531924%09%2Findex.php%3F"
-    useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
-    get_userinfo_by_cookie(cookie, useragent)
+    cookie = "227c9_ck_info=%2F%09;227c9_groupid=8;227c9_winduser=BANcAQZaOQcFUgZWVgcKAARdUlBXVwMBBQRWAgJSB1BcBVdWUwNQPFFaVAAGU1dWUVNYCFcBVFMBUFIDBlZTBFJSBQNYVFNd;PHPSESSID=ji0o1te7qp45uams4fmuifdamd;ismob=1;227c9_lastvisit=0%091673592051%09%2Fpersonal.php%3Faction%3Dcomment "
+    useragent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
+    # get_userinfo_by_cookie(cookie, useragent)
+    get_ref_commit_list(cookie, useragent, 1)
 
 
 if __name__ == '__main__':

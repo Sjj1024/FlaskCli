@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from src.models import CaoliuUsers
 from src.moduls.table import table_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, check_name_avliable, regist_caoliu, login_get_cookie, \
-    get_invcode_list, pay_some_invcode, get_article_list, get_commit_list
+    get_invcode_list, pay_some_invcode, get_article_list, get_commit_list, get_ref_commit_list
 from src import db
 
 
@@ -80,6 +80,42 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     caoliu_info.task_status = "未开启"
     caoliu_info.check_status = "未开启"
     return caoliu_info
+
+
+@table_blu.route("/tempAddUser", methods=["POST"])
+def temp_add_user():
+    logging.info("开始暂存用户信息...")
+    param_dict = request.json
+    print(param_dict)
+    username = param_dict.get("username", None)
+    password = param_dict.get("password", None)
+    email = param_dict.get("email", None)
+    cookie = param_dict.get("cookie", None)
+    userAgent = param_dict.get("userAgent", None)
+    important = param_dict.get("important", None)
+    desc = param_dict.get("desc", None)
+    caoliu_info = CaoliuUsers()
+    caoliu_info.user_name = username
+    caoliu_info.password = password
+    caoliu_info.email = email
+    caoliu_info.cookie = cookie
+    caoliu_info.user_agent = userAgent
+    caoliu_info.important = important
+    caoliu_info.desc = desc
+    caoliu_info.task_status = "未开启"
+    caoliu_info.check_status = "未开启"
+    caoliu_info.weiwang = 0
+    caoliu_info.contribute = 0
+    caoliu_info.grade = "暂存用户待更新"
+    caoliu_info.able_invate = "false"
+    try:
+        db.session.add(caoliu_info)
+        db.session.commit()
+        print(f"添加用户成功！")
+    except Exception as e:
+        print(e)
+        return jsonify(code=205, message=f"添加登陆异常:{e}")
+    return jsonify(code=200, message="success")
 
 
 @table_blu.route("/addUser", methods=["POST"])
@@ -201,6 +237,22 @@ def get_user_commit_list():
     if user:
         user_info = user.to_json()
         articles = get_commit_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
+        if isinstance(articles, str):
+            return jsonify(code=210, message=articles)
+        return jsonify(code=200, message="success", data=articles)
+    else:
+        return jsonify(code=210, message="未查找到用户信息")
+
+
+@table_blu.route("/getRefCommitList", methods=["POST"])
+def get_user_ref_commit_list():
+    logging.info("开始获取用户点评列表")
+    user_id = request.json.get('id')
+    pageNum = request.json.get('pageNum')
+    user = CaoliuUsers.query.get(user_id)
+    if user:
+        user_info = user.to_json()
+        articles = get_ref_commit_list(user_info.get("cookie"), user_info.get("user_agent"), pageNum)
         if isinstance(articles, str):
             return jsonify(code=210, message=articles)
         return jsonify(code=200, message="success", data=articles)

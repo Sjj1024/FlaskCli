@@ -1,3 +1,4 @@
+import copy
 import datetime
 import logging
 from flask import jsonify, request
@@ -65,6 +66,8 @@ def get_new_userinfo():
     email = paylod.get("email")
     cookie = paylod.get("cookie")
     user_agent = paylod.get("user_agent")
+    important = paylod.get("important")
+    original = paylod.get("original")
     if cookie:
         user_info = get_userinfo_by_cookie(cookie, user_agent, email)
     elif password:
@@ -82,6 +85,7 @@ def get_new_userinfo():
         user_caoliu["contribute"] = user_info.get("gongxian")
         user_caoliu["contribute_link"] = user_info.get("gongxian_link")
         user_caoliu["grade"] = user_info.get("dengji")
+        user_caoliu["original"] = 5 if "永久禁言" in user_info["desc"] else important
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
@@ -89,7 +93,7 @@ def get_new_userinfo():
         user_caoliu["able_invate"] = user_info.get("able_invate")
         user_caoliu["authentication"] = user_info.get("authentication")
         user_caoliu["regist_time"] = user_info.get("regist_time")
-        user_caoliu["update_time"] = datetime.datetime.now()
+        user_caoliu["update_time"] = str(datetime.datetime.now())
     else:
         return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情
@@ -119,6 +123,8 @@ def get_new_userinfo():
             check_status = "未开启"
             user_caoliu["check_status"] = check_status
     try:
+        if not original:
+            user_caoliu["original"] = copy.deepcopy(user_caoliu)
         update_user_list.update(user_caoliu)
         db.session.commit()
     except Exception as e:
