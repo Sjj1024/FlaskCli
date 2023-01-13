@@ -189,7 +189,7 @@ def get_soup(page_url, cl_cookie, user_agent):
         return f"get_soup有错误{e},请检查错误......"
 
 
-def login_get_cookie(username, password, cookie="",
+def login_get_cookie(username, password, cookie="227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin",
                      user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'):
     print("开始登陆并获取cookie")
     url = f"{get_source()}/login.php?"

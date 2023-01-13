@@ -85,7 +85,7 @@ def get_new_userinfo():
         user_caoliu["contribute"] = user_info.get("gongxian")
         user_caoliu["contribute_link"] = user_info.get("gongxian_link")
         user_caoliu["grade"] = user_info.get("dengji")
-        user_caoliu["original"] = 5 if "永久禁言" in user_info["desc"] else important
+        user_caoliu["important"] = 5 if "永久禁言" in user_info["desc"] else important
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
@@ -123,7 +123,7 @@ def get_new_userinfo():
             check_status = "未开启"
             user_caoliu["check_status"] = check_status
     try:
-        if not original:
+        if not original or isinstance(original, int):
             user_caoliu["original"] = copy.deepcopy(user_caoliu)
         update_user_list.update(user_caoliu)
         db.session.commit()
