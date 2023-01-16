@@ -191,7 +191,16 @@ def get_soup(page_url, cl_cookie, user_agent):
         return f"get_soup有错误{e},请检查错误......"
 
 
-def login_get_cookie(username, password, cookie="227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin",
+def set_cookies(res, cookie):
+    cookie_dict = {i.split("=")[0]: i.split("=")[1] for i in cookie.split("; ")}
+    c = res.cookies.get_dict()
+    cookie_dict.update(c)
+    cookie = "; ".join([f"{key}={val}" for key, val in cookie_dict.items()])
+    return cookie
+
+
+def login_get_cookie(username, password,
+                     cookie="227c9_lastvisit=0%091671848711%09%2Flogin.php%3F; PHPSESSID=idbl69k98i1nor4esbh6vc0oin",
                      user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'):
     print("开始登陆并获取cookie")
     url = f"{get_source()}/login.php?"
@@ -215,10 +224,7 @@ def login_get_cookie(username, password, cookie="227c9_lastvisit=0%091671848711%
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     time.sleep(time_sleep)
-    cookie_value = ""
-    for key, value in response.cookies.items():
-        cookie_value += key + '=' + value + ';'
-    print(cookie_value)
+    cookie_value = set_cookies(response, cookie)
     if "您已經順利登錄" in response.text:
         return cookie_value, user_agent
     elif "您登录尝试次数过多，需要输入验证码才能继续" in response.text:

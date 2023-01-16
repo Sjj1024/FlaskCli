@@ -70,6 +70,9 @@ def get_new_userinfo():
     original = paylod.get("original")
     if cookie:
         user_info = get_userinfo_by_cookie(cookie, user_agent, email)
+        if isinstance(user_info, str):
+            # 说明Cookie失效
+            return jsonify(code=207, message=user_info)
     elif password:
         cookie, user_agent = login_get_cookie(username, password)
         if not cookie:
@@ -122,6 +125,14 @@ def get_new_userinfo():
         else:
             check_status = "未开启"
             user_caoliu["check_status"] = check_status
+    # 判断是不是被禁言了，然后删除升级的工作流，并且降级到5级
+    if "禁止發言" in user_info.get("desc") and paylod.get("task_file_sha"):
+        user = {
+            "username": username,
+            "yml_sha": paylod.get("task_file_sha"),
+            "prefix": "caoliu_"
+        }
+        del_caoliu_task_file(f".github/workflows/{username}.yml", user)
     try:
         if not original or isinstance(original, int):
             user_caoliu["original"] = copy.deepcopy(user_caoliu)
