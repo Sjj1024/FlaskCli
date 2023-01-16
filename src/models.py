@@ -117,7 +117,7 @@ class CaoliuUsers(db.Model, BaseModel):
     regist_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 账号注册时间
     update_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 更新时间
     money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有的金钱
-    cookie = db.Column(db.String(255), unique=False, nullable=True)
+    cookie = db.Column(db.String(500), unique=False, nullable=True)
     user_agent = db.Column(db.String(255), unique=False, nullable=True)
     current_money = db.Column(db.Integer, unique=False, nullable=True)
     regular_money = db.Column(db.Integer, unique=False, nullable=True)

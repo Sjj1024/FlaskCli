@@ -59,6 +59,8 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     if len(user_agent) < 10:
         return user_agent
     user_info = get_userinfo_by_cookie(cookie, user_agent)
+    if isinstance(user_info, str):
+        return user_info
     caoliu_info = CaoliuUsers()
     caoliu_info.user_name = user_info.get("user_name")
     caoliu_info.password = password
@@ -73,9 +75,9 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     caoliu_info.regist_time = user_info.get("regist_time")
     caoliu_info.cookie = cookie
     caoliu_info.user_agent = user_agent
-    caoliu_info.able_invate = False
+    caoliu_info.able_invate = user_info.get("able_invate")
     caoliu_info.lease = False
-    caoliu_info.authentication = ""
+    caoliu_info.authentication = user_info.get("authentication")
     caoliu_info.contribute_link = user_info.get("gongxian_link")
     caoliu_info.task_status = "未开启"
     caoliu_info.check_status = "未开启"
@@ -144,7 +146,7 @@ def add_user():
         print("cookie逻辑")
         caoliu_info = get_caoliu_user(cookie=cookie, user_agent=userAgent, desc=desc)
         if isinstance(caoliu_info, str):
-            return jsonify(code=205, message=f"cookie逻辑:{caoliu_info}")
+            return jsonify(code=205, message=f"Cookie逻辑:{caoliu_info}")
     elif password:
         print("开始登陆逻辑")
         caoliu_info = get_caoliu_user(username, password, desc=desc)

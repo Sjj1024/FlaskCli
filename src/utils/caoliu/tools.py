@@ -182,6 +182,8 @@ def get_soup(page_url, cl_cookie, user_agent):
         res = requests.get(page_url, headers=header, timeout=10)
         html = res.content.decode()
         soup = BeautifulSoup(html, "lxml")
+        if "登 錄" in soup.decode():
+            return soup.decode()
         time.sleep(time_sleep)
         return soup
     except Exception as e:
@@ -283,7 +285,10 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         info_soup = get_soup(info_url, cookie, user_agent)
         if not has_email:
             email_soup = get_soup(email_url, cookie, user_agent)
-            email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
+            if "Mobile" not in email_soup.decode():
+                email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
+            else:
+                email = re.search(r"E-MAIL\n(.*?)為保?", email_soup.select("#main > form")[0].get_text()).group(1)
         else:
             email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
