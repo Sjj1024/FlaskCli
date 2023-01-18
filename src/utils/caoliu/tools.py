@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 
 source_url = "https://cl.5206x.xyz"
-time_sleep = 2
+time_sleep = 0.5
 
 
 # 获取回家地址
@@ -450,6 +450,7 @@ def get_article_list(cookie, user_agent, page):
             title = node.select("a.a2")[1].get_text()
             link = node.select("a.a2")[1].get("href")
             category = node.select("a")[2].get_text()
+            category_link = node.select("a")[2].get("href")
             replay = node.select("td")[2].get_text()
             like = node.select("td")[3].get_text()
             pub_time = node.select("td")[4].get_text()
@@ -458,6 +459,7 @@ def get_article_list(cookie, user_agent, page):
             title = node.select("a.a2")[1].get_text()
             link = node.select("a.a2")[1].get("href")
             category = node.select("a.tac")[0].get_text()
+            category_link = node.select("a.tac")[0].get("href")
             replay = node.select("span")[0].get_text().split("時間")[1].split("回")[1].replace(": ", "")
             like = "*"
             pub_time = node.select("span")[0].get_text().split("時間")[1].split("回")[0].replace(": ", "")
@@ -465,6 +467,7 @@ def get_article_list(cookie, user_agent, page):
             "title": title,
             "link": link,
             "category": category,
+            "category_link": category_link,
             "replay": replay,
             "like": like,
             "pub_time": pub_time
@@ -501,6 +504,7 @@ def get_commit_list(cookie, user_agent, page):
         author = node.select("a")[2].get_text()
         author_link = node.select("a")[2].get("href")
         category = node.select("div.fr")[0].get_text()
+        category_link = node.select("div.fr")[0].select("a")[0].get("href")
         replay = node.select("div")[2].get_text()
         pub_time = node.select("div.fl")[0].get_text()
         article_list.append({
@@ -509,6 +513,7 @@ def get_commit_list(cookie, user_agent, page):
             "author": author,
             "author_link": author_link,
             "category": category,
+            "category_link": category_link,
             "replay": replay,
             "pub_time": pub_time
         })
@@ -542,6 +547,7 @@ def get_ref_commit_list(cookie, user_agent, page):
         title = node.select("a")[1].get_text()
         link = node.select("a")[1].get("href")
         category = node.select("div.fr")[0].get_text()
+        category_link = node.select("div.fr")[0].select("a")[0].get("href")
         re_replay = node.select("div")[2].select("i")[0].get_text()
         replay = node.select("div")[2].get_text().replace(re_replay, "")
         pub_time = node.select("div.fl")[0].get_text().strip()
@@ -549,6 +555,7 @@ def get_ref_commit_list(cookie, user_agent, page):
             "title": title,
             "link": link,
             "category": category,
+            "category_link": category_link,
             "re_replay": re_replay,
             "replay": replay,
             "pub_time": pub_time

@@ -13,6 +13,11 @@ def update_caoliu_info():
     all_caoliu = CaoliuUsers.query.all()
     for cao in all_caoliu:
         cao_info = cao.to_json()
+        grade = cao_info.get("grade")
+        # user_name = cao_info.get("user_name")
+        if grade == "禁止發言":
+            print(f"禁止发言用户：{cao_info}")
+            continue
         try:
             res = requests.post("http://localhost:5000/api1/table/updateUserInfo", json=cao_info)
             print(f"{cao_info.get('user_name')}更新结果：{res.json()}")

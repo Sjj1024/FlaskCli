@@ -15,7 +15,7 @@ def table_list():
     logging.info("开始获取列表内容")
     try:
         param_dict = request.json
-        print(param_dict)
+        # print(param_dict)
         page_num = param_dict.get("pageNum")
         pageSize = param_dict.get("pageSize")
         username = param_dict.get("username")
@@ -46,7 +46,7 @@ def table_list():
         query = query.order_by(CaoliuUsers.important)
         paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
-        print(result)
+        # print(result)
         return jsonify(code=200, message="success", data={"total": paginate.total, "items": result})
     except Exception as e:
         print(f"查询异常： {e}")

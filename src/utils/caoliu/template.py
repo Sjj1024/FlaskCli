@@ -1,5 +1,6 @@
 import base64
 
+
 def str_to_base64(content):
     return str(base64.b64encode(content.encode("utf-8")), "utf-8")
 
