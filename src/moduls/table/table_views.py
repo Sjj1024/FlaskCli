@@ -158,6 +158,9 @@ def add_user():
         print("没有邀请码也没有cookie，逻辑错误")
         return jsonify(code=205, message="没有邀请码也没有cookie")
     try:
+        query_exist = CaoliuUsers.query.filter(CaoliuUsers.user_name == caoliu_info.user_name).all()
+        if query_exist:
+            return jsonify(code=206, message=f"{caoliu_info.user_name}：添加的用户已存在！请勿重复添加！")
         caoliu_info.important = important
         caoliu_info.original = caoliu_info.to_dict()
         caoliu_info.desc = desc
@@ -167,7 +170,7 @@ def add_user():
     except Exception as e:
         print(e)
         return jsonify(code=205, message=f"添加登陆用户异常:{e}")
-    return jsonify(code=200, message="success")
+    return jsonify(code=200, message=f"{caoliu_info.user_name} : 添加成功success")
 
 
 @table_blu.route("/delUser", methods=["DELETE"])

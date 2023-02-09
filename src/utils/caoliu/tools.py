@@ -6,16 +6,16 @@ import ddddocr
 import requests
 from bs4 import BeautifulSoup
 
-source_url = "https://cl.5206x.xyz"
-time_sleep = 0.5
+source_url = ""
+time_sleep = 3
 
 
 # 获取回家地址
 def get_source():
-    print("获取源地址")
     global source_url
     if source_url:
         return source_url
+    print("获取源地址")
     url = "https://get.xunfs.com/app/listapp.php"
     data = {"a": "get18", "system": "android"}
     res = requests.post(url=url, headers={}, data=data)
@@ -30,7 +30,7 @@ def get_source():
                 "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"},
                                timeout=5)
             if res.status_code == 200:
-                print(url)
+                print(f"得到的源地址是: {url}")
                 source_url = url
                 return url
         except:
@@ -41,7 +41,11 @@ def get_all_caoliu_home():
     print("获取源地址")
     url = "https://get.xunfs.com/app/listapp.php"
     data = {"a": "get18", "system": "android"}
-    res = requests.post(url=url, headers={}, data=data)
+    proxies = {
+        'http': None,
+        'https': None,
+    }
+    res = requests.post(url=url, headers={}, data=data, proxies =proxies)
     res_json = json.loads(res.content.decode("utf-8"))
     # 打印出地址信息和更新时间
     urls = [res_json["url1"], res_json["url2"], res_json["url3"]]
@@ -155,19 +159,24 @@ def check_success(response):
 
 def get_soup(page_url, cl_cookie, user_agent):
     # header = {
-    #     "user-agent": user_agent,
-    #     "cookie": cl_cookie
+    #     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    #     'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
+    #     'cache-control': 'max-age=0',
+    #     'content-type': 'application/x-www-form-urlencoded',
+    #     'cookie': cl_cookie,
+    #     'origin': get_source(),
+    #     'referer': f'{get_source()}/hack.php?H_name=invite&action=buy',
+    #     'upgrade-insecure-requests': '1',
+    #     'user-agent': user_agent
     # }
-    header = {
-        'authority': 'cl.2059x.xyz',
+    headers = {
+        'authority': 'cl.6273x.xyz',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
         'cache-control': 'max-age=0',
-        'content-type': 'application/x-www-form-urlencoded',
         'cookie': cl_cookie,
-        'origin': get_source(),
-        'referer': f'{get_source()}/hack.php?H_name=invite&action=buy',
-        'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
+        'referer': 'https://cl.6273x.xyz/index.php',
+        'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Windows"',
         'sec-fetch-dest': 'document',
@@ -177,9 +186,8 @@ def get_soup(page_url, cl_cookie, user_agent):
         'upgrade-insecure-requests': '1',
         'user-agent': user_agent
     }
-
     try:
-        res = requests.get(page_url, headers=header, timeout=10)
+        res = requests.get(page_url, headers=headers)
         html = res.content.decode()
         soup = BeautifulSoup(html, "lxml")
         if "登 錄" in soup.decode():
@@ -275,19 +283,50 @@ def many_login_code(cookie, useragent):
 def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
     print(f"get_userinfo_bycookie：{cookie}, {user_agent}")
     # 获取下一页的链接, 有就返回，没有就返回false
-    source_url = get_source()
-    url = source_url + "/profile.php"
+    url = get_source() + "/profile.php"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup
     liangbu_renzheng = "已設置 停用" in soup.select("#main")[0].get_text()
     if soup:
+        # 获取简单信息
+        user_name = re.search(r'用戶名: (.*?)[（|<]', soup.decode()).group(1)
+        user_id = re.search(r'uid=(.*?)">[查看資料|查看個人資料]', soup.decode()).group(1)
+        dengji = re.search(r'頭銜: (.*?)<', soup.decode()).group(1)
+        fatie = re.search(r'發帖: (.*?)<', soup.decode()).group(1)
+        weiwang = re.search(r'威望: (.*?)點<', soup.decode()).group(1)
+        money = re.search(r'金錢: (.*?) USD<', soup.decode()).group(1)
+        gongxian = re.search(r'貢獻: (.*?) 點<', soup.decode()).group(1)
+        if "註冊時間" in soup.decode():
+            regist_time = re.search(r'註冊時間: (.*?)<', soup.decode()).group(1)
+        else:
+            regist_time = re.search(r'註冊: (.*?)<', soup.decode()).group(1)
+        authentication = "已设置" if liangbu_renzheng else "未設置"
+        user_info = {
+            "user_name": user_name,
+            "user_id": user_id,
+            "dengji": dengji,
+            "jifen": "",
+            "fatie": fatie,
+            "weiwang": weiwang,
+            "money": money,
+            "gongxian": gongxian,
+            "gongxian_link": "",
+            "regist_time": regist_time,
+            "email": "",
+            "desc": "",
+            "able_invate": "",
+            "authentication": authentication
+        }
+        print(f"获取的用户信息:{user_info}")
+        return user_info
+        # 获取详细信息
         gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
         email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         # user_name = soup.select('div[colspan="2"] span')[0].get_text()
-        info_url = f"{source_url}/{gread_span[0].get('href')}"
-        email_url = f"{source_url}/{email_span[0].get('href')}"
-        invcode_url = f"{source_url}/hack.php?H_name=invite"
+        info_url = f"{get_source()}/{gread_span[0].get('href')}"
+        email_url = f"{get_source()}/{email_span[0].get('href')}"
+        invcode_url = f"{get_source()}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
         if not has_email:
             email_soup = get_soup(email_url, cookie, user_agent)
@@ -359,7 +398,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
 
 def pay_some_invcode(cookie, user_agent, num):
     print(f"购买邀请码：{num} 个")
-    url = f"{source_url}/hack.php?H_name=invite"
+    url = f"{get_source()}/hack.php?H_name=invite"
     payload = f'action=buy&step=3&invnum={num}'
     headers = {
         'authority': 'cl.2059x.xyz',
@@ -368,7 +407,7 @@ def pay_some_invcode(cookie, user_agent, num):
         'cache-control': 'max-age=0',
         'content-type': 'application/x-www-form-urlencoded',
         'cookie': cookie,
-        'referer': f'{source_url}/hack.php?H_name=invite&action=buy',
+        'referer': f'{get_source()}/hack.php?H_name=invite&action=buy',
         'user-agent': user_agent
     }
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -382,7 +421,7 @@ def pay_some_invcode(cookie, user_agent, num):
 
 
 def get_invcode_list(cookie, user_agent, page):
-    url = f"{source_url}/hack.php?H_name=invite&page={page}"
+    url = f"{get_source()}/hack.php?H_name=invite&page={page}"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup
@@ -428,7 +467,7 @@ def get_invcode_list(cookie, user_agent, page):
 
 
 def get_article_list(cookie, user_agent, page):
-    url = f"{source_url}/personal.php?action=&keyword=&page={page}"
+    url = f"{get_source()}/personal.php?action=&keyword=&page={page}"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup
@@ -480,7 +519,7 @@ def get_article_list(cookie, user_agent, page):
 
 def get_commit_list(cookie, user_agent, page):
     # 获取评论列表
-    url = f"{source_url}/personal.php?action=post&page={page}"
+    url = f"{get_source()}/personal.php?action=post&page={page}"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup
@@ -525,7 +564,7 @@ def get_commit_list(cookie, user_agent, page):
 
 def get_ref_commit_list(cookie, user_agent, page):
     # 获取点评列表
-    url = f"{source_url}/personal.php?action=comment&page={page}"
+    url = f"{get_source()}/personal.php?action=comment&page={page}"
     soup = get_soup(url, cookie, user_agent)
     if isinstance(soup, str):
         return soup

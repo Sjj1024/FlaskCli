@@ -1,10 +1,8 @@
 import requests
-from flask import jsonify
-from src import db, config_obj
 from src.models import CaoliuUsers
 from src.moduls.corntask import task_blu
-from src.utils.caoliu.tools import get_userinfo_by_cookie, login_get_cookie
-from src.utils.github.apis import get_repo_action, get_file_sha
+from flask import jsonify, request
+from src.utils.caoliu.task_control import *
 
 
 @task_blu.route("/updateCaoliu", methods=["GET", "POST"])
@@ -27,3 +25,12 @@ def update_caoliu_info():
             print(f"{cao_info.get('user_name')}更新结果：{e}")
     print(f"所有数据已经更新完毕！！！")
     return jsonify(code=200, message="正常")
+
+
+@task_blu.route("/addCaoliuCommit", methods=["GET", "POST"])
+def add_caoliu_commit():
+    print(f"添加1024的定时评论任务")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    add_caoliu_commit_task(user_name, "cookie", "user_agent", "*/1 * * * *")
+    return jsonify(code=200, message="success")

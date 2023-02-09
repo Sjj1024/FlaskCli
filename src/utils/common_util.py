@@ -2,7 +2,6 @@ import logging
 import smtplib
 from email.mime.text import MIMEText
 from urllib import parse
-
 import requests
 # 导入依赖包
 from flask import request, jsonify, current_app
