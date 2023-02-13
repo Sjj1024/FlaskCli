@@ -1,8 +1,9 @@
-import requests
 from src.models import CaoliuUsers
 from src.moduls.corntask import task_blu
 from flask import jsonify, request
-from src.utils.caoliu.task_control import *
+from src import db
+
+from src.utils.task_config.task_control import *
 
 
 @task_blu.route("/updateCaoliu", methods=["GET", "POST"])
@@ -28,9 +29,118 @@ def update_caoliu_info():
 
 
 @task_blu.route("/addCaoliuCommit", methods=["GET", "POST"])
-def add_caoliu_commit():
+def add_caoliu_commit_local():
     print(f"添加1024的定时评论任务")
     param_dict = request.json
     user_name = param_dict.get("user_name")
-    add_caoliu_commit_task(user_name, "cookie", "user_agent", "*/1 * * * *")
-    return jsonify(code=200, message="success")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    corn_tab = param_dict.get("corn", None) or "05 */3 * * *"
+    try:
+        update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if update_user["task_file_sha"]:
+            return jsonify(code=205, message="error", data=f"任务已存在")
+        task_id = add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab)
+        update_user["task_file_sha"] = task_id
+        update_user["task_status"] = "已开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/delCaoliuCommit", methods=["DELETE"])
+def del_caoliu_commit():
+    print(f"删除1024自动评论任务: ")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    try:
+        update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if not update_user["task_file_sha"]:
+            return jsonify(code=205, message="error", data=f"任务不存在")
+        del_caoliu_commit_article(user_name)
+        update_user["task_file_sha"] = ""
+        update_user["task_status"] = "未开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/addCaoliuSign", methods=["GET", "POST"])
+def add_caoliu_sign():
+    param_dict = request.json
+    print(f"添加1024签到任务: {param_dict}")
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    article_link = param_dict.get("link", None)
+    corn_tab = param_dict.get("corn", None) or "50 17 * * *"
+    commit_str = param_dict.get("commit", None) or "今日签到"
+    try:
+        if not article_link:
+            return jsonify(code=207, message="请输入需要签到的文章链接")
+        update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if update_user["sign_task_id"]:
+            return jsonify(code=205, message="error", data=f"任务已存在")
+        task_id = add_caoliu_sign_article(user_name, cookie, user_agent, article_link, commit_str, corn_tab)
+        update_user["sign_task_id"] = task_id
+        update_user["sign_task_status"] = "已开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/delCaoliuSign", methods=["DELETE"])
+def del_caoliu_sign():
+    print(f"删除1024签到任务: ")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    try:
+        update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if not update_user["sign_task_id"]:
+            return jsonify(code=205, message="error", data=f"任务不存在")
+        del_caoliu_sign_article(user_name)
+        update_user["sign_task_id"] = ""
+        update_user["sign_task_status"] = "未开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")

@@ -1,5 +1,4 @@
 import logging
-
 import requests
 from flask import jsonify, request
 from sqlalchemy import or_
@@ -30,7 +29,7 @@ def table_list():
         else:
             query = CaoliuUsers.query.filter(or_(CaoliuUsers.isDeleted.is_(None), CaoliuUsers.isDeleted == False))
         if username:
-            query = query.filter(CaoliuUsers.user_name == username)
+            query = query.filter(CaoliuUsers.user_name.like(f'%{username}%'))
         if weiwang:
             query = query.filter(CaoliuUsers.weiwang >= weiwang)
         if level:

@@ -20,6 +20,7 @@ class AutoCommit:
         self.post_url = self.source_url + "/post.php?"
         self.get_source_url()
         self.grader = ""
+        self.weiwang = 0
         self.commit_dist_num = 9
         self.cl_cookie = cookie
         self.user_agent = user_agent
@@ -43,6 +44,10 @@ class AutoCommit:
             html = res.content.decode()
             self.source_url = source_url
         soup = BeautifulSoup(html, "lxml")
+        if "登 錄" in soup.decode():
+            print(f"{self.user_name}Cookie失效............")
+            self.send_email(f"{self.user_name}Cookie失效", f"{soup.decode()}")
+            return soup
         return soup
 
     def get_source_url(self):
@@ -75,9 +80,9 @@ class AutoCommit:
             # 获取简单信息
             user_name = re.search(r'用戶名: (.*?)[（|<]', soup.decode()).group(1)
             user_id = re.search(r'uid=(.*?)">[查看資料|查看個人資料]', soup.decode()).group(1)
-            dengji = re.search(r'頭銜: (.*?)<', soup.decode()).group(1)
+            self.grader = re.search(r'頭銜: (.*?)<', soup.decode()).group(1)
             fatie = re.search(r'發帖: (.*?)<', soup.decode()).group(1)
-            weiwang = re.search(r'威望: (.*?)點<', soup.decode()).group(1)
+            self.weiwang = re.search(r'威望: (.*?)點<', soup.decode()).group(1)
             money = re.search(r'金錢: (.*?) USD<', soup.decode()).group(1)
             gongxian = re.search(r'貢獻: (.*?) 點<', soup.decode()).group(1)
             if "註冊時間" in soup.decode():
@@ -88,10 +93,10 @@ class AutoCommit:
             user_info = {
                 "user_name": user_name,
                 "user_id": user_id,
-                "dengji": dengji,
+                "dengji": self.grader,
                 "jifen": "",
                 "fatie": fatie,
-                "weiwang": weiwang,
+                "weiwang": self.weiwang,
                 "money": money,
                 "gongxian": gongxian,
                 "gongxian_link": "",
@@ -101,6 +106,9 @@ class AutoCommit:
                 "able_invate": "",
                 "authentication": authentication
             }
+            if self.grader == "禁止發言":
+                print(f"获取到禁止發言用户-----{self.user_name}")
+                self.send_email(f"{self.user_name}禁止发言了", f"{user_info}: {soup.decode()}")
             print(f"获取的用户信息:{user_info}")
             return user_info
 
@@ -248,7 +256,7 @@ class AutoCommit:
 
     def get_one_title(self, link):
         url = link
-        print(f"开始获取{url}页文章链接")
+        print(f"开始获取{url}文章title tid fid")
         soup = self.get_soup(url)
         time.sleep(5)
         title = soup.select("h4.f16")[0].get_text()
@@ -305,11 +313,21 @@ class AutoCommit:
 
     def random_sleep_second(self, min_second=5, max_second=30):
         sleep_time = random.randint(min_second * 60, max_second * 60)
+        print("当前时间是", datetime.datetime.now())
         print(f"开始随机睡眠{sleep_time} 秒，也就是 {sleep_time / 60} 分钟......")
         time.sleep(sleep_time)
 
+    def weiwang_big_100(self):
+        if int(self.weiwang) >= 100:
+            print("大于100了")
+            return True
+        else:
+            return False
+
     def send_commit_jishu(self, tid, title, commit, random_sleep=False):
         print("技术区回复内容...")
+        if self.weiwang_big_100():
+            return
         post_url = self.source_url + "/post.php?"
         gbk_title = f"Re:{title}".encode()
         gbk_commit = commit.encode()
@@ -357,6 +375,8 @@ class AutoCommit:
     def send_commit(self, tid, title, commit):
         # 遍历没有评论过的文章链接
         print("遍历没有评论过的文章链接")
+        if self.weiwang_big_100():
+            return
         post_url = self.source_url + "/post.php?"
         gbk_title = f"Re:{title}".encode()
         gbk_commit = commit.encode()
@@ -447,6 +467,10 @@ class AutoCommit:
                 continue
             if self.grader == "新手上路":
                 commit = "1024"  # 回复帖子的内容
+                commit_list = ["我支持你", "了解一下", "发帖辛苦", "我喜欢这个", "点赞支持", "感谢分享", "你很棒",
+                               "我很喜欢", "感谢你的发帖", "还有更骚的", "你很厉害", "这个也不错", "有点意思",
+                               "不知道真假", "我想试试", "有没有看过的", "不错不错"]
+                commit = random.choice(commit_list)
             else:
                 commit_list = ["我支持你", "了解一下", "发帖辛苦", "我喜欢这个", "点赞支持", "感谢分享", "你很棒",
                                "我很喜欢", "感谢你的发帖", "还有更骚的", "你很厉害", "这个也不错", "有点意思",
@@ -471,43 +495,64 @@ def get_my_ip():
     print(res)
 
 
-def commit_one_article(user_name, cookie, user_agent, link, commit="今日签到"):
-    print("只评论一个文章，定时签到任务")
+def check_white_day():
+    print("判断是不是白天....")
+    print("当前时间是", datetime.datetime.now())
+    current_hour = datetime.datetime.now().hour
+    if 6 < current_hour < 23:
+        print(f"{current_hour} 点是白天")
+        return True
+    else:
+        print(f"{current_hour} 点是晚上，黑夜啊")
+        return False
+
+
+def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到"):
+    print(f"只评论一个文章，定时签到任务: {user_name}")
+    print(cookie)
+    print(user_agent)
+    print(link)
+    # 判断是不是白天，是的话再评论，否则退出
+    if not check_white_day():
+        print(f"是黑夜，所以不参与发表评论，直接退出.......")
+        return
     commiter = AutoCommit(user_name, cookie, user_agent)
+    # 获取简单个人信息
     commiter.get_simple_info()
-    commiter.get_commiteds()
+    # 获取已经签到了多少次
+    # commiter.get_commiteds()
     # https://cl.6273x.xyz/read.php?tid=5522451&toread=0&page=307#97203157
     # t_link = "https://cl.6273x.xyz/htm_data/2302/7/5522451.html"
     t_link = link
     title, tid, fid = commiter.get_one_title(t_link)
-    commiter.send_commit_jishu(tid, title, commit)
+    commiter.send_commit_jishu(tid, title, commit, random_sleep=True)
 
 
 def one_commit(user_name="", cookie="", user_agent=""):
-    get_my_ip()
     print("当前时间是", datetime.datetime.now())
-    print("正在运行的脚本名称: '{}'".format(sys.argv[0]))
-    print("脚本的参数数量: '{}'".format(len(sys.argv)))
-    print("脚本的参数: '{}'".format(str(sys.argv)))
     # 判断是不是白天，是的话再评论，否则退出
-    current_hour = datetime.datetime.hour
-    print("")
+    if not check_white_day():
+        print(f"是黑夜，所以不参与发表评论，直接退出.......")
+        return
     if user_name and cookie and user_agent:
         print("传入的User可用")
     else:
+        print("正在运行的脚本名称: '{}'".format(sys.argv[0]))
+        print("脚本的参数数量: '{}'".format(len(sys.argv)))
+        print("脚本的参数: '{}'".format(str(sys.argv)))
         user_name = sys.argv[1]
         cookie = sys.argv[2]
         user_agent = sys.argv[3]
     commiter = AutoCommit(user_name, cookie, user_agent)
     # 配置不可以回复的文章
     commiter.cant_tid = ['5448754', "5448978", "5424564"]
-    commiter.cant_title = ["禁止无关回复", "乱入直接禁言"]
+    commiter.cant_title = ["禁止无关回复", "乱入直接禁言", "禁言", "无关", "禁止", "乱入"]
     commiter.run()
 
 
 if __name__ == '__main__':
-    user_name = "微笑0608"
-    cookie = 'ismob=1; PHPSESSID=mcu4gb74ard3iapm36iuqlt0as; 227c9_ck_info=%2F%09; 227c9_winduser=AgRcAANQOQQAUVRcBwEIAVRQUlACAwAEVgFTCFFWAwdYU1JVUldWPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091667717732%09%2Findex.php%3F'
+    user_name = "kissking"
+    cookie = 'ismob=0; PHPSESSID=mcu4gb74ard3iapm36iuqlt0as; 227c9_ck_info=%2F%09; 227c9_groupid=8; 227c9_winduser=AgNdDAdrB1ZTVVBXAAFdBwNcAVRTDVAGBFYMVlBTBVEBCANQBQRt; 227c9_lastvisit=0%091676022418%09%2Findex.php%3F'
     user_agent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
     link = "https://cl.6273x.xyz/htm_data/2302/7/5522451.html"
-    commit_one_article(user_name, cookie, user_agent, link)
+    sign_one_article(user_name, cookie, user_agent, link)

@@ -42,7 +42,7 @@ def send_weixin(title, msg):
 
 
 # 发送邮件
-def send_email(title: str, content: str, email=""):
+def send_email(title: str, content: str, email="648133599@qq.com"):
     # 邮件发送方邮箱地址
     sender = config_obj.MAIL_USER
     # 邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发

@@ -1,8 +1,6 @@
-import time
 import datetime
 
-print(datetime.datetime.now())
 
-print(time.localtime())
+current_hour = datetime.datetime.now().hour
 
-print()
+print(type(current_hour))

@@ -319,23 +319,23 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             "authentication": authentication
         }
         print(f"获取的用户信息:{user_info}")
-        return user_info
-        # 获取详细信息
+        # return user_info
+        # # 获取详细信息
         gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
-        email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
-        # user_name = soup.select('div[colspan="2"] span')[0].get_text()
+        # email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
+        # # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{get_source()}/{gread_span[0].get('href')}"
-        email_url = f"{get_source()}/{email_span[0].get('href')}"
+        # email_url = f"{get_source()}/{email_span[0].get('href')}"
         invcode_url = f"{get_source()}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
-        if not has_email:
-            email_soup = get_soup(email_url, cookie, user_agent)
-            if "Mobile" not in email_soup.decode():
-                email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
-            else:
-                email = re.search(r"E-MAIL\n(.*?)為保?", email_soup.select("#main > form")[0].get_text()).group(1)
-        else:
-            email = has_email
+        # if not has_email:
+        #     email_soup = get_soup(email_url, cookie, user_agent)
+        #     if "Mobile" not in email_soup.decode():
+        #         email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
+        #     else:
+        #         email = re.search(r"E-MAIL\n(.*?)為保?", email_soup.select("#main > form")[0].get_text()).group(1)
+        # else:
+        #     email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
         if info_soup and invcode_soup:
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
@@ -383,7 +383,6 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
                 "gongxian": gongxian,
                 "gongxian_link": gongxian_link,
                 "regist_time": regist_time,
-                "email": email,
                 "desc": desc,
                 "able_invate": invcode_flag,
                 "authentication": authentication
