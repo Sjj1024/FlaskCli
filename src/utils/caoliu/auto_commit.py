@@ -245,7 +245,7 @@ class AutoCommit:
             self.send_email(f"{self.user_name} :评论异常,Cookie失效", soup.decode())
         gread_span = soup.select("body")[0].get_text()  # 如果没有找到，返回None
         self.user_name = re.search(r'\t(.*?) 退出', gread_span).group(1)
-        self.grader = re.search(r'您的等級: (.*?) ', gread_span).group(1)
+        self.grader = soup.select("tr.tr3")[0].select("span.s3")[0].get_text()
         self.weiwang = re.search(r'威望: (.*?) 點', gread_span).group(1)
         self.jinqian = re.search(r'金錢: (.*?) USD', gread_span).group(1)
         self.gongxian = re.search(r'貢獻: (.*?) 點', gread_span).group(1)
@@ -274,13 +274,13 @@ class AutoCommit:
             print(f"开始获取{url}页文章链接")
             soup = self.get_soup(url)
             time.sleep(5)
-            titles = soup.select("h3 a")
+            titles = soup.select("div.list a")
             titles_href = [x.get("href") for x in titles]
             titles_text = [x.get_text() for x in titles]
             # 提取出文章的tid
             if i == 1:  # 如果获取到的是第一页的链接，则剔除前8个链接，因为那是社区公告
-                titles_href = [x.get("href") for x in titles][9:]
-                titles_text = [x.get_text() for x in titles][9:]
+                titles_href = [x.get("href") for x in titles][10:]
+                titles_text = [x.get_text() for x in titles][10:]
             tid_list = []
             for x in titles_href:
                 if "html" in x:
@@ -295,6 +295,10 @@ class AutoCommit:
                 return
         # 所有页面文章链接获取到之后，将链接打印出来
         print(f"获取到技术区文章个数是：{len(jishu_article_dict)}----------------->")
+        if len(jishu_article_dict):
+            print(f"有文章列表，所以可以发送评论")
+        else:
+            print(f"没有获取到文章...无法发送评论")
         return jishu_article_dict
 
     # 筛选出没有评论过的文章链接
@@ -309,7 +313,13 @@ class AutoCommit:
             filtered_article_link[i] = jishu_article[i]
         print(f"过滤中发现已经评论过的文章个数是：{len(commited_tid)}----------------->")
         print(f"获取到过滤后没有评论过的文章个数是：{len(filtered_article_link)}----------------->")
-        return filtered_article_link
+        # 对文章随机排序
+        dict_key_ls = list(filtered_article_link.keys())
+        random.shuffle(dict_key_ls)
+        new_dict = {}
+        for key in dict_key_ls:
+            new_dict[key] = filtered_article_link.get(key)
+        return new_dict
 
     def random_sleep_second(self, min_second=5, max_second=30):
         sleep_time = random.randint(min_second * 60, max_second * 60)
@@ -325,7 +335,7 @@ class AutoCommit:
             return False
 
     def send_commit_jishu(self, tid, title, commit, random_sleep=False):
-        print("技术区回复内容...")
+        print(f"{self.user_name} 技术区回复内容...")
         if self.weiwang_big_100():
             return
         post_url = self.source_url + "/post.php?"
@@ -362,7 +372,7 @@ class AutoCommit:
         guashui = "灌水預防機制已經打開，在1024秒內不能發貼"
         every_10 = "用戶組權限：你所屬的用戶組每日最多能發 10 篇帖子"
         if success in res_html or guashui in res_html or every_10 in res_html:
-            print(f"{self.user_name}回复帖子{tid}:{title}成功------------->")
+            print(f"{self.user_name}回复帖子{tid}:{title} : {commit} 成功------------->")
             self.posted_article.update({tid: title})
             return True
         else:
@@ -372,7 +382,7 @@ class AutoCommit:
             return False
 
     # 开始发起评论
-    def send_commit(self, tid, title, commit):
+    def send_commit(self, tid, title, commit, random_sleep=True):
         # 遍历没有评论过的文章链接
         print("遍历没有评论过的文章链接")
         if self.weiwang_big_100():
@@ -402,13 +412,16 @@ class AutoCommit:
             "content-type": "application/x-www-form-urlencoded"
         }
         rel_url = post_url
+        # 随机睡眠几分钟
+        if random_sleep:
+            self.random_sleep_second()
         response = requests.post(rel_url, headers=zuiai_header, data=commit_data, timeout=10)
         res_html = response.content.decode()
         success = "發貼完畢點擊進入主題列表"
         guashui = "灌水預防機制已經打開，在1024秒內不能發貼"
         every_10 = "用戶組權限：你所屬的用戶組每日最多能發 10 篇帖子"
         if success in res_html or guashui in res_html or every_10 in res_html:
-            print(f"{self.user_name}回复帖子{tid}:{title}成功------------->")
+            print(f"{self.user_name}回复帖子{tid}:{title} : {commit} 成功------------->")
             self.posted_article.update({tid: title})
             return True
         else:
@@ -474,10 +487,9 @@ class AutoCommit:
             else:
                 commit_list = ["我支持你", "了解一下", "发帖辛苦", "我喜欢这个", "点赞支持", "感谢分享", "你很棒",
                                "我很喜欢", "感谢你的发帖", "还有更骚的", "你很厉害", "这个也不错", "有点意思",
-                               "不知道真假",
-                               "我想试试", "有没有看过的", "不错不错"]
+                               "不知道真假", "有没有看过的", "不错不错", "这个不错", "感谢分享"]
                 commit = random.choice(commit_list)
-            print("评论的内容是：" + commit)
+            print(f"{self.user_name} 的评论的内容是：{commit}")
             try:
                 res = self.send_commit(tid, title, commit)
                 if res is True:
@@ -508,10 +520,7 @@ def check_white_day():
 
 
 def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到"):
-    print(f"只评论一个文章，定时签到任务: {user_name}")
-    print(cookie)
-    print(user_agent)
-    print(link)
+    print(f"{user_name}只评论一个文章，定时签到任务: {user_name}")
     # 判断是不是白天，是的话再评论，否则退出
     if not check_white_day():
         print(f"是黑夜，所以不参与发表评论，直接退出.......")

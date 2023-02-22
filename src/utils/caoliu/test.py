@@ -1,6 +1,6 @@
 import datetime
 
 
-current_hour = datetime.datetime.now().hour
-
-print(type(current_hour))
+# current_hour = datetime.datetime.now().hour
+#
+# print(type(current_hour))

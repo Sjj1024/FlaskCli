@@ -68,7 +68,12 @@ def del_task(task_id):
 
 
 def update_task(task_id):
-    print("删除定时任务")
+    print("更新定时任务")
+
+
+def run_task(task_id):
+    print("立即运行定时任务")
+    # scheduler.
 
 
 def get_all_task():
