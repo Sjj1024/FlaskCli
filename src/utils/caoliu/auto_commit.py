@@ -24,6 +24,7 @@ class AutoCommit:
         self.commit_dist_num = 9
         self.cl_cookie = cookie
         self.user_agent = user_agent
+        self.titles_href = []
 
     def get_soup(self, page_url):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
@@ -274,8 +275,9 @@ class AutoCommit:
             print(f"开始获取{url}页文章链接")
             soup = self.get_soup(url)
             time.sleep(5)
-            titles = soup.select("div.list a")
+            titles = soup.select("td.tal h3 a") or soup.select("div.t_one a")
             titles_href = [x.get("href") for x in titles]
+            self.titles_href = self.titles_href + titles_href
             titles_text = [x.get_text() for x in titles]
             # 提取出文章的tid
             if i == 1:  # 如果获取到的是第一页的链接，则剔除前8个链接，因为那是社区公告
@@ -334,8 +336,22 @@ class AutoCommit:
         else:
             return False
 
+    def get_article_commit_random(self, tid):
+        print(f"获取一篇文章的评论，随机抽取其中一个给自己用")
+        for href in self.titles_href:
+            if tid in href:
+                source_href = f"{self.source_url}/{href}"
+                article_soup = self.get_soup(source_href)
+                commit_list = article_soup.select("div.do_not_catch") or article_soup.select("div.tpc_cont")
+                commit_str_list = [commit.get_text().strip() for commit in commit_list[1:]]
+                self.dont_commit_str = ["1024", "感谢分享"]
+                commit_fillter_str = [commit for commit in commit_str_list if commit not in self.dont_commit_str]
+                return random.choice(commit_fillter_str)
+        return ""
+
     def send_commit_jishu(self, tid, title, commit, random_sleep=False):
         print(f"{self.user_name} 技术区回复内容...")
+        commit_str = self.get_article_commit_random(tid)
         if self.weiwang_big_100():
             return
         post_url = self.source_url + "/post.php?"
@@ -489,9 +505,11 @@ class AutoCommit:
                                "我很喜欢", "感谢你的发帖", "还有更骚的", "你很厉害", "这个也不错", "有点意思",
                                "不知道真假", "有没有看过的", "不错不错", "这个不错", "感谢分享"]
                 commit = random.choice(commit_list)
-            print(f"{self.user_name} 的评论的内容是：{commit}")
+            # 从要评论的文章的评论列表随机获取一个评论内容
+            commit_str = self.get_article_commit_random(tid) or commit
+            print(f"{self.user_name} 的评论的内容是：{commit_str}")
             try:
-                res = self.send_commit(tid, title, commit)
+                res = self.send_commit(tid, title, commit_str)
                 if res is True:
                     return
                 else:
@@ -561,7 +579,8 @@ def one_commit(user_name="", cookie="", user_agent=""):
 
 if __name__ == '__main__':
     user_name = "kissking"
-    cookie = 'ismob=0; PHPSESSID=mcu4gb74ard3iapm36iuqlt0as; 227c9_ck_info=%2F%09; 227c9_groupid=8; 227c9_winduser=AgNdDAdrB1ZTVVBXAAFdBwNcAVRTDVAGBFYMVlBTBVEBCANQBQRt; 227c9_lastvisit=0%091676022418%09%2Findex.php%3F'
+    cookie = 'ismob=1; PHPSESSID=mcu4gb74ard3iapm36iuqlt0as; 227c9_ck_info=%2F%09; 227c9_groupid=8; 227c9_winduser=AgNdDAdrB1ZTVVBXAAFdBwNcAVRTDVAGBFYMVlBTBVEBCANQBQRt; 227c9_lastvisit=0%091676022418%09%2Findex.php%3F'
     user_agent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1"
     link = "https://cl.6273x.xyz/htm_data/2302/7/5522451.html"
-    sign_one_article(user_name, cookie, user_agent, link)
+    # sign_one_article(user_name, cookie, user_agent, link)
+    one_commit(user_name, cookie, user_agent)
