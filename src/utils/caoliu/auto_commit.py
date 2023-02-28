@@ -350,8 +350,7 @@ class AutoCommit:
         return ""
 
     def send_commit_jishu(self, tid, title, commit, random_sleep=False):
-        print(f"{self.user_name} 技术区回复内容...")
-        commit_str = self.get_article_commit_random(tid)
+        print(f"{self.user_name} 技术区回复内容: {title} : {commit}")
         if self.weiwang_big_100():
             return
         post_url = self.source_url + "/post.php?"
@@ -399,8 +398,7 @@ class AutoCommit:
 
     # 开始发起评论
     def send_commit(self, tid, title, commit, random_sleep=True):
-        # 遍历没有评论过的文章链接
-        print("遍历没有评论过的文章链接")
+        print(f"开始发起评论: {title} : {commit}")
         if self.weiwang_big_100():
             return
         post_url = self.source_url + "/post.php?"
