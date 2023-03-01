@@ -523,11 +523,11 @@ def get_my_ip():
     print(res)
 
 
-def check_white_day():
+def check_white_day(min, max):
     print("判断是不是白天....")
     print("当前时间是", datetime.datetime.now())
     current_hour = datetime.datetime.now().hour
-    if 6 < current_hour < 23:
+    if min < current_hour < max:
         print(f"{current_hour} 点是白天")
         return True
     else:
@@ -536,9 +536,10 @@ def check_white_day():
 
 
 def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到"):
+    # 定时签到的任务
     print(f"{user_name}只评论一个文章，定时签到任务: {user_name}")
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day():
+    if not check_white_day(18, 22):
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     commiter = AutoCommit(user_name, cookie, user_agent)
@@ -554,9 +555,10 @@ def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到")
 
 
 def one_commit(user_name="", cookie="", user_agent=""):
+    # 定时评论的函数
     print("当前时间是", datetime.datetime.now())
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day():
+    if not check_white_day(7, 16):
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     if user_name and cookie and user_agent:
