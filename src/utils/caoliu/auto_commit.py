@@ -527,7 +527,7 @@ def check_white_day(min, max):
     print("判断是不是白天....")
     print("当前时间是", datetime.datetime.now())
     current_hour = datetime.datetime.now().hour
-    if min < current_hour < max:
+    if min <= current_hour <= max:
         print(f"{current_hour} 点是白天")
         return True
     else:
