@@ -539,7 +539,7 @@ def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到")
     # 定时签到的任务
     print(f"{user_name}只评论一个文章，定时签到任务: {user_name}")
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day(18, 22):
+    if not check_white_day(17, 22):
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     commiter = AutoCommit(user_name, cookie, user_agent)
@@ -558,7 +558,7 @@ def one_commit(user_name="", cookie="", user_agent=""):
     # 定时评论的函数
     print("当前时间是", datetime.datetime.now())
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day(7, 16):
+    if not check_white_day(8, 15):
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     if user_name and cookie and user_agent:
