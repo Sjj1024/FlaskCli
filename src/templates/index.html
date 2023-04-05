@@ -1,178 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
+
 <head>
     <meta charset="UTF-8">
-    <title>首页-新经资讯</title>
-    <link rel="stylesheet" type="text/css" href="../static/news/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/news/css/main.css">
-    <script type="text/javascript" src="../static/news/js/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="../static/news/js/main.js"></script>
-    <script type="text/javascript" src="../static/news/js/index.js"></script>
+    <!-- 自定义应用名称 -->
+    <meta name="application-name" content="百度一下">
+    <!-- 自定义应用图标可用 -->
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://g.csdnimg.cn/static/logo/favicon32.ico">
+    <!-- 内容按照移动端样式展示 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"/>
+
+
+    <!-- 用来定义顶部状态栏的形式默认是default为白色 black为黑色 black-translucent为灰色半透明（会占据屏幕的约20px，不同的设备可能会有差异）-->
+    <!-- 在定义了apple-mobile-web-app-capable的前提下，设置状态栏的属性值apple-mobile-web-app-status-bar-style才有效； -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <title>1024小神</title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .guide-time {
+            color: gray;
+            padding: 0.5vh 1vh;
+        }
+
+
+        .tips {
+            padding: 0.5vh 1vh;
+        }
+
+        .tabBox {
+            margin-bottom: 2vh;
+            border-radius: 5px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .tabTitle {
+            margin: 1vh 0 1vh 0;
+            color: white;
+            padding: 1vh 2vh;
+            border-radius: 5px 5px 0 0;
+            border-bottom: 1px solid #ebeef5;
+            box-sizing: border-box;
+            background-color: rgb(0, 108, 130);
+            box-shadow: rgb(0 108 130 / 35%) 0 0 2vh;
+        }
+
+        .aBox {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: start;
+            padding: 1vh 2vh;
+        }
+
+        .alink {
+            display: inline-block;
+            width: 31%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: left;
+            color: black;
+            padding-right: 2%;
+            margin-bottom: 8px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="header_con">
-        <div class="header">
-            <a href="#" class="logo fl"><img src="../static/news/images/logo.png" alt="logo"></a>
-            <ul class="menu fl">
-                <li class="active" data-cid="0"><a href="javascript:;">最新</a></li>
-                <li data-cid="1"><a href="javascript:;">股市</a></li>
-                <li data-cid="2"><a href="javascript:;">债市</a></li>
-                <li data-cid="3"><a href="javascript:;">商品</a></li>
-                <li data-cid="4"><a href="javascript:;">外汇</a></li>
-                <li data-cid="5"><a href="javascript:;">公司</a></li>
-            </ul>
-            <div class="user_btns fr">
-                <a href="javascript:;" class="login_btn">登录</a> / <a href="javascript:;" class="register_btn">注册</a>
-            </div>
-            <!-- 用户登录后显示下面，隐藏上面 -->
-            <div class="user_login fr">
-                <img src="../static/news/images/person01.png" class="lgin_pic">
-                <a href="#">用户张三</a>
-                <a href="#">退出</a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="conter_con">
-        <ul class="list_con fl">
-            <li>
-                <a href="#" class="news_pic fl"><img src="../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市软银计划将手机业务分拆上市</a>
-                <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-                <div class="author_info fl">
-                    <div class="author fl">
-                        <img src="../static/news/images/person.png" alt="author">
-                        <a href="#">乐鸣</a>
-                    </div>
-                    <div class="time fl">2017-01-01 00:00:00</div>
-                </div>
-            </li>
-            <li>
-                <a href="#" class="news_pic fl"><img src="../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-                <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-                <div class="author_info fl">
-                    <div class="source fl">
-                        来源：广州日报
-                    </div>
-                    <div class="time fl">2017-01-01 00:00:00</div>
-                </div>
-            </li>
-            <li>
-                <a href="#" class="news_pic fl"><img src="../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-                <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-                <div class="author_info fl">
-                    <div class="author fl">
-                        <img src="../static/news/images/person.png" alt="author">
-                        <a href="#">乐鸣</a>
-                    </div>
-                    <div class="time fl">2017-01-01 00:00:00</div>
-                </div>
-            </li>
-            <li>
-                <a href="#" class="news_pic fl"><img src="../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-                <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-                <div class="author_info fl">
-                    <div class="source fl">
-                        来源：广州日报
-                    </div>
-                    <div class="time fl">2017-01-01 00:00:00</div>
-                </div>
-            </li>
-        </ul>
-        <div class="rank_con fr">
-            <div class="rank_title">
-                <h3>点击排行</h3>
-            </div>
-            <ul class="rank_list">
-                <li><span class="first">1</span><a href="#">势如破竹！人民币再度连闯四道关口 在岸、离岸双双升破6.42</a></li>
-                <li><span class="second">2</span><a href="#">凛冬已至，还有多少银行人在假装干银行</a></li>
-                <li><span class="third">3</span><a href="#">人民日报：部分城市楼市放松限制引关注，楼市调控不会“拉抽屉”</a></li>
-                <li><span>4</span><a href="#">势如破竹！人民币再度连闯四道关口 在岸、离岸双双升破6.42</a></li>
-                <li><span>5</span><a href="#">凛冬已至，还有多少银行人在假装干银行</a></li>
-                <li><span>6</span><a href="#">人民日报：部分城市楼市放松限制引关注，楼市调控不会“拉抽屉”</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer">        
-        <div class="footer_links">
-            <a href="">关于我们</a>
-            <span>|</span>
-            <a href="">联系我们</a>
-            <span>|</span>
-            <a href="">招聘人才</a>
-            <span>|</span>
-            <a href="">友情链接</a>
-        </div>
-        <p class="copyright">
-            CopyRight © 2018 新经资讯信息技术有限公司 All Rights Reserved<br />
-电话：010-****888    京ICP备*******8号
-        </p>
-    </div>
-    
-    <!-- 登录表单 -->
-    <form class="login_form_con">
-        <div class="login_form">
-            <div class="login_title">
-                <h3>登 录</h3>
-                <a href="javascript:;" class="shutoff"></a>
-            </div>
-            <div class="form_group">
-                <input id="mobile" type="text" name="mobile" autocomplete="off">
-                <div class="input_tip">手机号</div>
-                <div id="login-mobile-err" class="error_tip">手机号不能为空</div>
-            </div>
-            <div class="form_group">
-                <input id="password" type="password" name="password">
-                <div class="input_tip">密码(不少于6位)</div>
-                <div id="login-password-err" class="error_tip">密码不能为空</div>
-            </div>
-            <input type="submit" name="" value="登 录" class="input_sub">
-            <div class="down_link">还没有账号？<a href="javascript:;" class="to_register">立即注册</a></div>
-        </div>
-        <div class="mask"></div>
-    </form>
+<div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
 
-    <!-- 注册表单 -->
-    <form class="register_form_con">
-        <div class="register_form">
-            <div class="register_title">
-                <h3>注 册</h3>
-                <a href="javascript:;" class="shutoff"></a>
-            </div>
-            <div class="form_group">
-                <input type="text" name="mobile" autocomplete="off" id="register_mobile" class="phone_input">
-                <div class="input_tip">手机号</div>
-                <div id="register-mobile-err" class="error_tip">手机号不能为空</div>
-            </div>
-            <div class="form_group">
-                <input type="text" name="code_pwd" id="imagecode" class="code_pwd">
-                <div class="input_tip">图形验证码</div>
-                <img src="../static/news/images/pic_code.png" class="get_pic_code" onclick="generateImageCode()">
-                <div id="register-image-code-err" class="error_tip">图形码不能为空</div>
-            </div>
-            <div class="form_group">
-                <input type="text" name="smscode" id="smscode" class="code_pwd">
-                <div class="input_tip">手机验证码</div>
-                <a href="javascript:;" class="get_code" onclick="sendSMSCode()">点击获取验证码</a>
-                <div id="register-sms-code-err" class="error_tip">验证码不能为空</div>
-            </div>
-            <div class="form_group">
-                <input type="password" name="password" id="register_password" class="pass_input">
-                <div class="input_tip">密码(不少于6位)</div>
-                <div id="register-password-err" class="error_tip">密码不能为空</div>
-            </div>
-            <div  class="form_group2 clearfix">
-                <input type="checkbox" class="agree_input" checked>
-                <p>同意使用条款，并已阅读"跟帖评论自律管理承诺书"</p>
-                <div class="error_tip">请勾选</div>
-            </div>
-            <input type="submit" name="" value="注 册" class="input_sub">
-            <div class="down_link">已有账号？<a href="javascript:;" class="to_login">立即登录</a></div>
-        </div>
-        <div class="mask"></div>
-    </form>
+    </div>
+</div>
+<div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
+
+    </div>
+</div>
+<div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
+
+    </div>
+</div><div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
+
+    </div>
+</div><div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
+
+    </div>
+</div><div class="tabBox">
+    <h3 class="tabTitle">动漫网站</h3>
+    <div class="aBox">
+        <a href="https://rule34.xxx/" class="alink" target="_blank">Rule34</a>
+        <a href="https://kemono.party/" class="alink" target="_blank">KemonoParty</a>
+        <a href="https://e-hentai.org/" class="alink" target="_blank">E-Hentai</a>
+        <a href="https://e621.net/" class="alink" target="_blank">E621</a>
+        <a href="https://www.furaffinity.net/" class="alink" target="_blank">FurAffinity</a>
+        <a href="https://gelbooru.com/" class="alink" target="_blank">Gelbooru</a>
+        <a href="https://rule34.paheal.net/" class="alink" target="_blank">Rule34Paheal</a>
+        <a href="https://chan.sankakucomplex.com/" class="alink" target="_blank">SankakuChannel</a>
+        <a href="https://exhentai.org/" class="alink" target="_blank">ExHentai</a>
+        <a href="https://danbooru.donmai.us/" class="alink" target="_blank">Danbooru</a>
+
+    </div>
+</div>
 </body>
 </html>
