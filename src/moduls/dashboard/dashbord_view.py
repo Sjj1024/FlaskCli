@@ -1,7 +1,7 @@
 import logging
 from flask import jsonify
 from src.moduls.dashboard import dashbord_blu
-from src.utils.caoliu.tools import get_all_caoliu_home
+from src.utils.caoliu.tools import get_all_caoliu_home, get_all_homes
 
 
 @dashbord_blu.route("/homes", methods=["GET", "POST"])
@@ -15,6 +15,14 @@ def get_homes():
         "homes": caoliu
     })
     return jsonify(code=200, message="success", data=homes)
+
+
+@dashbord_blu.route("/navigation", methods=["GET", "POST"])
+def get_all_urls():
+    logging.info("获取所有的回家地址")
+    # 获取所有的草榴地址
+    caoliu = get_all_homes()
+    return jsonify(code=200, message="success", data=caoliu)
 
 # @categorys_blu.route("/query", methods=["GET", "POST"])
 # def query():

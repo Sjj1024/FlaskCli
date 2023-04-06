@@ -1,6 +1,10 @@
 import requests
+from bs4 import BeautifulSoup
+import time
+import re
 
-source_url = "https://zxfdsfdsf.online"
+source_url = "https://www.hghg58.com"
+time_sleep = 3
 
 
 def get_source():
@@ -15,6 +19,113 @@ def set_cookies(res, cookie):
     cookie_dict.update(c)
     cookie = "; ".join([f"{key}={val}" for key, val in cookie_dict.items()])
     return cookie
+
+
+def get_soup(page_url, tang_cookie, user_agent):
+    headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Cookie': tang_cookie,
+        'Pragma': 'no-cache',
+        'Referer': 'https://www.hghg58.com/home.php?mod=spacecp&ac=usergroup',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': user_agent,
+        'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"'
+    }
+    try:
+        res = requests.get(page_url, headers=headers)
+        html = res.content.decode()
+        soup = BeautifulSoup(html, "lxml")
+        if "立即注册" in soup.decode():
+            return soup.decode()
+        time.sleep(time_sleep)
+        return soup
+    except Exception as e:
+        print(f"get_soup有错误{e},请检查错误......")
+        return f"get_soup有错误{e},请检查错误......"
+
+
+def get_article_list(*kwg):
+    print("todo")
+
+
+def get_commit_list(*kwg):
+    print("todo")
+
+
+def get_invcode_list(*kwg):
+    print("todo")
+
+
+def regist_caoliu(*kwg):
+    print("todo")
+
+
+def get_ref_commit_list(*kwg):
+    print("todo")
+
+
+def pay_some_invcode(*kwg):
+    print("todo")
+
+
+def check_name_avliable(*kwg):
+    print("todo")
+
+
+def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
+    print(f"get_userinfo_bycookie：{cookie}, {user_agent}")
+    # 获取下一页的链接, 有就返回，没有就返回false
+    url = get_source() + ""
+    soup = get_soup(url, cookie, user_agent)
+    # 如果是字符串，认为是没登陆
+    if isinstance(soup, str):
+        return soup
+    # 获取详情
+    if soup:
+        user_name = soup.select_one("strong.vwmy").get_text().strip()
+        user_id = soup.select_one("div.avt > a").get("href").split("uid=")[1].strip()
+        dengji = soup.select_one("a#g_upmine").get_text().replace("用户组: ", "").split(" ")[0].strip()
+        # 通过详情找到更详细的信息：https://www.hghg58.com/home.php?mod=space&uid=446206
+        info_url = f"{get_source()}/home.php?mod=space&uid={user_id}"
+        soup_info = get_soup(info_url, cookie, user_agent)
+        # 如果是字符串，认为是没登陆
+        if isinstance(soup_info, str):
+            return soup_info
+        fatie = soup_info.select("ul.bbda > li > a")[1].get_text().split(" ")[1].strip()
+        # 威望=金钱
+        weiwang = soup_info.select("ul.pf_l > li")[11].get_text().replace("金钱", "").strip()
+        money = soup_info.select("ul.pf_l > li")[12].get_text().replace("色币", "").strip()
+        gongxian = soup_info.select("ul.pf_l > li")[10].get_text().replace("积分", "").strip()
+        if "注册时间" in soup_info.decode():
+            regist_time = soup_info.select("ul.pf_l > li")[1].get_text().replace("注册时间", "").strip()
+        else:
+            regist_time = re.search(r'註冊: (.*?)<', soup.decode()).group(1)
+        user_info = {
+            "user_name": user_name,
+            "user_id": user_id,
+            "dengji": dengji,
+            "jifen": "",
+            "fatie": fatie,
+            "weiwang": weiwang,
+            "money": money,
+            "gongxian": gongxian,
+            "gongxian_link": "",
+            "regist_time": regist_time,
+            "email": "",
+            "desc": "",
+            "able_invate": "",
+        }
+        print(f"获取的用户信息:{user_info}")
+        return user_info
 
 
 def login_get_cookie(user_name, password):

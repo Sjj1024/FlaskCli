@@ -2,7 +2,7 @@ import copy
 import datetime
 import logging
 from flask import jsonify, request
-from src.moduls.table import table_blu
+from src.moduls.tang98 import tang98_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, login_get_cookie
 from src.utils.github.apis import add_caoliu_task_file, del_caoliu_task_file, dispatches_workflow_run, get_repo_action, \
     get_file_sha
@@ -10,8 +10,8 @@ from src.models import CaoliuUpdate, CaoliuUsers
 from src import db, config_obj
 
 
-@table_blu.route("/addCheckUser", methods=["POST"])
-def add_check_file():
+@tang98_blu.route("/addCheckUser", methods=["POST"])
+def add_check_file_98():
     logging.info("开始创建caoliu账号监控...")
     paylod = request.json
     cookie = paylod.get("cookie")
@@ -47,8 +47,8 @@ def add_check_file():
         return jsonify(code=501, message={"message_yml": message_yml})
 
 
-@table_blu.route("/saveUserInfo", methods=["POST"])
-def save_userinfo():
+@tang98_blu.route("/saveUserInfo", methods=["POST"])
+def save_userinfo_98():
     logging.info("开始保存用户信息...")
     user_data = request.json
     update_user_list = CaoliuUsers.query.filter_by(user_name=user_data.get("user_name"))
@@ -57,8 +57,8 @@ def save_userinfo():
     return jsonify(code=200, message="success")
 
 
-@table_blu.route("/updateUserInfo", methods=["POST"])
-def get_new_userinfo():
+@tang98_blu.route("/updateUserInfo", methods=["POST"])
+def get_new_userinfo_98():
     logging.info("开始更新用户信息...")
     paylod = request.json
     username = paylod.get("user_name")
@@ -144,8 +144,8 @@ def get_new_userinfo():
     return jsonify(code=200, message="success", data=user_caoliu)
 
 
-@table_blu.route("/addUpdateUser", methods=["POST"])
-def add_git_file():
+@tang98_blu.route("/addUpdateUser", methods=["POST"])
+def add_git_file_98():
     logging.info("开始创建caoliu自动升级...")
     paylod = request.json
     # 先添加一个caoliu.py文件
@@ -181,8 +181,8 @@ def add_git_file():
         return jsonify(code=501, message={"message_yml": message_yml})
 
 
-@table_blu.route("/dispatchesRun", methods=["POST"])
-def dispatch_work_run():
+@tang98_blu.route("/dispatchesRun", methods=["POST"])
+def dispatch_work_run_98():
     logging.info("触发一个工作流运行...")
     paylod = request.json
     user_name = paylod.get("username")
@@ -191,8 +191,8 @@ def dispatch_work_run():
         return jsonify(code=200, message="success")
 
 
-@table_blu.route("/delUpdateUser", methods=["DELETE"])
-def del_git_file():
+@tang98_blu.route("/delUpdateUser", methods=["DELETE"])
+def del_git_file_98():
     logging.info("删除caoliu自动升级...")
     paylod = request.json
     caoliu_user: CaoliuUsers = CaoliuUsers.query.get(paylod.get("id"))
@@ -217,8 +217,8 @@ def del_git_file():
         return jsonify(code=501, message={"message_yml": message_yml})
 
 
-@table_blu.route("/delCheckUser", methods=["DELETE"])
-def del_check_file():
+@tang98_blu.route("/delCheckUser", methods=["DELETE"])
+def del_check_file_98():
     logging.info("删除caoliu账号监控...")
     paylod = request.json
     caoliu_user: CaoliuUsers = CaoliuUsers.query.get(paylod.get("id"))
@@ -241,8 +241,8 @@ def del_check_file():
         return jsonify(code=501, message={"message_yml": message_yml})
 
 
-@table_blu.route("/updateList", methods=["GET", "POST"])
-def table_update_list():
+@tang98_blu.route("/updateList", methods=["GET", "POST"])
+def table_update_list_98():
     logging.info("开始获取升级任务列表")
     try:
         paginate = CaoliuUpdate.query.order_by(-CaoliuUpdate.id).paginate(1, 10)

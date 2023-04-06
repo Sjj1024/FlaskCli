@@ -139,6 +139,45 @@ class CaoliuUsers(db.Model, BaseModel):
     sign_task_status = db.Column(db.String(255), unique=False, nullable=True)
 
 
+class Tang98Users(db.Model, BaseModel):
+    """表信息记录"""
+    __tablename__ = "tang_users"
+    id = db.Column(db.Integer, primary_key=True)  # 序号
+    user_name = db.Column(db.String(255), unique=True, nullable=False)  # 唯一id
+    user_id = db.Column(db.Integer, unique=False, nullable=True)  # 所有数量统计
+    password = db.Column(db.String(255), unique=False, nullable=True)  # 表名称
+    grade = db.Column(db.String(255), unique=False, nullable=True)  # jsonschema
+    email = db.Column(db.String(255), unique=False, nullable=True)  # 是否可用
+    weiwang = db.Column(db.String(255), unique=False, nullable=True)  # 描述信息
+    article_number = db.Column(db.Integer, unique=False, nullable=True)
+    contribute = db.Column(db.String(255), unique=False, nullable=True)
+    desc = db.Column(db.String(255), unique=False, nullable=True)
+    creat_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 添加时间
+    regist_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 账号注册时间
+    update_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 更新时间
+    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有的金钱
+    cookie = db.Column(db.String(5000), unique=False, nullable=True)
+    user_agent = db.Column(db.String(255), unique=False, nullable=True)
+    current_money = db.Column(db.Integer, unique=False, nullable=True)
+    regular_money = db.Column(db.Integer, unique=False, nullable=True)
+    able_invate = db.Column(db.String(255), unique=False, nullable=True)
+    lease = db.Column(db.String(255), unique=False, nullable=True)
+    authentication = db.Column(db.String(255), unique=False, nullable=True)
+    contribute_link = db.Column(db.String(255), unique=False, nullable=True)
+    task_link = db.Column(db.String(255), unique=False, nullable=True)
+    task_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+    check_link = db.Column(db.String(255), unique=False, nullable=True)
+    check_file_sha = db.Column(db.String(255), unique=False, nullable=True)
+    new_passwd = db.Column(db.String(255), unique=False, nullable=True)
+    task_status = db.Column(db.String(255), unique=False, nullable=True)
+    check_status = db.Column(db.String(255), unique=False, nullable=True)
+    isDeleted = db.Column(db.Boolean, unique=False, nullable=True)
+    important = db.Column(db.Integer, unique=False, nullable=True)
+    original = db.Column(db.JSON, unique=False, nullable=True)
+    sign_task_id = db.Column(db.String(255), unique=False, nullable=True)
+    sign_task_status = db.Column(db.String(255), unique=False, nullable=True)
+
+
 class CaoliuUpdate(db.Model, BaseModel):
     """表信息记录"""
     __tablename__ = "caoliu_update"

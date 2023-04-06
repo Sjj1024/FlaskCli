@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 # 创建蓝图，并设置蓝图前缀
-table_blu = Blueprint("tableblue", __name__, url_prefix='/api1/table')
+tang98_blu = Blueprint("tangtang", __name__, url_prefix='/api1/tang98')
 
 from . import table_views
 from . import update_views

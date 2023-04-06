@@ -53,6 +53,14 @@ def get_all_caoliu_home():
     return home_urls
 
 
+def get_all_homes():
+    print("获取源地址")
+    url = "https://api.github.com/repos/1024dasehn/TestSome/contents/.github/hubsql/deskHuijia.txt"
+    res = requests.get(url=url, headers={})
+    res_json = res.json()
+    return res_json
+
+
 def get_code(cookie):
     """
     获取验证码
@@ -158,17 +166,6 @@ def check_success(response):
 
 
 def get_soup(page_url, cl_cookie, user_agent):
-    # header = {
-    #     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    #     'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
-    #     'cache-control': 'max-age=0',
-    #     'content-type': 'application/x-www-form-urlencoded',
-    #     'cookie': cl_cookie,
-    #     'origin': get_source(),
-    #     'referer': f'{get_source()}/hack.php?H_name=invite&action=buy',
-    #     'upgrade-insecure-requests': '1',
-    #     'user-agent': user_agent
-    # }
     headers = {
         'authority': 'cl.6273x.xyz',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -321,8 +318,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         print(f"获取的用户信息:{user_info}")
         # return user_info
         # # 获取详细信息
-        gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
-        # email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
+        gread_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
+        # email_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         # # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{get_source()}/{gread_span[0].get('href')}"
         # email_url = f"{get_source()}/{email_span[0].get('href')}"
@@ -338,7 +335,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         #     email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
         if info_soup and invcode_soup:
-            all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
+            all_info = info_soup.select("#main > div:nth-child(3)")[0].select("caoliu")[0].get_text()
             user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
             user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
             dengji = re.search(r'會員頭銜(.*?)\n', all_info).group(1)

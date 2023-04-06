@@ -120,8 +120,8 @@ class AutoCommit:
         url = source_url + "/profile.php"
         soup = self.get_soup(url)
         if soup:
-            gread_span = soup.select("#main > div.t > table > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
-            email_span = soup.select("#main > div.t > table > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
+            gread_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
+            email_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
             info_url = f"{source_url}/{gread_span[0].get('href')}"
             email_url = f"{source_url}/{email_span[0].get('href')}"
             print(f"您的用户名是：, 您的等级是：{info_url}")
@@ -130,7 +130,7 @@ class AutoCommit:
             if info_soup and email_soup:
                 email = re.search(r"E-MAIL\n(.*?)com",
                                   email_soup.select("#main > form")[0].get_text()).group(1) + "com"
-                all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
+                all_info = info_soup.select("#main > div:nth-child(3)")[0].select("caoliu")[0].get_text()
                 user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
                 user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
                 dengji = re.search(r'會員頭銜(.*?)\n', all_info).group(1)
