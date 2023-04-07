@@ -1,11 +1,14 @@
 import base64
+import datetime
 import random
 import re
 import smtplib
 import sys
+import time
 from email.mime.text import MIMEText
 from urllib import parse
 import requests
+from bs4 import BeautifulSoup
 
 
 class TangTang(object):
@@ -18,6 +21,7 @@ class TangTang(object):
         self.user_agent = ""
         self.source_url = self.get_source()
         self.user_info = ""
+        self.contCommit = ["编辑中", "沙发"]
 
     def get_source(self, key="98色花堂1"):
         print("获取源地址")
@@ -339,7 +343,7 @@ class TangTang(object):
             page_url = f"{self.source_url}/forum.php?mod=forumdisplay&fid=95&page={i}"
             html = self.get_html(page_url)
             id_list = re.findall(r'tid=.*?class="s xst"', html)
-            tid_list = [i[4:10] for i in id_list]
+            tid_list = [i.split("&amp")[0].replace("tid=", "") for i in id_list]
             article_list += tid_list
         print(f"得到总的文章链接是:{len(article_list)}")
         return article_list
@@ -354,16 +358,16 @@ class TangTang(object):
             comment_list = re.findall(r'tid=.*?class="xst"', html)
             # print(comment_list)
             # print(len(comment_list))
-            ids = [i[4:10] for i in comment_list]
+            ids = [i.split("&amp")[0].replace("tid=", "") for i in comment_list]
+            id_list += ids
             if "下一页" in html and page <= 5:
                 page += 1
-                id_list += ids
             else:
                 print(f"评论过的文章有{page}页，总共有{len(id_list)}篇文章被评论过")
                 return id_list
 
-    def get_comment_txt(self, count):
-        print(f"获取评论内容:{count}")
+    def get_comment_txt(self):
+        print(f"随机获取评论内容:")
         txt_list = ["看起来挺骚的", "溜了，评分留下", "典型的大妈脸", "都是猛人", "被吓到了", "还是支持一下",
                     "最近啥情况", "怎么看不了", "感谢大佬", "有磁力的吗", "最近这种有点多啊", "我看到过的",
                     "这也太牛逼了",
@@ -378,6 +382,49 @@ class TangTang(object):
                     "真人想多了",
                     "因为我本纯良", "这个主题不错"]
         return txt_list[random.randint(0, len(txt_list) - 1)]
+
+    def get_comment_from_articl(self, tid):
+        # 从文章评论列表中随机获取一条评论
+        print(f"获取评论内容:{tid}")
+        article_url = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1"
+        article_soup = self.get_soup(article_url)
+        commit_list = [com.get_text() for com in article_soup.select("td.t_f")[1:]]
+        commit_text = [com.split("\r\n")[1] for com in commit_list if "\r\n" in com]
+        commit_res = []
+        for com in commit_text:
+            if "\n" in com:
+                commit_res.append(com.split("\n")[1])
+            else:
+                commit_res.append(com)
+        random_commit = commit_res[random.randint(0, len(commit_res) - 1)]
+        cont_commit_res = [i not in random_commit for i in self.contCommit]
+        if all(cont_commit_res):
+            return random_commit
+        else:
+            return self.get_comment_txt()
+
+    def get_soup(self, page_url):
+        # 获取单张我的评论页面中的所有评论过的文章id和标题
+        time.sleep(1)
+        header = {
+            "user-agent": self.user_agent,
+            "cookie": self.cookie,
+            "referer": self.source_url + "/index.php"
+        }
+        try:
+            res = requests.get(page_url, headers=header, timeout=10)
+            html = res.content.decode()
+        except Exception as e:
+            print(f"有错误{e},开始重试新的请求......")
+            new_url = page_url.replace(self.source_url, source_url)
+            res = requests.get(new_url, headers=header, timeout=10)
+            html = res.content.decode()
+        soup = BeautifulSoup(html, "lxml")
+        if "立即注册" in soup.decode():
+            print(f"{self.user_name}Cookie失效............")
+            self.send_email(f"{self.user_name}Cookie失效", f"{soup.decode()}")
+            return soup
+        return soup
 
     def get_formhash(self, tid):
         print("获取hash值")
@@ -436,7 +483,7 @@ class TangTang(object):
         need_post = [i for i in article_list if i not in id_list]
         # 发起评论
         for index, value in enumerate(need_post):
-            commit_txt = self.get_comment_txt(index)
+            commit_txt = self.get_comment_from_articl(value)
             form_hash = self.get_formhash(value)
             res = self.post_commit(value, commit_txt, form_hash)
             if res:
@@ -460,22 +507,49 @@ def auto_sign_tang(user_name, cookie, user_agent):
         print(f"签到异常: {qiandao}")
 
 
+def check_white_day(min, max):
+    print("判断是不是白天....")
+    print("当前时间是", datetime.datetime.now())
+    current_hour = datetime.datetime.now().hour
+    if min <= current_hour <= max:
+        print(f"{current_hour} 点是白天")
+        return True
+    else:
+        print(f"{current_hour} 点是晚上，黑夜啊")
+        return False
+
+
+def auto_commit_tang(user_name, cookie, user_agent):
+    # 定时评论的函数
+    print("当前时间是", datetime.datetime.now())
+    # 判断是不是白天，是的话再评论，否则退出
+    if not check_white_day(8, 21):
+        print(f"是黑夜，所以不参与发表评论，直接退出.......")
+        return
+    tang = TangTang()
+    tang.contCommit = ["编辑中", "沙发"]
+    tang.user_name = user_name
+    tang.cookie = cookie
+    tang.user_agent = user_agent
+    tang.get_user_info()
+    tang.start_commit_one()
+
+
 def run():
     tang = TangTang()
-    tang.source_url = source_url
     tang.user_name = name
     tang.cookie = cookie
     tang.user_agent = user_agent
     tang.get_user_info()
-    # tang.start_commit_one()
-    qiandao = tang.has_signed()
-    if qiandao == "今日未签到，点击签到":
-        # tang.start_web_sign()
-        tang.start_iphone_sign()
-    elif "今日已签到" in qiandao:
-        print(qiandao)
-    else:
-        print(f"签到异常: {qiandao}")
+    tang.start_commit_one()
+    # qiandao = tang.has_signed()
+    # if qiandao == "今日未签到，点击签到":
+    #     # tang.start_web_sign()
+    #     tang.start_iphone_sign()
+    # elif "今日已签到" in qiandao:
+    #     print(qiandao)
+    # else:
+    #     print(f"签到异常: {qiandao}")
 
 
 if __name__ == '__main__':

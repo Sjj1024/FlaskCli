@@ -57,6 +57,36 @@ def add_caoliu_commit_local():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/addTangCommit", methods=["GET", "POST"])
+def add_tang_commit_local():
+    print(f"添加98的定时评论任务")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    corn_tab = param_dict.get("corn", None) or "05 */3 * * *"
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if update_user["task_file_sha"] and user_name in update_user["task_file_sha"]:
+            return jsonify(code=205, message="任务已存在", data=f"任务已存在")
+        task_id = add_tang_commit_task(user_name, cookie, user_agent, corn_tab)
+        update_user["task_file_sha"] = task_id
+        update_user["task_status"] = "已开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
 @task_blu.route("/delCaoliuCommit", methods=["DELETE"])
 def del_caoliu_commit():
     print(f"删除1024自动评论任务: ")
@@ -71,6 +101,33 @@ def del_caoliu_commit():
         if not update_user["task_file_sha"]:
             return jsonify(code=205, message="error", data=f"任务不存在")
         del_caoliu_commit_article(user_name)
+        update_user["task_file_sha"] = ""
+        update_user["task_status"] = "未开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/delTangCommit", methods=["DELETE"])
+def del_tang_commit():
+    print(f"删除98自动评论任务: ")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if not update_user["task_file_sha"]:
+            return jsonify(code=205, message="error", data=f"任务不存在")
+        del_tang_commit_article(user_name)
         update_user["task_file_sha"] = ""
         update_user["task_status"] = "未开启"
         try:

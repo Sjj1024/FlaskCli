@@ -84,7 +84,7 @@ def check_name_avliable(*kwg):
 def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
     print(f"get_userinfo_bycookie：{cookie}, {user_agent}")
     # 获取下一页的链接, 有就返回，没有就返回false
-    url = get_source() + ""
+    url = get_source()
     soup = get_soup(url, cookie, user_agent)
     # 如果是字符串，认为是没登陆
     if isinstance(soup, str):
