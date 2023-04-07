@@ -93,7 +93,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
     if soup:
         user_name = soup.select_one("strong.vwmy").get_text().strip()
         user_id = soup.select_one("div.avt > a").get("href").split("uid=")[1].strip()
-        dengji = soup.select_one("a#g_upmine").get_text().replace("用户组: ", "").split(" ")[0].strip()
+        dengji = soup.select_one("a#g_upmine").get_text().replace("用户组: ", "").strip()
         # 通过详情找到更详细的信息：https://www.hghg58.com/home.php?mod=space&uid=446206
         info_url = f"{get_source()}/home.php?mod=space&uid={user_id}"
         soup_info = get_soup(info_url, cookie, user_agent)
@@ -109,6 +109,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             regist_time = soup_info.select("ul.pf_l > li")[1].get_text().replace("注册时间", "").strip()
         else:
             regist_time = re.search(r'註冊: (.*?)<', soup.decode()).group(1)
+        # 判断是否可以产邀请码：>lv6就可以
+        able_invate = "可以" if int(re.search('\d', dengji).group(0)) > 6 else "不可以"
         user_info = {
             "user_name": user_name,
             "user_id": user_id,
@@ -122,7 +124,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             "regist_time": regist_time,
             "email": "",
             "desc": "",
-            "able_invate": "",
+            "able_invate": able_invate,
         }
         print(f"获取的用户信息:{user_info}")
         return user_info

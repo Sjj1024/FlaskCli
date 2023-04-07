@@ -1,8 +1,7 @@
-from src.models import CaoliuUsers
+from src.models import *
 from src.moduls.corntask import task_blu
 from flask import jsonify, request
 from src import db
-
 from src.utils.task_config.task_control import *
 
 
@@ -119,6 +118,36 @@ def add_caoliu_sign():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/addTangSign", methods=["GET", "POST"])
+def add_tangtang_sign():
+    param_dict = request.json
+    print(f"添加98签到任务: {param_dict}")
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    corn_tab = param_dict.get("corn", None) or "50 17 * * *"
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if update_user["sign_task_id"]:
+            return jsonify(code=205, message="error", data=f"任务已存在")
+        task_id = add_tang_sign_article(user_name, cookie, user_agent, corn_tab)
+        update_user["sign_task_id"] = task_id
+        update_user["sign_task_status"] = "已开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
 @task_blu.route("/delCaoliuSign", methods=["DELETE"])
 def del_caoliu_sign():
     print(f"删除1024签到任务: ")
@@ -146,3 +175,28 @@ def del_caoliu_sign():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/delTangSign", methods=["DELETE"])
+def del_tang_sign():
+    print(f"删除98签到任务: ")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if not update_user["sign_task_id"]:
+            return jsonify(code=205, message="error", data=f"任务不存在")
+        del_tangtang_sign_article(user_name)
+        update_user["sign_task_id"] = ""
+        update_user["sign_task_status"] = "未开启"
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")

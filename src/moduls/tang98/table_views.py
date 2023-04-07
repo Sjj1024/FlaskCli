@@ -5,6 +5,7 @@ from src.models import Tang98Users
 from src.moduls.tang98 import tang98_blu
 from src.utils.tangtang.tools import *
 from src import db
+from copy import deepcopy
 
 
 @tang98_blu.route("/list", methods=["GET", "POST"])
@@ -159,7 +160,10 @@ def add_user_98():
         if query_exist:
             return jsonify(code=206, message=f"{tang_info.user_name}：添加的用户已存在！请勿重复添加！")
         tang_info.important = important
-        tang_info.original = tang_info.to_dict()
+        # 将原始信息里面的用户组拆为lv1这种
+        tang_original_dict = deepcopy(tang_info)
+        tang_original_dict.grade = tang_original_dict.grade.split(" ")[0]
+        tang_info.original = tang_original_dict.to_dict()
         tang_info.desc = desc
         db.session.add(tang_info)
         db.session.commit()

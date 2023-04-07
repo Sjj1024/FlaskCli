@@ -6,6 +6,7 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from tzlocal import get_localzone
 from src import config_obj
 from src.utils.caoliu.auto_commit import *
+from src.utils.tangtang.auto_commit import auto_sign_tang
 
 # 存储位置
 SCHEDULER_JOBSTORES = {'default': SQLAlchemyJobStore(url=config_obj.SQLALCHEMY_DATABASE_URI)}
@@ -36,10 +37,27 @@ def add_caoliu_sign_article(user_name, cookie, user_agent, link, commit="今日�
     return task_id
 
 
+def add_tang_sign_article(user_name, cookie, user_agent, corn_tab="30 17 * * *"):
+    print(f"添加98签到任务: {user_name}")
+    # 每天早上8点23执行一次
+    task_id = f"sign-98-{user_name}"
+    arguments = (user_name, cookie, user_agent)
+    scheduler.add_job(auto_sign_tang, CronTrigger.from_crontab(corn_tab), args=arguments, id=task_id)
+    return task_id
+
+
 def del_caoliu_sign_article(user_name):
     print(f"删除1024签到任务: {user_name}")
     # 每天早上8点23执行一次
     task_id = f"sign-1024-{user_name}"
+    scheduler.remove_job(task_id)
+    return task_id
+
+
+def del_tangtang_sign_article(user_name):
+    print(f"删除1024签到任务: {user_name}")
+    # 每天早上8点23执行一次
+    task_id = f"sign-98-{user_name}"
     scheduler.remove_job(task_id)
     return task_id
 

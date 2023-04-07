@@ -18,7 +18,7 @@ class Config(object):
     DATABASE_NAME = "sunmanage"
     # SQLALCHEMY_DATABASE_URI = "mysql://root:123456@localhost:3306/infomation"
     SQLALCHEMY_DATABASE_URI = f"postgresql://{USERNAME}:{PASSWORD}@{DATA_IP}:{DATA_PORT}/{DATABASE_NAME}"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     REDIS_HOST = DATA_IP
     REDIS_PORT = 6379

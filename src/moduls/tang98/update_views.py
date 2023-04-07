@@ -6,7 +6,7 @@ from src.moduls.tang98 import tang98_blu
 from src.utils.caoliu.tools import get_userinfo_by_cookie, login_get_cookie
 from src.utils.github.apis import add_caoliu_task_file, del_caoliu_task_file, dispatches_workflow_run, get_repo_action, \
     get_file_sha
-from src.models import CaoliuUpdate, CaoliuUsers
+from src.models import CaoliuUpdate, Tang98Users
 from src import db, config_obj
 
 
@@ -18,7 +18,7 @@ def add_check_file_98():
     user_agent = paylod.get("userAgent")
     user_info = get_userinfo_by_cookie(cookie, user_agent)
     user_name = user_info.get("user_name")
-    check_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+    check_user_list = Tang98Users.query.filter_by(user_name=user_name)
     if check_user_list:
         check_user = check_user_list.all()[0].to_json()
     else:
@@ -51,7 +51,7 @@ def add_check_file_98():
 def save_userinfo_98():
     logging.info("开始保存用户信息...")
     user_data = request.json
-    update_user_list = CaoliuUsers.query.filter_by(user_name=user_data.get("user_name"))
+    update_user_list = Tang98Users.query.filter_by(user_name=user_data.get("user_name"))
     update_user_list.update(user_data)
     db.session.commit()
     return jsonify(code=200, message="success")
@@ -80,7 +80,7 @@ def get_new_userinfo_98():
         user_info = get_userinfo_by_cookie(cookie, user_agent, email)
     else:
         return jsonify(code=211, message="没有cookie和用户名密码")
-    update_user_list = CaoliuUsers.query.filter_by(user_name=username)
+    update_user_list = Tang98Users.query.filter_by(user_name=username)
     if update_user_list and user_info:
         user_caoliu = update_user_list.all()[0].to_json()
         user_caoliu["article_number"] = user_info.get("fatie")
@@ -152,7 +152,7 @@ def add_git_file_98():
     cookie = paylod.get("cookie")
     user_agent = paylod.get("userAgent")
     user_name = paylod.get("username")
-    update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
+    update_user_list = Tang98Users.query.filter_by(user_name=user_name)
     if update_user_list:
         update_user = update_user_list.all()[0].to_json()
     else:
@@ -195,7 +195,7 @@ def dispatch_work_run_98():
 def del_git_file_98():
     logging.info("删除caoliu自动升级...")
     paylod = request.json
-    caoliu_user: CaoliuUsers = CaoliuUsers.query.get(paylod.get("id"))
+    caoliu_user: Tang98Users = Tang98Users.query.get(paylod.get("id"))
     user = {
         "username": caoliu_user.user_name,
         "yml_sha": caoliu_user.task_file_sha,
@@ -206,7 +206,7 @@ def del_git_file_98():
     flag_yml, message_yml = del_caoliu_task_file(f".github/workflows/{user.get('username')}.yml", user)
     if flag_yml:
         try:
-            CaoliuUsers.query.filter_by(user_name=caoliu_user.user_name).update(
+            Tang98Users.query.filter_by(user_name=caoliu_user.user_name).update(
                 {"task_link": "", "task_file_sha": "", "task_status": "未开启"})
             db.session.commit()
             return jsonify(code=200, message="success")
@@ -221,7 +221,7 @@ def del_git_file_98():
 def del_check_file_98():
     logging.info("删除caoliu账号监控...")
     paylod = request.json
-    caoliu_user: CaoliuUsers = CaoliuUsers.query.get(paylod.get("id"))
+    caoliu_user: Tang98Users = Tang98Users.query.get(paylod.get("id"))
     user = {
         "username": caoliu_user.user_name,
         "yml_sha": caoliu_user.check_file_sha,
@@ -230,7 +230,7 @@ def del_check_file_98():
     flag_yml, message_yml = del_caoliu_task_file(f".github/workflows/Check{user.get('username')}.yml", user)
     if flag_yml:
         try:
-            CaoliuUsers.query.filter_by(user_name=caoliu_user.user_name).update(
+            Tang98Users.query.filter_by(user_name=caoliu_user.user_name).update(
                 {"check_link": "", "check_file_sha": "", "check_status": "未开启"})
             db.session.commit()
             return jsonify(code=200, message="success")
