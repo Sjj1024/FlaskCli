@@ -442,6 +442,12 @@ class TangTang(object):
         form_hash = re.search(r'formhash=(.*?)">退出</a>', response.text).group(1)
         return form_hash
 
+    def random_sleep_second(self, min_second=2, max_second=30):
+        sleep_time = random.randint(min_second * 60, max_second * 60)
+        print("当前时间是", datetime.datetime.now())
+        print(f"开始随机睡眠{sleep_time} 秒，也就是 {sleep_time / 60} 分钟......")
+        time.sleep(sleep_time)
+
     def post_commit(self, tid, txt, form_hash):
         print(f"开始回复评论：{tid} : {txt} hash:{form_hash}")
         url = f"{self.source_url}/forum.php?mod=post&action=reply&fid=95&tid={tid}&extra=page%3D1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1"
@@ -463,6 +469,7 @@ class TangTang(object):
             'cookie': self.cookie,
             'user-agent': self.user_agent
         }
+        self.random_sleep_second()
         response = requests.request("POST", url, headers=headers, data=payload)
         self.set_cookies(response)
         html = response.text
@@ -492,7 +499,7 @@ class TangTang(object):
                 continue
 
 
-def auto_sign_tang(user_name, cookie, user_agent):
+def auto_sign_tang(user_name, cookie, user_agent, sleep=True):
     tang = TangTang()
     tang.user_name = user_name
     tang.cookie = cookie
@@ -500,6 +507,8 @@ def auto_sign_tang(user_name, cookie, user_agent):
     tang.get_user_info()
     qiandao = tang.has_signed()
     if qiandao == "今日未签到，点击签到":
+        if sleep:
+            tang.random_sleep_second()
         tang.start_iphone_sign()
     elif "今日已签到" in qiandao:
         print(qiandao)

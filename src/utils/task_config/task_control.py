@@ -99,6 +99,7 @@ def del_tang_commit_article(user_name):
         print(f"删除任务出错:{e}")
     return task_id
 
+
 def del_task(task_id):
     print("删除定时任务")
 
@@ -107,9 +108,10 @@ def update_task(task_id):
     print("更新定时任务")
 
 
-def run_task(task_id):
-    print("立即运行定时任务")
-    # scheduler.
+def run_tang_sign_article(user_name, cookie, user_agent):
+    print(f"立即运行98签到任务: {user_name}")
+    auto_sign_tang(user_name, cookie, user_agent, sleep=False)
+    return True
 
 
 def get_all_task():

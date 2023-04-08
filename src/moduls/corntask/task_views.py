@@ -205,6 +205,20 @@ def add_tangtang_sign():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/runTangSign", methods=["GET", "POST"])
+def run_tangtang_sign():
+    param_dict = request.json
+    print(f"运行98签到任务: {param_dict}")
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    try:
+        run_tang_sign_article(user_name, cookie, user_agent)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
 @task_blu.route("/delCaoliuSign", methods=["DELETE"])
 def del_caoliu_sign():
     print(f"删除1024签到任务: ")
