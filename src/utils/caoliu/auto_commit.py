@@ -397,7 +397,7 @@ class AutoCommit:
             return False
 
     # 开始发起评论
-    def send_commit(self, tid, title, commit, random_sleep=True):
+    def send_commit(self, tid, title, commit, sleep=True):
         print(f"开始发起评论: {title} : {commit}")
         if self.weiwang_big_100():
             return "威望大于100了"
@@ -425,11 +425,10 @@ class AutoCommit:
             "cookie": self.cl_cookie,
             "content-type": "application/x-www-form-urlencoded"
         }
-        rel_url = post_url
         # 随机睡眠几分钟
-        if random_sleep:
+        if sleep:
             self.random_sleep_second()
-        response = requests.post(rel_url, headers=zuiai_header, data=commit_data, timeout=10)
+        response = requests.post(post_url, headers=zuiai_header, data=commit_data, timeout=10)
         res_html = response.content.decode()
         success = "發貼完畢點擊進入主題列表"
         guashui = "灌水預防機制已經打開，在1024秒內不能發貼"
@@ -480,7 +479,7 @@ class AutoCommit:
             print('send email error', e)  # 打印错误
 
     # 执行主程序
-    def run(self):
+    def run(self, sleep=True):
         print("评论程序开始运行")
         self.grader = self.get_grade()
         self.posted_article = self.get_commiteds()
@@ -507,7 +506,7 @@ class AutoCommit:
             commit_str = self.get_article_commit_random(tid) or commit
             print(f"{self.user_name} 的评论的内容是：{commit_str}")
             try:
-                res = self.send_commit(tid, title, commit_str)
+                res = self.send_commit(tid, title, commit_str, sleep)
                 if res is True:
                     return
                 elif res == "威望大于100了":
@@ -557,11 +556,11 @@ def sign_one_article(user_name, cookie, user_agent, link, commit="今日签到")
     commiter.send_commit_jishu(tid, title, commit, random_sleep=True)
 
 
-def one_commit(user_name="", cookie="", user_agent=""):
+def one_commit(user_name="", cookie="", user_agent="", sleep=True):
     # 定时评论的函数
     print("当前时间是", datetime.datetime.now())
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day(8, 15):
+    if not check_white_day(8, 15) and sleep:
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     if user_name and cookie and user_agent:
@@ -577,7 +576,7 @@ def one_commit(user_name="", cookie="", user_agent=""):
     # 配置不可以回复的文章
     commiter.cant_tid = ['5448754', "5448978", "5424564"]
     commiter.cant_title = ["禁止无关回复", "乱入直接禁言", "禁言", "无关", "禁止", "乱入"]
-    commiter.run()
+    commiter.run(sleep)
 
 
 if __name__ == '__main__':

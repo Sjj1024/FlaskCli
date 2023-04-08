@@ -57,6 +57,20 @@ def add_caoliu_commit_local():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/runCaoliuCommit", methods=["GET", "POST"])
+def run_caoliu_commit_local():
+    print(f"添加1024的定时评论任务")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    try:
+        run_caoliu_commit_task(user_name, cookie, user_agent)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
 @task_blu.route("/addTangCommit", methods=["GET", "POST"])
 def add_tang_commit_local():
     print(f"添加98的定时评论任务")

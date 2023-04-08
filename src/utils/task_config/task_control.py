@@ -70,6 +70,12 @@ def add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *
     return task_id
 
 
+def run_caoliu_commit_task(user_name, cookie, user_agent):
+    print(f"运行1024评论任务: {user_name}")
+    one_commit(user_name, cookie, user_agent, sleep=False)
+    return True
+
+
 def add_tang_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *"):
     print(f"添加98堂评论任务: {user_name}")
     task_id = f"commit-98-{user_name}"
