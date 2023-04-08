@@ -116,7 +116,7 @@ def update_task(task_id):
 
 def run_tang_sign_article(user_name, cookie, user_agent):
     print(f"添加98堂评论任务: {user_name}")
-    auto_sign_tang(user_name, cookie, user_agent)
+    auto_sign_tang(user_name, cookie, user_agent, sleep=False)
     return True
 
 

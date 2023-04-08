@@ -126,7 +126,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         else:
             regist_time = re.search(r'註冊: (.*?)<', soup.decode()).group(1)
         # 判断是否可以产邀请码：>lv6就可以
-        able_invate = "可以" if int(re.search('\d', dengji).group(0)) > 6 else "不可以"
+        able_invate = "可以" if re.search('\d', dengji) and int(re.search('\d', dengji).group(0)) > 6 else "不可以"
         user_info = {
             "user_name": user_name,
             "user_id": user_id,
