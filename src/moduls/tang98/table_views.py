@@ -53,7 +53,7 @@ def table_list_98():
 
 def get_tang_user(username="", password="", cookie="", user_agent="", desc=""):
     if password:
-        cookie, user_agent = login_get_cookie(username, password)
+        cookie, user_agent = login_get_cookie(username, password, cookie, user_agent)
     if len(user_agent) < 10:
         return user_agent
     user_info = get_userinfo_by_cookie(cookie, user_agent)
@@ -147,7 +147,7 @@ def add_user_98():
             return jsonify(code=205, message=f"Cookie逻辑:{tang_info}")
     elif password:
         print("开始登陆逻辑")
-        tang_info = get_tang_user(username, password, desc=desc)
+        tang_info = get_tang_user(username, password, user_agent=userAgent, desc=desc)
         if isinstance(tang_info, str):
             return jsonify(code=205, message=f"登陆逻辑异常:{tang_info}")
         if not tang_info:

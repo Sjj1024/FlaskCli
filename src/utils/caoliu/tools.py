@@ -318,10 +318,10 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         print(f"获取的用户信息:{user_info}")
         # return user_info
         # # 获取详细信息
-        gread_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(3) > a")  # 如果没有找到，返回None
+        gread_span = soup.select_one("tr.tr4").select("td > a")[2].get("href") # 如果没有找到，返回None
         # email_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         # # user_name = soup.select('div[colspan="2"] span')[0].get_text()
-        info_url = f"{get_source()}/{gread_span[0].get('href')}"
+        info_url = f"{get_source()}/{gread_span}"
         # email_url = f"{get_source()}/{email_span[0].get('href')}"
         invcode_url = f"{get_source()}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
@@ -335,7 +335,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         #     email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
         if info_soup and invcode_soup:
-            all_info = info_soup.select("#main > div:nth-child(3)")[0].select("caoliu")[0].get_text()
+            all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
             user_name = re.search(r'用戶名(.*?) \(', all_info).group(1)
             user_id = re.search(r'\(數字ID:(.*?)\)', all_info).group(1)
             dengji = re.search(r'會員頭銜(.*?)\n', all_info).group(1)

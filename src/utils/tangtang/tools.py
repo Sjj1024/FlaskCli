@@ -1,3 +1,6 @@
+import base64
+from urllib.parse import urlencode
+
 import requests
 from bs4 import BeautifulSoup
 import time
@@ -7,10 +10,23 @@ source_url = "https://www.hghg58.com"
 time_sleep = 3
 
 
-def get_source():
-    print("获取源地址")
+def get_source(key="98色花堂1"):
+    global source_url
     if source_url:
         return source_url
+    print("获取源地址")
+    url = "https://api.github.com/repos/Sjj1024/Sjj1024/contents/src/homes/hotbox.py"
+    res = requests.get(url=url, headers={})
+    res_json = res.json()
+    content = res_json.get("content")
+    info_str = base64.b64decode(content).decode("utf-8").replace("hot_urls = ", "")
+    json_info = eval(info_str.replace("\n", "").replace(" ", ""))
+    hot_homes = json_info.get("data")
+    for home in hot_homes:
+        if home.get("title") == key:
+            source_url = home.get("url")
+            return home.get("url")
+    return Exception("没有找到源地址")
 
 
 def set_cookies(res, cookie):
@@ -21,7 +37,7 @@ def set_cookies(res, cookie):
     return cookie
 
 
-def get_soup(page_url, tang_cookie, user_agent):
+def get_soup(page_url, tang_cookie, user_agent, ignore=True):
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
@@ -44,7 +60,7 @@ def get_soup(page_url, tang_cookie, user_agent):
         res = requests.get(page_url, headers=headers)
         html = res.content.decode()
         soup = BeautifulSoup(html, "lxml")
-        if "立即注册" in soup.decode():
+        if "立即注册" in soup.decode() and ignore:
             return soup.decode()
         time.sleep(time_sleep)
         return soup
@@ -130,59 +146,61 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         return user_info
 
 
-def login_get_cookie(user_name, password):
+def login_get_cookie(user_name, password, cookie, user_agent):
     print("登陆获取cookie")
-    url = "https://zxfdsfdsf.online/member.php?mod=logging&action=login&loginsubmit=yes&frommessage&loginhash=LrcXZ&inajax=1"
-    payload = 'formhash=34ae0253&referer=https%3A%2F%2Fzxfdsfdsf.online%2Fforum.php%3Fmod%3Dguide%26view%3Dmy%26type%3Dreply&loginfield=username&username=%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%B9%A6%E7%94%9F&password=521.yigexiaoshuSHENG&gacode=&questionid=0&answer=&cookietime=2592000'
+    cookie = cookie or '_safe=vqd37pjm4p5uodq339yzk6b7jdt6oich; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_saltkey=OIWUctit; cPNj_2132_lastvisit=1680915276; cPNj_2132__refer=%252Fhome.php%253Fmod%253Dspacecp%2526ac%253Dusergroup; cPNj_2132_lastact=1680918920%09index.php%09'
+    url = f"{get_source()}/member.php?mod=logging&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes&inajax=1"
+    formhash = get_login_form_hash(cookie, user_agent)
+    payload = {
+        "fastloginfield": "username",
+        "username": user_name,
+        "cookietime": 2592000,
+        "password": password,
+        "formhash": formhash,
+        "quickforward": "yes",
+        "handlekey": "ls"
+    }
+    payload = urlencode(payload)
     headers = {
-        'authority': 'zxfdsfdsf.online',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
-        'cache-control': 'max-age=0',
-        'content-type': 'application/x-www-form-urlencoded',
-        'cookie': 'cPNj_2132_saltkey=B2TyF8Bk; cPNj_2132_lastvisit=1673917656; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_sendmail=1; cPNj_2132_lastact=1673921270%09member.php%09logging; cPNj_2132_auth=b6a6ZC6rp1w8Mq%2FZfNMnA36yg16heGu2%2Bkb3%2FNfhQN1Uf9Q5gDYGiyEceEvaFxSe8uY6pKswT4nX2mkolilwZVutt9Q; cPNj_2132_checkfollow=1; cPNj_2132_lastact=1673921376%09member.php%09logging; cPNj_2132_lastcheckfeed=438758%7C1673921376; cPNj_2132_lip=123.5.163.159%2C1673921376; cPNj_2132_sid=0; cPNj_2132_ulastactivity=1673921376%7C0',
-        'origin': 'https://zxfdsfdsf.online',
-        'referer': 'https://zxfdsfdsf.online/forum.php?mod=guide&view=my&type=reply',
-        'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cookie': cookie,
+        'Origin': get_source(),
+        'Pragma': 'no-cache',
+        'Referer': get_source(),
+        'Sec-Fetch-Dest': 'iframe',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': user_agent,
+        'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
         'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'iframe',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+        'sec-ch-ua-platform': '"Windows"'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
+    cookie_value = set_cookies(response, cookie)
+    # print(response.text)
+    if "CDATA" in response.text:
+        return cookie_value, user_agent
+    else:
+        print(f"登陆异常：{response.text}")
 
 
-def get_login_form_hash():
-    url = f"{get_source()}/forum.php?mod=guide&view=my&type=reply"
-    payload = {}
-    headers = {
-        'authority': 'zxfdsfdsf.online',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
-        'cache-control': 'max-age=0',
-        'cookie': 'cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_saltkey=k7M86DC7; cPNj_2132_lastvisit=1673917899; cPNj_2132_sendmail=1; cPNj_2132_lastact=1673921499%09member.php%09logging; cPNj_2132_auth=b6a6ZC6rp1w8Mq%2FZfNMnA36yg16heGu2%2Bkb3%2FNfhQN1Uf9Q5gDYGiyEceEvaFxSe8uY6pKswT4nX2mkolilwZVutt9Q; cPNj_2132_lastact=1673921835%09forum.php%09guide; cPNj_2132_lastcheckfeed=438758%7C1673921376; cPNj_2132_lip=123.5.163.159%2C1673921376; cPNj_2132_sid=0; cPNj_2132_ulastactivity=1673921376%7C0',
-        'referer': 'https://zxfdsfdsf.online/member.php?mod=logging&action=logout&formhash=fe6ee739',
-        'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
-    }
-    response = requests.request("GET", url, headers=headers, data=payload)
-    print(response.text)
+def get_login_form_hash(cookie, user_agent):
+    url = get_source()
+    index_soup = get_soup(url, cookie, user_agent, ignore=False)
+    formhash = index_soup.select_one("input[name='formhash']").get("value")
+    return formhash
 
 
 if __name__ == '__main__':
     source_url = "https://zxfdsfdsf.online"
-    user_name = "一个小书生"
-    pass_word = "521.yigexiaoshuSHENG"
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+    user_name = "桃花先森"
+    pass_word = "uu9k1984@163.COM"
+    cookie = '_safe=vqd37pjm4p5uodq339yzk6b7jdt6oich; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_saltkey=OIWUctit; cPNj_2132_lastvisit=1680915276; cPNj_2132__refer=%252Fhome.php%253Fmod%253Dspacecp%2526ac%253Dusergroup; cPNj_2132_lastact=1680918920%09index.php%09'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
+    login_get_cookie(user_name, pass_word, cookie, user_agent)

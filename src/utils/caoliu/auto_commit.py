@@ -400,7 +400,7 @@ class AutoCommit:
     def send_commit(self, tid, title, commit, random_sleep=True):
         print(f"开始发起评论: {title} : {commit}")
         if self.weiwang_big_100():
-            return
+            return "威望大于100了"
         post_url = self.source_url + "/post.php?"
         gbk_title = f"Re:{title}".encode()
         gbk_commit = commit.encode()
@@ -442,7 +442,7 @@ class AutoCommit:
             print(f"{self.user_name}回复帖子{tid}:{title}失败------------->{res_html}")
             if "被管理員禁言" in res_html:
                 return res_html
-            return False
+            return res_html
 
     def send_email(self, title, msg, email="648133599@qq.com"):
         content = str(msg)
@@ -509,6 +509,9 @@ class AutoCommit:
             try:
                 res = self.send_commit(tid, title, commit_str)
                 if res is True:
+                    return
+                elif res == "威望大于100了":
+                    self.send_email(f"{self.user_name}评论异常", res)
                     return
                 else:
                     self.send_email(f"{self.user_name}评论异常", res)

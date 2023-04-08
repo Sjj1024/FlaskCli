@@ -385,7 +385,6 @@ class TangTang(object):
 
     def get_comment_from_articl(self, tid):
         # 从文章评论列表中随机获取一条评论
-        print(f"获取评论内容:{tid}")
         article_url = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1"
         article_soup = self.get_soup(article_url)
         commit_list = [com.get_text() for com in article_soup.select("td.t_f")[1:]]
@@ -399,9 +398,11 @@ class TangTang(object):
         random_commit = commit_res[random.randint(0, len(commit_res) - 1)]
         cont_commit_res = [i not in random_commit for i in self.contCommit]
         if all(cont_commit_res):
-            return random_commit
+            print("没有发现违规评论....")
         else:
-            return self.get_comment_txt()
+            random_commit = self.get_comment_txt()
+        print(f"获取评论内容:{random_commit}")
+        return random_commit
 
     def get_soup(self, page_url):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
@@ -469,7 +470,6 @@ class TangTang(object):
             'cookie': self.cookie,
             'user-agent': self.user_agent
         }
-        self.random_sleep_second()
         response = requests.request("POST", url, headers=headers, data=payload)
         self.set_cookies(response)
         html = response.text
@@ -481,17 +481,20 @@ class TangTang(object):
             print("评论失败了")
             return False
 
-    def start_commit_one(self):
+    def start_commit_one(self, sleep=True):
         # 获取评论过的文章
         id_list = self.get_commenteds()
         # 获取前10页的文章链接
         article_list = self.get_articales()
         # 过滤没有评论过的文章链接
         need_post = [i for i in article_list if i not in id_list]
-        # 发起评论
+        # 发起评论: 随机对列表重新排序
+        random.shuffle(need_post)
         for index, value in enumerate(need_post):
             commit_txt = self.get_comment_from_articl(value)
             form_hash = self.get_formhash(value)
+            if sleep:
+                self.random_sleep_second()
             res = self.post_commit(value, commit_txt, form_hash)
             if res:
                 break
@@ -528,7 +531,7 @@ def check_white_day(min, max):
         return False
 
 
-def auto_commit_tang(user_name, cookie, user_agent):
+def auto_commit_tang(user_name, cookie, user_agent, sleep=True):
     # 定时评论的函数
     print("当前时间是", datetime.datetime.now())
     # 判断是不是白天，是的话再评论，否则退出
@@ -541,7 +544,7 @@ def auto_commit_tang(user_name, cookie, user_agent):
     tang.cookie = cookie
     tang.user_agent = user_agent
     tang.get_user_info()
-    tang.start_commit_one()
+    tang.start_commit_one(sleep)
 
 
 def run():
