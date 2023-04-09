@@ -345,7 +345,7 @@ class AutoCommit:
                 commit_list = article_soup.select("div.do_not_catch") or article_soup.select("div.tpc_cont")
                 commit_str_list = [commit.get_text().strip() for commit in commit_list[1:]]
                 self.dont_commit_str = ["1024", "感谢分享"]
-                commit_fillter_str = [commit for commit in commit_str_list if commit not in self.dont_commit_str]
+                commit_fillter_str = [commit.strip() for commit in commit_str_list if commit not in self.dont_commit_str]
                 return random.choice(commit_fillter_str)
         return ""
 

@@ -41,7 +41,7 @@ def add_caoliu_commit_local():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if user_name in update_user["task_file_sha"]:
+        if update_user["task_file_sha"] and user_name in update_user["task_file_sha"]:
             return jsonify(code=205, message="任务已存在", data=f"任务已存在")
         task_id = add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab)
         update_user["task_file_sha"] = task_id

@@ -402,7 +402,7 @@ class TangTang(object):
         else:
             random_commit = self.get_comment_txt()
         print(f"获取评论内容:{random_commit}")
-        return random_commit
+        return random_commit.strip()
 
     def get_soup(self, page_url):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
