@@ -45,7 +45,7 @@ def get_all_caoliu_home():
         'http': None,
         'https': None,
     }
-    res = requests.post(url=url, headers={}, data=data, proxies =proxies)
+    res = requests.post(url=url, headers={}, data=data, proxies=proxies)
     res_json = json.loads(res.content.decode("utf-8"))
     # 打印出地址信息和更新时间
     urls = [res_json["url1"], res_json["url2"], res_json["url3"]]
@@ -318,7 +318,10 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         print(f"获取的用户信息:{user_info}")
         # return user_info
         # # 获取详细信息
-        gread_span = soup.select_one("tr.tr4").select("td > a")[2].get("href") # 如果没有找到，返回None
+        if "Mobile" not in soup.decode():
+            gread_span = soup.select_one("tr.tr4").select("td > a")[2].get("href")  # 如果没有找到，返回None
+        else:
+            gread_span = soup.select_one("tr.tr2").select("td > a")[2].get("href")
         # email_span = soup.select("#main > div.t > caoliu > tr > td:nth-child(2) > a")  # 如果没有找到，返回None
         # # user_name = soup.select('div[colspan="2"] span')[0].get_text()
         info_url = f"{get_source()}/{gread_span}"
