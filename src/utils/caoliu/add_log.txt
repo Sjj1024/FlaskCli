@@ -1,181 +1,358 @@
-E:\Dpandata\Myproject\FlaskCli\venv\Scripts\python.exe E:/PyCharm202223/plugins/python/helpers/pydev/pydevd.py --multiprocess --qt-support=auto --client 127.0.0.1 --port 58716 --file E:\Dpandata\Myproject\FlaskCli\src\utils\caoliu\test.py
-Connected to pydev debugger (build 222.4345.23)
-打开sql文件
-227c9_ck_info=%2F%09; 227c9_winduser=AglXBgFVOQlQAFdVVA0MUAVdVAhUVwxSAwAHCFtVDQZdAFcDVQcFPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091639021982%09%2Fread.php%3Ftid%3D4756805; ismob=1
-{'code': 206, 'message': '彼岸的向阳花：添加的用户已存在！请勿重复添加！'}
-227c9_lastwrite=1631016953; 227c9_ck_info=%2F%09; 227c9_winduser=BAhTBgFQOVMCBlFWAlAMUFNTVQZWBFcEBwAAAFRVUwFYUF9RVgIGPA%3D%3D; 227c9_groupid=8; 227c9_ipfrom=b4a0067bc6e254e5554680059c3b9232%09Unknown; 227c9_postReplyLastData=47447101024; 227c9_lastvisit=0%091639804440%09%2Findex.php%3F; ismob=1
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:34  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=h5n82i9lncu1l0n2s696fafk04; 227c9_ck_info=%2F%09; 227c9_winduser=AwRQAgRbOVRTVFEHDFYABFcDA1VWAwRWUVZXU1NWBwwLA1EGUlNVPA%3D%3D; 227c9_groupid=8
-{'code': 206, 'message': '诗人发诗兴：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=qvda3sst7rfeno1c0ebho25hb7; 227c9_ck_info=%2F%09; 227c9_winduser=AgNTBAZTOVRTAVVTAVcLBlNQUVABUVEGUVFUVFNcVwQNAgQDAQZTPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '高领 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=BgNdBAJWOVYNUQUBBlBfVwBSUlMHAgVXVQBWVVZQAwZbBlMEBwgCPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091639925404%09%2Findex.php%3F; ismob=1
-{'code': 200, 'message': '北部湾海盗 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AwlQDA1TOQJWUlBQDAMLUFMADgRRBlZSBFMDBFBdBAAOAwQDUQRSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091639720599%09%2Findex.php%3F; ismob=1
-{'code': 200, 'message': '西单 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgdQAgVQOVJQCQZUVgFcCF8GBQcAAgNQVVYCBlZTVFABBFEAUQgGPAxRB1RUCAZQUQBdB1EBB1IAUFFTAVQHBVBcBlYKBlJc; 227c9_groupid=8; 227c9_ipfrom=adbe10449d48133038dc6b55fc987aac%09Unknown; 227c9_postReplyLastData=48255821024; 227c9_lastvisit=0%091639838474%09%2Findex.php%3F; ismob=1
-{'code': 200, 'message': '天涯若比伦 : 添加成功success'}
-ismob=1; PHPSESSID=flf9hgdbnkv333ag3pjhmu0117; 227c9_ck_info=%2F%09; 227c9_winduser=BgFWBgFUOQdXBVtcAVQJU1MGUQVcU1FTBQQBUVNdBwENVAQBBwkAPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '浪子叮铛 : 添加成功success'}
-227c9_winduser=AghWAwNUOVIMCQIFV1daU1ZVVFJSBQFVBgdXUwVSUw1bAVQHBwlS; 227c9_ck_info=%2F%09; 227c9_lastvisit=0%091638901551%09%2Findex.php%3F; ismob=1
-{'code': 200, 'message': '天繁盛式 : 添加成功success'}
-ismob=1; PHPSESSID=aeb7kj9vcepu1cbbtnqdcd9q06; 227c9_ck_info=%2F%09; 227c9_winduser=BQldAAxROQFQBAVQDAAMV1ZUUwZTAwJRAwRTA1QFBwBYCVFcUwJUPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '昨夜清风 : 添加成功success'}
-ismob=1; PHPSESSID=07jc33ovrbahngsqrl79c6g900; 227c9_ck_info=%2F%09; 227c9_winduser=AghUDAVSOQcHB1sGUAFbU15QUgEGBgcEVgVXBFEGAAwBCFRRUQYHPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '吕小布lll : 添加成功success'}
-ismob=1; PHPSESSID=hkboai9d2b2i8mhrgjt8cbasm6; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZVOQYBBVddAgJbB1IBAgUHAlIDBAQECVMGAlEIAV9UBQZWPA%3D%3D; 227c9_groupid=9
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:35  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=0p5vej235vip9ivib090g1l9f4; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZUOQEAB1VSAgRYAwJXAQVVUwJRA1JQAQZSBgQBVFFUBwhRPA%3D%3D; 227c9_groupid=8
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:35  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=jvpp77a6c87312b3mvt35j6qv4; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZUOQEAB1VSAgRYAwJXAQVVUwJRA1JQAQZSBgQBVFFUBwhRPA%3D%3D; 227c9_groupid=8
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:35  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=rik27fsni8fhb76s2msaevo5e0; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZVOQYBBVddAgJbB1IBAgUHAlIDBAQECVMGAlEIAV9UBQZWPA%3D%3D; 227c9_groupid=9; 227c9_lastvisit=0%091640099100%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:36  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=qe4nedfmdd3epav61dneerv4u3; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZUOQEAB1VSAgRYAwJXAQVVUwJRA1JQAQZSBgQBVFFUBwhRPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640099223%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.00(s) x2, 01-20 09:36  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=gtgmnh88fpldnssonnsitm0lj1; 227c9_ck_info=%2F%09; 227c9_winduser=BQZWAwVUOVIDAAEBUFBcBl9XAAEGBFJXAVNRCQZXAlQPB1AGAANSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091640142648%09%2Findex.php%3F
-{'code': 200, 'message': 'yuquzhi : 添加成功success'}
-ismob=1; PHPSESSID=jf924c1a16i21rlaas7pkttfl0; 227c9_ck_info=%2F%09; 227c9_winduser=AwNcAgRXOQIHVlBXUwddCVZWAVNUAgxaVlNUBlRXDQBYAlJXDlUAPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '环塔王子 : 添加成功success'}
-ismob=1; PHPSESSID=8jm3kd7hqmcrea6v6aq5asice5; 227c9_ck_info=%2F%09; 227c9_winduser=AgJdAwZUOVEMAVJWU1BbB1UHVldWUVdXVlQCAFJRDQcMUAUGUgcBPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '现场报话机 : 添加成功success'}
-ismob=1; PHPSESSID=s4ofni1k63dt78tbg3hqribht7; 227c9_ck_info=%2F%09; 227c9_winduser=BQhcBAdQOVEHAlVQA1AMU1ddBwhWVlZQBQlUVldXVlAKCQIEVlNWPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640173184%09%2Fthread0806.php%3Ffid%3D7%26search%3D295474
-{'code': 200, 'message': '逆行 : 添加成功success'}
-ismob=1; PHPSESSID=sgjf6usksop9bvmru2d5msjmh7; 227c9_ck_info=%2F%09; 227c9_winduser=AghXDQZVOQYBBVddAgJbB1IBAgUHAlIDBAQECVMGAlEIAV9UBQZWPA%3D%3D; 227c9_groupid=9; 227c9_lastvisit=0%091640173432%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:36  <br/>\n</center><br/>\n</body></html>\n'}
-227c9_winduser=BgdWDQxWOQkMUwBTDQQMBlYDBQYGAFdUAABRVAZWU1MNU1YBUQRQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640174181%09%2Findex.php%3F
-{'code': 200, 'message': 'wp98144 : 添加成功success'}
-227c9_winduser=BgdWDQxWOQkMUwBTDQQMBlYDBQYGAFdUAABRVAZWU1MNU1YBUQRQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640174181%09%2Findex.php%3F
-{'code': 206, 'message': 'wp98144：添加的用户已存在！请勿重复添加！'}
-227c9_winduser=BgdWDQxWOQkMUwBTDQQMBlYDBQYGAFdUAABRVAZWU1MNU1YBUQRQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640174181%09%2Findex.php%3F
-{'code': 206, 'message': 'wp98144：添加的用户已存在！请勿重复添加！'}
-227c9_winduser=BgdWDQxWOQkMUwBTDQQMBlYDBQYGAFdUAABRVAZWU1MNU1YBUQRQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640174181%09%2Findex.php%3F
-{'code': 206, 'message': 'wp98144：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=BQRUAQVVOQQFBFVTAVENB1JUAAhSA1BQVQMBBlUAUAZfUFJWUQYGPA%3D%3D; 227c9_groupid=8; 227c9_ipfrom=75a2e288c7e53f7fc8633319a2a8957f%09%D6%D0%B9%FA%C1%AA%CD%A8; 227c9_postReplyLastData=4717074%B2%BB%CA%C7%B5%F6%D3%E3%A3%AC%CB%FC%B4%D3%BE%C5%D4%C2%B7%DD%BF%AA%CA%BC%BE%CD%B2%BB%D0%D0%C1%CB%A3%AC%BA%DC%B6%E0%B4%F3%C0%D0%B7%D6%CF%ED%B5%C4%D7%CA%D4%B4%B6%BC%BF%B4%B2%BB%C1%CB%A3%AC%BA%DC%B7%B3%A1%A3; ismob=1; 227c9_lastvisit=0%091640187210%09%2Findex.php%3F
-{'code': 200, 'message': 'Incubus : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=BQNSBw1VOQQHVQAGVwIMAFYABgAFUANVVgUMAFICDFQJBQIEAgAFPA%3D%3D; 227c9_groupid=9; ismob=1; 227c9_lastvisit=0%091640265064%09%2Findex.php%3F
-{'code': 206, 'message': 'ZGyin行：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=vnm8b9sc53g44r4q2trdvrpa56; 227c9_ck_info=%2F%09; 227c9_winduser=BAJRDABSOQQACAZVDVQKAABUAAUHB1VTUlENVVpQAQ1aCFVXAFBSPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '一柱道长 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AwhVAQBQOVMDUgJUBQMIAFRcBAJRUQABVFMGU1dTVwFcBQUDAwVXPA%3D%3D; 227c9_groupid=8; UM_distinctid=17c03bf9c8a230-0477b330dd147a-5437971-5f070-17c03bf9c8ee4; CNZZDATA950900=cnzz_eid%3D819174076-1632143893-https%253A%252F%252Fprivate70.ghuws.win%252F%26ntime%3D1632143893; ismob=1; 227c9_lastvisit=0%091640276562%09%2Findex.php%3F
-{'code': 200, 'message': '妹控大佬 : 添加成功success'}
-ismob=1; PHPSESSID=eiru9dfj73jdu48vmr1mk2n0i6; 227c9_ck_info=%2F%09; 227c9_winduser=BQNTBANbOVIDA1BcAFBfVVVRUwdTAFFRAgJXAVtUVgNdUwUBA1NSPA%3D%3D; 227c9_groupid=8
-{'code': 200, 'message': '爱你不变 : 添加成功success'}
-ismob=1; PHPSESSID=m1ha5ajn990arl8p43gvbk0hq0; 227c9_ck_info=%2F%09; 227c9_winduser=AgJdAwFSOQQHVVZSVFBYUFZdUQJQVgUHAgBXBAZXAgdaUFUBB1ABPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640355575%09%2Findex.php%3F
-{'code': 200, 'message': '降妖da金杵 : 添加成功success'}
-ismob=1; PHPSESSID=ecn2ilad8ad5r1u7bpbv2ojd67; 227c9_ck_info=%2F%09; 227c9_winduser=AAlUAgxrAgFXCVUHDFZbA1QADgMABgwEBVUFUQZVDQEMVQUHDlJt; 227c9_groupid=8
-{'code': 200, 'message': 'duker : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=BAhTBwBXOQhTBgdSVwdaCAVRBgcHDAVUVAVRB1AGVwQKAQJQDlRTPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640377996%09%2Findex.php%3F
-{'code': 200, 'message': 'wu358610125 : 添加成功success'}
-ismob=1; PHPSESSID=jb4d1bdrm93bl6m839nr1rfg93; 227c9_ck_info=%2F%09; 227c9_winduser=BgJVDQdTOQdUVlNTAQVbUwJTDgVdAwFRBwYEAVIHDFNbAlFWUwBRPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640405746%09%2Findex.php%3F
-{'code': 200, 'message': 'woyepagui : 添加成功success'}
-ismob=1; PHPSESSID=jb4d1bdrm93bl6m839nr1rfg93; 227c9_ck_info=%2F%09; 227c9_winduser=BgJVDQdTOQdUVlNTAQVbUwJTDgVdAwFRBwYEAVIHDFNbAlFWUwBRPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640405746%09%2Findex.php%3F
-{'code': 206, 'message': 'woyepagui：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=v86ik2540vds8gjasvtne0r810; 227c9_ck_info=%2F%09; 227c9_winduser=AglcAwFXOQkGB1JVDQEJVwIAVVRcVgJSBlVTBlQFAgwLBgRWAARSPFZTVlMACVBWU1FcAQVXVFRXUVVVCVJRUQBXBQ0OA15T; 227c9_groupid=8; 227c9_lastvisit=0%091640410067%09%2Findex.php%3F
-{'code': 200, 'message': '静的故事1024 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgZWAwRQOQVRVVUFBAQNVQNdVgddAVBaU1ZUBgJdBQUBCFRUBwMFPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640422311%09%2Findex.php%3F
-{'code': 200, 'message': '酒肆阿良 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgZWAwRQOQVRVVUFBAQNVQNdVgddAVBaU1ZUBgJdBQUBCFRUBwMFPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640422311%09%2Findex.php%3F
-{'code': 206, 'message': '酒肆阿良：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=BANWAAxWOVIHUwAHVgINVFJRAghXB1YBAgQMVlMGDVFaBFMGVgZdPA%3D%3D; 227c9_groupid=9; ismob=1; 227c9_lastvisit=0%091640426056%09%2Findex.php%3F
-{'code': 200, 'message': '爱的曙光 : 添加成功success'}
-ismob=1; PHPSESSID=s1df74akj7hgnt03hbkkg88fc7; 227c9_ck_info=%2F%09; 227c9_winduser=AglXBQdQOQUEVlUBBAIJBlEDAAYBAQRQAwVXAlNSVFEJVFQDAwUBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640501391%09%2Findex.php%3F
-{'code': 200, 'message': '最爱小母狗L : 添加成功success'}
-ismob=1; PHPSESSID=s1df74akj7hgnt03hbkkg88fc7; 227c9_ck_info=%2F%09; 227c9_winduser=AglXBQdQOQUEVlUBBAIJBlEDAAYBAQRQAwVXAlNSVFEJVFQDAwUBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640501391%09%2Findex.php%3F
-{'code': 206, 'message': '最爱小母狗L：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=s1df74akj7hgnt03hbkkg88fc7; 227c9_ck_info=%2F%09; 227c9_winduser=AglXBQdQOQUEVlUBBAIJBlEDAAYBAQRQAwVXAlNSVFEJVFQDAwUBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640501391%09%2Findex.php%3F
-{'code': 206, 'message': '最爱小母狗L：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=dg7bnmmmcn309np2r9jql18h50; 227c9_ck_info=%2F%09; 227c9_winduser=AwlQDA1aOQJWUlBQDAMLUFMADgRRBlZSBFMDBFBdBAAOAwQDUQRSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091640502261%09%2Findex.php%3F
-{'code': 206, 'message': '萌十三：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=rd247dfhu8j7oqd8a05cnaj8j2; 227c9_ck_info=%2F%09; 227c9_winduser=BAlQDAVSOQhTVAUGAgEOAAVTAwZXBgdaBAIHBwdVAwwKCV8GUQAHPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640518828%09%2Findex.php%3F
-{'code': 200, 'message': '110120122 : 添加成功success'}
-ismob=1; PHPSESSID=sphutp66a42dglnccfqb75pvo6; 227c9_ck_info=%2F%09; 227c9_winduser=BAJQAwZVOQABVVBQA1RaBF9RVAAGB1YAAQYCCFNUAQIKU1NWUlBcPA%3D%3D; 227c9_groupid=10; 227c9_lastvisit=0%091640521218%09%2Findex.php%3F
-{'code': 200, 'message': '征途 : 添加成功success'}
-ismob=1; PHPSESSID=0lsb7qrdhl46o7vhdf2vmqj464; 227c9_ck_info=%2F%09; 227c9_winduser=BABXBg1QOVUAAFtcAVcIAl5QD1ICVgxVUgFTU1VTVFcOCVdRUgEBPA%3D%3D; 227c9_groupid=14; 227c9_lastvisit=0%091640521317%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:39  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=sqo05uqifav83deq0l7rm3qoc0; 227c9_ck_info=%2F%09; 227c9_winduser=AwNdDQRbOVEDVFNVDVAKA1ADDgNcAFdTUgRUVVoFBlFdVVdVDwkCPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640522550%09%2Findex.php%3F
-{'code': 200, 'message': '乘前骑后 : 添加成功success'}
-ismob=1; PHPSESSID=bg0pfj37b8c78q3ahmoh49t183; 227c9_ck_info=%2F%09; 227c9_winduser=BANcAwRbOVVTUgZXUAwLVAUAAQZVAQdQAwcGBlVSAwcMVQVTAwFTPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640526964%09%2Findex.php%3F
-{'code': 200, 'message': '耐心等待 : 添加成功success'}
-ismob=1; PHPSESSID=bg0pfj37b8c78q3ahmoh49t183; 227c9_ck_info=%2F%09; 227c9_winduser=BANcAwRbOVVTUgZXUAwLVAUAAQZVAQdQAwcGBlVSAwcMVQVTAwFTPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640526964%09%2Findex.php%3F
-{'code': 206, 'message': '耐心等待：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgJVAgNVOVYCVABRVAEPBF5WBAddUANXU1UGAwACA1ddBQBXD1BQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640527137%09%2Findex.php%3F
-{'code': 200, 'message': '咖啡树苗 : 添加成功success'}
-ismob=1; PHPSESSID=efoogs87ov2mh3r6ktt0u60du1; 227c9_ck_info=%2F%09; 227c9_winduser=AwlQDA1TOQJWUlBQDAMLUFMADgRRBlZSBFMDBFBdBAAOAwQDUQRSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091640527775%09%2Findex.php%3F
-{'code': 206, 'message': '西单：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=5j7plhqjoslk9uufioavn0chs0; 227c9_ck_info=%2F%09; 227c9_winduser=DwZdAQBrBFIFVAIHAFNbAwRUBAVXBQYHAgUFVFYGAAxfCAJQDgdt; 227c9_groupid=8; 227c9_lastvisit=0%091640528190%09%2Findex.php%3F
-{'code': 200, 'message': 'duan52133 : 添加成功success'}
-ismob=1; PHPSESSID=ncd9ulurall6nh3bttcvurkuh7; 227c9_ck_info=%2F%09; 227c9_winduser=AwhdDQdaOQYMBAUFBwANB1IHUwVVBgdWCQIEU1dSUAcBV1MHUwFdPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640529982%09%2Findex.php%3F
-{'code': 200, 'message': '蓝银草 : 添加成功success'}
-ismob=1; PHPSESSID=ncd9ulurall6nh3bttcvurkuh7; 227c9_ck_info=%2F%09; 227c9_winduser=AwhdDQdaOQYMBAUFBwANB1IHUwVVBgdWCQIEU1dSUAcBV1MHUwFdPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640529982%09%2Findex.php%3F
-{'code': 206, 'message': '蓝银草：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=kfdab0l1di3l9i0bti1hpbn0m0; 227c9_ck_info=%2F%09; 227c9_winduser=AwlQDA1aOQJWUlBQDAMLUFMADgRRBlZSBFMDBFBdBAAOAwQDUQRSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091640530728%09%2Findex.php%3F
-{'code': 206, 'message': '萌十三：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgZTBwBXOVQMVlAHBgILU1cDUQVSUVJaCFYMVVZUBwQKUFNVVlJQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640530873%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:40  <br/>\n</center><br/>\n</body></html>\n'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgZTBwBXOVQMVlAHBgILU1cDUQVSUVJaCFYMVVZUBwQKUFNVVlJQPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640530873%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:40  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=3bb843qhp3jsiidunv41ocq1a1; 227c9_ck_info=%2F%09; 227c9_winduser=AwBcDQJVOVQEBABSAgwPVVIHAVVdAwdVBgFQU1VWUQFcUAVRBVRSPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640531338%09%2Fhack.php%3FH_name%3Dbank
-{'code': 200, 'message': '被禁忌的爱 : 添加成功success'}
-ismob=1; PHPSESSID=3bb843qhp3jsiidunv41ocq1a1; 227c9_ck_info=%2F%09; 227c9_winduser=AwBcDQJVOVQEBABSAgwPVVIHAVVdAwdVBgFQU1VWUQFcUAVRBVRSPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640531338%09%2Fhack.php%3FH_name%3Dbank
-{'code': 206, 'message': '被禁忌的爱：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=82bjl6q0249as5ior25h94aij1; 227c9_ck_info=%2F%09; 227c9_winduser=AwBVBgRQOVFWAQBTVwMPVQMHDlBUDQRWAQICVgVTVAIOVAUHU1JWPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640531676%09%2Findex.php%3F
-{'code': 200, 'message': '心由相生 : 添加成功success'}
-ismob=1; PHPSESSID=82bjl6q0249as5ior25h94aij1; 227c9_ck_info=%2F%09; 227c9_winduser=AwBVBgRQOVFWAQBTVwMPVQMHDlBUDQRWAQICVgVTVAIOVAUHU1JWPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640531676%09%2Findex.php%3F
-{'code': 206, 'message': '心由相生：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=0nouetk3483ur7jnmq6ic8bmi3; 227c9_ck_info=%2F%09; 227c9_winduser=AwlQDAxQOQJWUlBQDAMLUFMADgRRBlZSBFMDBFBdBAAOAwQDUQRSPA%3D%3D; 227c9_groupid=6; 227c9_lastvisit=0%091640535313%09%2Findex.php%3F
-{'code': 200, 'message': '望京 : 添加成功success'}
-ismob=1; PHPSESSID=mt83sfq6kcoil2tttq2qtu7i73; 227c9_ck_info=%2F%09; 227c9_winduser=BAlWBgVQOVRWAltcAlcAB1FWBgdSAAADAlVXVAdUVAZdAVFVDgNVPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640537794%09%2Findex.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:41  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=tk5fsh6s8co90vda3eh283i6k4; 227c9_ck_info=%2F%09; 227c9_winduser=AgRRAQNbOQFXBVZcVgdbBFBSBAJSBQNWBFFXU1NUV1EAVANQDwRTPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640540260%09%2Fsearch.php%3F
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.01(s) x2, 01-20 09:41  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=e4puko8c0s6cbrdsf3ugg17ue1; 227c9_ck_info=%2F%09; 227c9_winduser=AgJUBQBWOVEHCAEHV1cMUgdWVVNXAFZbAQQEBlVSUwEIVFRVD1RQPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640562710%09%2Findex.php%3F
-{'code': 200, 'message': '笑笑不说话 : 添加成功success'}
-ismob=1; PHPSESSID=e4puko8c0s6cbrdsf3ugg17ue1; 227c9_ck_info=%2F%09; 227c9_winduser=AgJUBQBWOVEHCAEHV1cMUgdWVVNXAFZbAQQEBlVSUwEIVFRVD1RQPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640562710%09%2Findex.php%3F
-{'code': 206, 'message': '笑笑不说话：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgdVBAVVOQRWAVRcBlFcUFZSBABSBgNTBFZTBAdSUAUMUwNQUwBRPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640565159%09%2Findex.php%3F
-{'code': 206, 'message': '和鲁迅放风筝：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgdVBAVVOQRWAVRcBlFcUFZSBABSBgNTBFZTBAdSUAUMUwNQUwBRPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640565159%09%2Findex.php%3F
-{'code': 206, 'message': '和鲁迅放风筝：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgdVBAVVOQRWAVRcBlFcUFZSBABSBgNTBFZTBAdSUAUMUwNQUwBRPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640565159%09%2Findex.php%3F
-{'code': 206, 'message': '和鲁迅放风筝：添加的用户已存在！请勿重复添加！'}
-227c9_ck_info=%2F%09; 227c9_winduser=AgdVBAVVOQRWAVRcBlFcUFZSBABSBgNTBFZTBAdSUAUMUwNQUwBRPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640565159%09%2Findex.php%3F
-{'code': 206, 'message': '和鲁迅放风筝：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=lnh0qo2d4j51pnhenrsuj78ps5; 227c9_ck_info=%2F%09; 227c9_winduser=DwVWAAJrU1JRUlJWUw0JBAVdBFMBAQYEUgdQVAJVUAYIV1IDD1Nt; 227c9_groupid=8; 227c9_lastvisit=0%091640565863%09%2Fsearch.php%3F
-{'code': 200, 'message': '阿立 : 添加成功success'}
-227c9_ck_info=%2F%09; 227c9_winduser=AghRDQZbOQgABQFVBgwNUFNUVgBQDAJQBVEGA1sCVFEAA1JWA1cCPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640582298%09%2Fthread0806.php%3Ffid%3D9
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.00(s) x2, 01-20 09:42  <br/>\n</center><br/>\n</body></html>\n'}
-227c9_ck_info=%2F%09; 227c9_winduser=AghRDQZbOQgABQFVBgwNUFNUVgBQDAJQBVEGA1sCVFEAA1JWA1cCPA%3D%3D; 227c9_groupid=8; ismob=1; 227c9_lastvisit=0%091640582298%09%2Fthread0806.php%3Ffid%3D9
-{'code': 205, 'message': 'Cookie逻辑:<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<head>\n<title>  草榴社區 </title>\n<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>\n<meta content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover" name="viewport"/>\n<meta content="草榴,1024,草榴社區,1024app,草榴app,小草app,亞洲無碼,亞洲有碼,歐美無碼,動漫無碼,轉貼交流,技術討論區,達蓋爾的旗幟,新時代的我們,成人文學,在線成人影院,http下載,草榴貼圖,草榴資訊,t66y.com" name="keywords"/>\n<meta content="草榴社區 t66y.com" name="description"/>\n<base href="https://cl.5206x.xyz/"/>\n<link href="114.png" rel="apple-touch-icon-precomposed" sizes="114x114"/>\n<link href="72.png" rel="apple-touch-icon-precomposed" sizes="72x72"/>\n<link href="57.png" rel="apple-touch-icon-precomposed"/>\n<link href="72.png" rel="shortcut icon"/>\n<script charset="UTF-8" src="//2023.redircdn.com/web/mob_post.js?v=2.050622"></script>\n<script src="//2023.redircdn.com/web/cdn/jquery.3.2.1.min.js"></script>\n<script type="text/javascript">cssInit(\'2.050622\');</script>\n</head><body>\n<div id="header">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr>\n<td class="banner">\n<h3>草榴社區</h3>\n<div style="float:left;height:50px;"><input onclick="window.location=\'index.php\'" type="button" value="＜"/></div>\n<div style="float:right;height:50px;"><input class="nav-button" type="button" value="≡"/>\n<ul class="nav-categories" style="display:none;right:10px;width:120px;float:right;background-color:white;position:absolute;border-radius:5px;padding:10px;line-height:50px;z-index:1;">\n<a href="index.php">首頁</a><br/>\n<a href="profile.php">資料</a><br/>\n<a href="faq.php">幫助</a>\n</ul></div>\n</td>\n</tr>\n</table>\n<script>\r\n$(function() {     \r\n    $(\'.nav-button\').on(\'click\',function(e) {\r\n        e.preventDefault();\r\n        $(".nav-categories").slideToggle();\r\n    });\r\n});\r\n</script>\n<div class="h guide" colspan="2">\n<!--mb--><a href="">登錄</a> \xa0<a href="">註冊</a><!--mbend-->\r\n\r\n\t| <a href="search.php?fid=0">搜索</a>\n</div>\n<div id="blank" style="height:10px; clear:both"></div>\n</div>\n<div id="main">\n<div class="t3"><table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td align="left">\n<img align="absbottom" src="//2023.redircdn.com/web/images//wind/index/home.gif"/> <b><a href="./index.php">草榴社區</a> » 論壇提示</b></td></tr></table></div>\n<div class="t" style="margin-top:15px;">\n<table align="center" cellpadding="0" cellspacing="0" width="100%">\n<tr><td class="h" colspan="2">草榴社區 提示信息</td></tr>\n<tr class="tr1">\n<th>\n<center>\n<br/>\n<div style="padding:0px 0px 5px 10px;width:100%;max-width:500px;text-align:left;">您沒有登錄或者您沒有權限訪問此頁面，可能有如下幾個原因:</div>\n<div style="padding:0px 0px 15px 10px; line-height:150%;width:100%;max-width:500px;text-align:left;">\n<ol>\n<li>用戶密碼已更改 或 站點開啟了安全認證 , 需要重新登錄!<br/>如果您無法退出,請點選IE 工具 =&gt; 選項 然後手動清除COOKIE<br/>\n</li><li>您還不是論壇會員,請先登錄論壇<br/>\n</li></ol>\n</div>\n<form action="login.php?" method="post" name="login">\n<fieldset class="cleanbg" style="border:1px solid #D4EFF7;width:90%;max-width:500px;">\n<legend style="padding:0 5px 0 5px;">登錄</legend>\n<table align="center" width="85%">\n<tr>\n<td style="height:30px;padding-left:10px;" width="30%">用戶名</td><td> <input class="input" name="pwuser" style="width:90%;" tabindex="1" type="text"/></td>\n</tr>\n<tr>\n<td style="height:30px;padding-left:10px;">密碼</td><td> <input class="input" name="pwpwd" style="width:90%;" tabindex="2" type="password"/></td>\n</tr>\n<tr><td style="height:30px;padding-left:10px;">隱身登錄</td>\n<td>\n<input name="hideid" type="radio" value="1"/>          是 &amp;nbsp\r\n\t\t<input checked="" name="hideid" tabindex="4" type="radio" value="0"/>  否 &amp;nbsp \r\n\t</td>\n</tr>\n<tr>\n<td></td>\n<td>\n<br/><input class="btn" style="height:30px;" tabindex="4" type="submit" value=" 登 錄 "/>\n</td>\n</tr>\n</table>\n</fieldset>\n</form></center>\n<input name="forward" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="jumpurl" type="hidden" value="http://cl.5206x.xyz/profile.php?"/>\n<input name="step" type="hidden" value="2"/>\n<input name="cktime" type="hidden" value="31536000"/><br/>\n<script language="JavaScript">\r\ndocument.login.pwuser.focus();\r\n</script>\n</th></tr>\n</table></div><br/>\n<div style="margin:0px 15px;"></div>\n</div>\n<center class="gray">\n<a href="mobile.php?ismobile=no">電腦版</a> <a href="mobile.php?ismobile=yes">手機版</a> <a href="read.php?tid=1648542">客戶端</a> <a href="notice.php?fid=-1#1">DMCA</a><br/>\r\n用時 0.21(s) x2, 01-20 09:42  <br/>\n</center><br/>\n</body></html>\n'}
-ismob=1; PHPSESSID=c5hroarbf5c9c8pvpeimfnbp62; 227c9_ck_info=%2F%09; 227c9_winduser=BAdXBAJUOQkFAVRXBQYNAF9RDgBQBFBaBAQCVldWUwRaUAVcAFdUPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640592164%09%2Findex.php%3F
-{'code': 200, 'message': '富贵闲人 : 添加成功success'}
-ismob=1; PHPSESSID=25vfd87f7s480db42noedus6n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgRWAQdTOQNUBlEHAgQOBFVWAABXUFVRB1UCCAcGAwxbAlRTAwMBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640612556%09%2Findex.php%3F
-{'code': 200, 'message': '冰城老憨 : 添加成功success'}
-ismob=1; PHPSESSID=25vfd87f7s480db42noedus6n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgRWAQdTOQNUBlEHAgQOBFVWAABXUFVRB1UCCAcGAwxbAlRTAwMBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640612556%09%2Findex.php%3F
-{'code': 206, 'message': '冰城老憨：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=25vfd87f7s480db42noedus6n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgRWAQdTOQNUBlEHAgQOBFVWAABXUFVRB1UCCAcGAwxbAlRTAwMBPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640612556%09%2Findex.php%3F
-{'code': 206, 'message': '冰城老憨：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=kmp9cfnk0gp8kbdheha3m3b3n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgBTBgRUOVUCB1RdV1EKVVFTAVBRVFFRCVJRCVFVDFFfCVVQBQABPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640614530%09%2Findex.php%3F
-{'code': 200, 'message': '温酒师 : 添加成功success'}
-ismob=1; PHPSESSID=kmp9cfnk0gp8kbdheha3m3b3n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgBTBgRUOVUCB1RdV1EKVVFTAVBRVFFRCVJRCVFVDFFfCVVQBQABPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640614530%09%2Findex.php%3F
-{'code': 206, 'message': '温酒师：添加的用户已存在！请勿重复添加！'}
-ismob=1; PHPSESSID=kmp9cfnk0gp8kbdheha3m3b3n1; 227c9_ck_info=%2F%09; 227c9_winduser=AgBTBgRUOVUCB1RdV1EKVVFTAVBRVFFRCVJRCVFVDFFfCVVQBQABPA%3D%3D; 227c9_groupid=8; 227c9_lastvisit=0%091640614530%09%2Findex.php%3F
-Traceback (most recent call last):
-  File "E:\Dpandata\Myproject\FlaskCli\venv\lib\site-packages\requests\models.py", line 971, in json
-    return complexjson.loads(self.text, **kwargs)
-  File "C:\Users\song\AppData\Local\Programs\Python\Python39\lib\json\__init__.py", line 346, in loads
-    return _default_decoder.decode(s)
-  File "C:\Users\song\AppData\Local\Programs\Python\Python39\lib\json\decoder.py", line 337, in decode
-    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
-  File "C:\Users\song\AppData\Local\Programs\Python\Python39\lib\json\decoder.py", line 355, in raw_decode
-    raise JSONDecodeError("Expecting value", s, err.value) from None
-json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
-During handling of the above exception, another exception occurred:
 
-Traceback (most recent call last):
-  File "E:\Dpandata\Myproject\FlaskCli\venv\lib\site-packages\requests\models.py", line 975, in json
-    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
-requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
-Process finished with exit code 1
+草榴社區
+
+»
+
+	无限色情 退出 |
+
+	資料
+
+	|
+
+	短信
+
+	| 搜索 | 社區服務
+
+	| 银行
+
+	| 邀请注册
+
+	| 幫助
+
+
+
+社區服務
+
+
+
+
+
+
+
+
+
+■■■ 來訪者必看的內容 - 使你更快速上手 <隨時更新> ■■■ (2006-11-11 22:49)        
+
+
+
+
+
+
+
+
+
+
+
+
+
+		您的等級：新手上路 | 上次登錄時間：04-11 10:59 | 您的IP：116.236.218.154威望：9 點 | 金錢：99 USD | 貢獻：0 點 | 共發表帖子：63 | 我的主題 | 我的回復 | 我的點評 | 個人展區
+
+
+
+		最高日 2670 帖 | 標記已讀 | 精華區 | 最新帖子 RSS
+		共 1547161 篇主題 | 24196166  篇帖子 | 1876  位會員 | 歡迎新會員 Caroline
+
+
+
+
+
+
+		» BT電影下載
+
+
+
+論壇
+主題
+文章
+最後發表
+版主
+
+
+
+241
+亞洲無碼原創區
+自由發布亞洲最新無修正資訊片 亞洲無碼AV大聯盟
+
+140962
+266935
+
+[MP4/1.01G]【无码精 ..
+dioguitar23  04-11 15:35
+
+		 
+
+carrot
+
+		 
+
+
+160
+亞洲有碼原創區
+自由發布亞洲最新有修正資訊片
+
+279595
+343837
+
+[HD/ 18G] SDJS-186 2023 ..
+wwg101  04-11 15:33
+
+		 
+
+carrot
+
+		 
+
+
+58
+歐美原創區
+自由發布純正的歐美成人資訊片
+
+69400
+109509
+
+Re:[MP4/1.20GB] 【中文 ..
+美人吸英雄  04-11 14:42
+
+		 
+
+Sphinx avjap valen brent
+
+		 
+
+
+2
+動漫原創區
+自由發布任何H動畫漫畫
+
+11164
+19240
+
+Re:[SD/1.0G] ACRN-380 ○ ..
+高义校长  04-11 08:47
+
+		 
+
+avjap valen brent carrot
+
+		 
+
+
+316
+國產原創區
+自由發布純正的國產成人，三級資訊片
+
+241711
+414226
+
+[MP4/1390M] 【疯狂露  ..
+heher007  04-11 15:46
+
+		 
+
+carrot
+
+		 
+
+
+106
+中字原創區
+自由發布各類中文字幕成人資訊片
+
+169550
+223045
+
+【MP4/1.78GB】STARS-807 ..
+AVhunter  04-11 15:36
+
+		 
+
+carrot
+
+		 
+
+
+184
+HTTP下載區
+自由發布各類HTTP/Ray/eMule等方式下載
+
+76331
+114411
+
+✿神仙蜜臀✿ 顶级 ..
+许仙干大蛇  04-11 15:48
+
+		 
+
+avjap valen brent
+
+		 
+
+
+220
+在綫成人影院
+在綫欣賞,即點即看
+
+270110
+319007
+
+【精品收藏】 【首 ..
+991  04-11 15:23
+
+		 
+
+avjap valen brent
+
+		 
+
+
+.:.
+綜合分享區
+最新資訊，網友分享，搶先登場
+
+1
+1
+
+Re:综合分享区正在 ..
+carrot  12-10 16:35
+
+		 
+
+valen carrot
+
+		 
+
+
+1071
+草榴影視庫
+發布2-3個月后的帖子,會轉移到這里,保留一段時間后,刪除(會員可看)
+子板：博彩區
+
+8955
+3543465
+
+Re:===聊天帖===
+joker999  04-11 15:36
+
+		 
+
+
+
+
+		 
+
+
+
+
+
+
+
+
+		» 草榴休閑區
+
+
+
+論壇
+主題
+文章
+最後發表
+版主
+
+
+
+9329
+技術討論區
+日常生活 興趣交流 時事經濟 求助求檔 會員閑談吹水區
+
+88874
+11094960
+
+Re:看到2023年十佳文 ..
+子龙七进七出  04-11 15:49
+
+		 
+
+valen brent Diss 966 Sphinx carrot
+
+		 
+
+
+355
+新時代的我們
+草榴貼圖區 加大你的帶寬! 加大你的內存! 加大你的顯示器!
+
+105239
+322060
+
+零真的的风险迷情  ..
+丄ＷＤ  04-11 15:08
+
+		 
+
+valen brent Diss
+
+		 
+
+
+790
+達蓋爾的旗幟
+草榴自拍區 分享你我光圈下的最美
+
+61963
+3546091
+
+Re:[原创][手势认证] ..
+mikxue  04-11 15:45
+
+		 
+
+valen brent Diss
+
+		 
+
+
+34
+成人文學交流區
+草榴文學區 歡迎各位發表
+
+4075
+286524
+
+Re:夫债妻偿
+妖一  04-11 15:22
+
+		 
+
+valen Diss
+
+		 
+
+
+.:.
+草榴資訊
+公告有關本站最新動向 會員須知 請經常來看看
+
+9
+21619
+
+Re:[2014.07.27] 關于獲 ..
+nicolbolas  04-06 13:14
+
+		 
+
+
+
+
+		 
+
+
+
+
+
+
+
+
+電腦版 手機版 客戶端 DMCA
+用時 0.00(s) x1, 04-11 15:51
+

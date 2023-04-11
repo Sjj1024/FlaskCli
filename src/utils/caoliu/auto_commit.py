@@ -247,9 +247,9 @@ class AutoCommit:
         gread_span = soup.select("body")[0].get_text()  # 如果没有找到，返回None
         self.user_name = re.search(r'\t(.*?) 退出', gread_span).group(1)
         self.grader = soup.select("tr.tr3")[0].select("span.s3")[0].get_text()
-        self.weiwang = re.search(r'威望: (.*?) 點', gread_span).group(1)
-        self.jinqian = re.search(r'金錢: (.*?) USD', gread_span).group(1)
-        self.gongxian = re.search(r'貢獻: (.*?) 點', gread_span).group(1)
+        self.weiwang = re.search(r'威望.*?(\d).*?點', gread_span).group(1)
+        self.jinqian = re.search(r'金錢.*?(\d).*?USD', gread_span).group(1)
+        self.gongxian = re.search(r'貢獻.*?(\d).*?點', gread_span).group(1)
         print(f"您的用户名：{self.user_name}, 等级：{self.grader}, 威望：{self.weiwang}，貢獻：{self.gongxian}")
         if int(self.weiwang) >= 100:
             print("开始产邀请码了")
