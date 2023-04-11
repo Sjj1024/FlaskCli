@@ -70,6 +70,7 @@ def get_new_userinfo():
     original = paylod.get("original")
     if cookie:
         user_info = get_userinfo_by_cookie(cookie, user_agent, email)
+        update_user_list = CaoliuUsers.query.filter_by(cookie=cookie)
         if isinstance(user_info, str):
             # 说明Cookie失效
             return jsonify(code=207, message=user_info)
@@ -78,11 +79,12 @@ def get_new_userinfo():
         if not cookie:
             return jsonify(code=212, message="登陆失败，可能是登陆次数过多导致的")
         user_info = get_userinfo_by_cookie(cookie, user_agent, email)
+        update_user_list = CaoliuUsers.query.filter_by(user_name=username)
     else:
         return jsonify(code=211, message="没有cookie和用户名密码")
-    update_user_list = CaoliuUsers.query.filter_by(user_name=username)
     if update_user_list and user_info:
         user_caoliu = update_user_list.all()[0].to_json()
+        user_caoliu["user_name"] = user_info.get("user_name")
         user_caoliu["article_number"] = user_info.get("fatie")
         user_caoliu["cookie"] = cookie
         user_caoliu["contribute"] = user_info.get("gongxian")
@@ -100,7 +102,7 @@ def get_new_userinfo():
     else:
         return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情
-    if not user_caoliu.get("task_file_sha"):
+    if not user_caoliu.get("task_file_sha") and username:
         task_workflow = get_repo_action(username, "Commit")
         if task_workflow:
             task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/", "")}'
@@ -113,7 +115,7 @@ def get_new_userinfo():
             task_status = "未开启"
             user_caoliu["task_status"] = task_status
     # 如果工作流存储为空，则获取工作流详情
-    if not user_caoliu.get("check_file_sha"):
+    if not user_caoliu.get("check_file_sha") and username:
         check_workflow = get_repo_action(username, "Check")
         if check_workflow:
             check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/", "")}'
