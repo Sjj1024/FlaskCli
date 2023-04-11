@@ -38,10 +38,10 @@ def table_list():
             query = query.filter(CaoliuUsers.desc.like(f'%{status}%'))
         if "正常" in status:
             query = query.filter(~CaoliuUsers.desc.contains('禁言'))
-        if yaoqing == "可以购买":
+        if yaoqing == "不可邀请":
+            query = query.filter(CaoliuUsers.able_invate == "")
+        elif yaoqing:
             query = query.filter(CaoliuUsers.able_invate == yaoqing)
-        elif yaoqing == "不可以":
-            query = query.filter(~CaoliuUsers.able_invate.contains('可以购买'))
         query = query.order_by(CaoliuUsers.important)
         paginate = query.order_by(-CaoliuUsers.id).paginate(page_num, pageSize)
         result = [u.to_json() for u in paginate.items]
