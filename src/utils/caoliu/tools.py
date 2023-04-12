@@ -287,13 +287,15 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
     liangbu_renzheng = "已設置 停用" in soup.select("#main")[0].get_text()
     if soup:
         # 获取简单信息
-        user_name = re.search(r'用戶名: (.*?)[（|<]', soup.decode()).group(1)
-        user_id = re.search(r'uid=(.*?)">[查看資料|查看個人資料]', soup.decode()).group(1)
-        dengji = re.search(r'頭銜: (.*?)<', soup.decode()).group(1)
-        fatie = re.search(r'發帖: (.*?)<', soup.decode()).group(1)
-        weiwang = re.search(r'威望: (.*?)點<', soup.decode()).group(1)
-        money = re.search(r'金錢: (.*?) USD<', soup.decode()).group(1)
-        gongxian = re.search(r'貢獻: (.*?) 點<', soup.decode()).group(1)
+        user_name = re.search(r'用戶名: (.*?)[（|<]', soup.decode()).group(1).strip()
+        user_id = re.search(r'uid=(.*?)">[查看資料|查看個人資料]', soup.decode()).group(1).strip()
+        dengji = re.search(r'頭銜: (.*?)<', soup.decode()).group(1).strip()
+        fatie = re.search(r'發帖: (.*?)<', soup.decode()).group(1).strip()
+        weiwang = re.search(r'威望: (.*?)點<', soup.decode()).group(1).strip()
+        money = re.search(r'金錢.*?(\d).*?USD', soup.decode()).group(1).strip()
+        current_money = re.search(r'活期(.*?)USD', soup.decode()) and re.search(r'活期(.*?)USD', soup.decode()).group(1).split(":")[1].strip()
+        regular_money = re.search(r'定期存款: (.*?)USD', soup.decode()).group(1).strip()
+        gongxian = re.search(r'貢獻: (.*?) 點<', soup.decode()).group(1).strip()
         if "註冊時間" in soup.decode():
             regist_time = re.search(r'註冊時間: (.*?)<', soup.decode()).group(1)
         else:
@@ -307,6 +309,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             "fatie": fatie,
             "weiwang": weiwang,
             "money": money,
+            "current_money": current_money,
+            "regular_money": regular_money,
             "gongxian": gongxian,
             "gongxian_link": "",
             "regist_time": regist_time,
@@ -328,14 +332,6 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         # email_url = f"{get_source()}/{email_span[0].get('href')}"
         invcode_url = f"{get_source()}/hack.php?H_name=invite"
         info_soup = get_soup(info_url, cookie, user_agent)
-        # if not has_email:
-        #     email_soup = get_soup(email_url, cookie, user_agent)
-        #     if "Mobile" not in email_soup.decode():
-        #         email = re.search(r"E-MAIL\n(.*?) \(", email_soup.select("#main > form")[0].get_text()).group(1)
-        #     else:
-        #         email = re.search(r"E-MAIL\n(.*?)為保?", email_soup.select("#main > form")[0].get_text()).group(1)
-        # else:
-        #     email = has_email
         invcode_soup = get_soup(invcode_url, cookie, user_agent)
         if info_soup and invcode_soup:
             all_info = info_soup.select("#main > div:nth-child(3)")[0].select("table")[0].get_text()
@@ -346,6 +342,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             fatie = re.search(r'發帖(.*?)\n', all_info).group(1)
             weiwang = re.search(r'威望(.*?) 點\n', all_info).group(1)
             money = re.search(r'金錢(.*?) USD\n', all_info).group(1)
+            current_money = re.search(r'活期(.*?)USD', soup.decode()) and re.search(r'活期(.*?)USD', soup.decode()).group(1).split(":")[1].strip()
+            regular_money = re.search(r'定期存款: (.*?)USD', soup.decode()).group(1).strip()
             gongxian = re.search(r'貢獻(.*?) 點\n', all_info).group(1)
             gongxian_link = re.search(r'隨機生成\)(.*?)\n', all_info).group(1)
             regist_time = re.search(r'註冊時間(.*?)\n', all_info).group(1)
@@ -380,6 +378,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
                 "fatie": fatie,
                 "weiwang": weiwang,
                 "money": money,
+                "current_money": current_money,
+                "regular_money": regular_money,
                 "gongxian": gongxian,
                 "gongxian_link": gongxian_link,
                 "regist_time": regist_time,

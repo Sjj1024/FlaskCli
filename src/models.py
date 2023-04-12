@@ -119,8 +119,8 @@ class CaoliuUsers(db.Model, BaseModel):
     money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有的金钱
     cookie = db.Column(db.String(500), unique=False, nullable=True)
     user_agent = db.Column(db.String(255), unique=False, nullable=True)
-    current_money = db.Column(db.Integer, unique=False, nullable=True)
-    regular_money = db.Column(db.Integer, unique=False, nullable=True)
+    current_money = db.Column(db.Integer, unique=False, nullable=True)  # 活期
+    regular_money = db.Column(db.Integer, unique=False, nullable=True)  # 定期
     able_invate = db.Column(db.String(255), unique=False, nullable=True)
     lease = db.Column(db.String(255), unique=False, nullable=True)
     authentication = db.Column(db.String(255), unique=False, nullable=True)
