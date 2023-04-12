@@ -70,9 +70,9 @@ def get_caoliu_user(username="", password="", cookie="", user_agent="", desc="")
     caoliu_info.article_number = user_info.get("fatie")
     caoliu_info.contribute = user_info.get("gongxian")
     caoliu_info.desc = desc + user_info.get("desc")
-    caoliu_info.money = user_info.get("money")
-    caoliu_info.current_money = user_info.get("current_money")
-    caoliu_info.regular_money = user_info.get("regular_money")
+    caoliu_info.money = int(user_info.get("money"))
+    caoliu_info.current_money = int(user_info.get("current_money"))
+    caoliu_info.regular_money = int(user_info.get("regular_money"))
     caoliu_info.regist_time = user_info.get("regist_time")
     caoliu_info.cookie = cookie
     caoliu_info.user_agent = user_agent
