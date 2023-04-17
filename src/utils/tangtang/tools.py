@@ -126,7 +126,13 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         else:
             regist_time = re.search(r'註冊: (.*?)<', soup.decode()).group(1)
         # 判断是否可以产邀请码：>lv6就可以
-        able_invate = "可以" if re.search('\d', dengji) and int(re.search('\d', dengji).group(0)) > 6 else "不可以"
+        if re.search('\d', dengji) and int(re.search('\d', dengji).group(0)) >= 6:
+            if int(weiwang) > 200:
+                able_invate = "可以"
+            else:
+                able_invate = "金币不足"
+        else:
+            able_invate = "等级不足"
         user_info = {
             "user_name": user_name,
             "user_id": user_id,
@@ -146,7 +152,7 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         return user_info
 
 
-def login_get_cookie(user_name, password, cookie, user_agent):
+def login_get_cookie(user_name, password, cookie="", user_agent=""):
     print("登陆获取cookie")
     cookie = cookie or '_safe=vqd37pjm4p5uodq339yzk6b7jdt6oich; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_saltkey=OIWUctit; cPNj_2132_lastvisit=1680915276; cPNj_2132__refer=%252Fhome.php%253Fmod%253Dspacecp%2526ac%253Dusergroup; cPNj_2132_lastact=1680918920%09index.php%09'
     url = f"{get_source()}/member.php?mod=logging&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes&inajax=1"

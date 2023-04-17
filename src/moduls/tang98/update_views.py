@@ -92,7 +92,9 @@ def get_new_userinfo_98():
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
         user_caoliu["weiwang"] = user_info.get("weiwang")
-        user_caoliu["desc"] = user_info.get("desc") if "永久禁言" in user_info["desc"] else user_caoliu["desc"] + user_info.get("desc")
+        user_caoliu["desc"] = user_info.get("desc") if "永久禁言" in user_info["desc"] else user_caoliu[
+                                                                                                "desc"] + user_info.get(
+            "desc")
         user_caoliu["able_invate"] = user_info.get("able_invate")
         user_caoliu["authentication"] = user_info.get("authentication")
         user_caoliu["regist_time"] = user_info.get("regist_time")
