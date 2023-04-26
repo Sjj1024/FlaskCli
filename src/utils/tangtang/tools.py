@@ -118,9 +118,17 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
             return soup_info
         fatie = soup_info.select("ul.bbda > li > a")[1].get_text().split(" ")[1].strip()
         # 威望=金钱
-        weiwang = soup_info.select("ul.pf_l > li")[11].get_text().replace("金钱", "").strip()
-        money = soup_info.select("ul.pf_l > li")[12].get_text().replace("色币", "").strip()
-        gongxian = soup_info.select("ul.pf_l > li")[10].get_text().replace("积分", "").strip()
+        weiwang, money, gongxian = 0, 0, 0
+        for li in soup_info.select("ul.pf_l > li"):
+            if "金钱" in li.get_text():
+                weiwang = li.get_text().replace("金钱", "").strip()
+            elif "色币" in li.get_text():
+                money = li.get_text().replace("色币", "").strip()
+            elif "积分" in li.get_text():
+                gongxian = li.get_text().replace("积分", "").strip()
+        # weiwang = soup_info.select("ul.pf_l > li")[11].get_text().replace("金钱", "").strip()
+        # money = soup_info.select("ul.pf_l > li")[12].get_text().replace("色币", "").strip()
+        # gongxian = soup_info.select("ul.pf_l > li")[10].get_text().replace("积分", "").strip()
         if "注册时间" in soup_info.decode():
             regist_time = soup_info.select("ul.pf_l > li")[1].get_text().replace("注册时间", "").strip()
         else:
