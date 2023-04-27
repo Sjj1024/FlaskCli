@@ -1,5 +1,7 @@
 import base64
 import datetime
+import json
+import os
 import random
 import re
 import smtplib
@@ -13,6 +15,8 @@ from bs4 import BeautifulSoup
 
 class TangTang(object):
     def __init__(self):
+        self.commit_strs = []
+        self.id_list = []
         self.name = ""
         self.cookie = ""
         self.user_name = ""
@@ -21,7 +25,8 @@ class TangTang(object):
         self.user_agent = ""
         self.source_url = self.get_source()
         self.user_info = ""
-        self.contCommit = ["编辑中", "沙发"]
+        self.contCommit = ["编辑中", "沙发", "感谢分享"]
+        self.json_path = f"commit/{self.user_name}.json"
 
     def get_source(self, key="98色花堂1"):
         print("获取源地址")
@@ -61,6 +66,7 @@ class TangTang(object):
             "积分": re.search(r'积分: </em>(.*?) </li>', response.text).group(1),
         }
         print(f"今日用户信息: {self.user_info}")
+        self.get_commit_json()
         return self.user_info
 
     def set_cookies(self, response):
@@ -348,27 +354,61 @@ class TangTang(object):
         print(f"得到总的文章链接是:{len(article_list)}")
         return article_list
 
+    def update_commit_json(self):
+        commit_json = {
+            "id_list": self.id_list,
+            "commit_strs": self.commit_strs
+        }
+        with open(self.json_path, "w", encoding="utf-8") as f:
+            json.dump(commit_json, f)
+
+    def get_commit_json(self):
+        # 有本地缓存过的文件，就加载，没有就查找
+        self.json_path = f"{__file__.replace('auto_commit.py', '')}commit/{self.user_name}.json"
+        if os.path.exists(self.json_path):
+            with open(self.json_path, "r", encoding="utf-8") as f:
+                commit_json = json.load(f)
+                self.id_list = commit_json.get("id_list", [])
+                self.commit_strs = commit_json.get("commit_strs", [])
+        else:
+            # 给评论过的文章id和评论内容赋值
+            # self.id_list = []
+            # self.commit_strs = []
+            self.get_commenteds()
+            commit_json = {
+                "id_list": self.id_list,
+                "commit_strs": self.commit_strs
+            }
+            with open(self.json_path, "w", encoding="utf-8") as f:
+                json.dump(commit_json, f)
+
     def get_commenteds(self):
         print("获取评论过的文章:")
-        id_list = []
+        self.id_list = []
+        self.commit_strs = []
         page = 1
         while True:
             url = f"{self.source_url}/forum.php?mod=guide&view=my&type=reply&page={page}"
             html = self.get_html(url)
             comment_list = re.findall(r'tid=.*?class="xst"', html)
+            # 获取评论内容
+            commit_tag_strs = re.findall(r'class="tl_reply.*?</a></div>', html)
+            commit_tag_filter = list(
+                set([tag.split('target="_blank">')[1].replace('</a></div>', '') for tag in commit_tag_strs]))
+            self.commit_strs += commit_tag_filter
             # print(comment_list)
             # print(len(comment_list))
             ids = [i.split("&amp")[0].replace("tid=", "") for i in comment_list]
-            id_list += ids
-            if "下一页" in html and page <= 5:
+            self.id_list += ids
+            if "下一页" in html and page <= 25:
                 page += 1
             else:
-                print(f"评论过的文章有{page}页，总共有{len(id_list)}篇文章被评论过")
-                return id_list
+                print(f"评论过的文章有{page}页，总共有{len(self.id_list)}篇文章被评论过")
+                return self.id_list
 
     def get_comment_txt(self):
         print(f"随机获取评论内容:")
-        txt_list = ["看起来挺骚的", "溜了，评分留下", "典型的大妈脸", "都是猛人", "被吓到了", "还是支持一下",
+        txt_list = ["看起来挺骚的", "评分留下", "典型的大妈脸", "都是猛人", "被吓到了", "还是支持一下",
                     "最近啥情况", "怎么看不了", "感谢大佬", "有磁力的吗", "最近这种有点多啊", "我看到过的",
                     "这也太牛逼了",
                     "感谢大佬的精彩分享", "都是神人", "艺高人胆大", "就是喜欢这样的题材", "这个不太好吧",
@@ -385,24 +425,42 @@ class TangTang(object):
 
     def get_comment_from_articl(self, tid):
         # 从文章评论列表中随机获取一条评论
-        article_url = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1"
-        article_soup = self.get_soup(article_url)
-        commit_list = [com.get_text() for com in article_soup.select("td.t_f")[1:]]
-        commit_text = [com.split("\r\n")[1] for com in commit_list if "\r\n" in com]
         commit_res = []
-        for com in commit_text:
-            if "\n" in com:
-                commit_res.append(com.split("\n")[1])
+        page = 1
+        while True:
+            article_url = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1&page={page}"
+            print(f"文章评论链接: {article_url}")
+            article_soup = self.get_soup(article_url)
+            commit_list = [com.get_text() for com in article_soup.select("td.t_f")[1:]]
+            commit_text = [com.split("\r\n")[1] for com in commit_list if "\r\n" in com]
+            for com in commit_text:
+                if "\n" in com:
+                    commit_res.append(com.split("\n")[1].replace("\xa0", "").replace(" ", ""))
+                else:
+                    com = com.replace("\xa0", "").replace(" ", "")
+                    commit_res.append(com)
+            if "下一页" in article_soup.decode() and page <= 25:
+                page += 1
             else:
-                commit_res.append(com)
-        random_commit = commit_res[random.randint(0, len(commit_res) - 1)]
-        cont_commit_res = [i not in random_commit for i in self.contCommit]
-        if all(cont_commit_res):
-            print("没有发现违规评论....")
-        else:
-            random_commit = self.get_comment_txt()
-        print(f"获取评论内容:{random_commit}")
-        return random_commit.strip()
+                commit_result = list(set(commit_res))
+                commit_res = []
+                for com in commit_result:
+                    for cot in self.contCommit:
+                        if com and cot not in com and com not in commit_res:
+                            commit_res.append(com)
+                break
+        # 从评论列表里筛选出一个没有评论过的
+        if len(commit_res) < 6:
+            return ""
+        random_chouse_num = 0
+        while True:
+            random_commit = commit_res[random.randint(0, len(commit_res) - 1)]
+            if random_commit not in self.commit_strs and random_commit not in self.contCommit:
+                return random_commit.strip()
+            if random_chouse_num >= 10:
+                random_commit = self.get_comment_txt()
+                return random_commit
+            random_chouse_num += 1
 
     def get_soup(self, page_url):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
@@ -474,7 +532,11 @@ class TangTang(object):
         self.set_cookies(response)
         html = response.text
         if "回复发布成功" in html:
-            print("回复发布成功, 评论完成了....")
+            print(f"{self.user_name}回复发布成功, 评论完成了....")
+            # 更新评论过的json文件
+            self.id_list.append(tid)
+            self.commit_strs.append(txt)
+            self.update_commit_json()
             return True
         else:
             print(response.text)
@@ -483,15 +545,17 @@ class TangTang(object):
 
     def start_commit_one(self, sleep=True):
         # 获取评论过的文章
-        id_list = self.get_commenteds()
+        # id_list = self.get_commenteds()
         # 获取前10页的文章链接
         article_list = self.get_articales()
         # 过滤没有评论过的文章链接
-        need_post = [i for i in article_list if i not in id_list]
+        need_post = [i for i in article_list if i not in self.id_list]
         # 发起评论: 随机对列表重新排序
         random.shuffle(need_post)
         for index, value in enumerate(need_post):
             commit_txt = self.get_comment_from_articl(value)
+            if not commit_txt:
+                continue
             form_hash = self.get_formhash(value)
             if sleep:
                 self.random_sleep_second()
@@ -539,7 +603,7 @@ def auto_commit_tang(user_name, cookie, user_agent, sleep=True):
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     tang = TangTang()
-    tang.contCommit = ["编辑中", "沙发"]
+    tang.contCommit = ["编辑中", "沙发", "感谢分享", "板凳"]
     tang.user_name = user_name
     tang.cookie = cookie
     tang.user_agent = user_agent
