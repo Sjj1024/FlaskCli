@@ -66,7 +66,6 @@ class TangTang(object):
             "积分": re.search(r'积分: </em>(.*?) </li>', response.text).group(1),
         }
         print(f"今日用户信息: {self.user_info}")
-        self.get_commit_json()
         return self.user_info
 
     def set_cookies(self, response):
@@ -545,7 +544,7 @@ class TangTang(object):
 
     def start_commit_one(self, sleep=True):
         # 获取评论过的文章
-        # id_list = self.get_commenteds()
+        self.get_commit_json()
         # 获取前10页的文章链接
         article_list = self.get_articales()
         # 过滤没有评论过的文章链接
