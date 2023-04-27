@@ -485,7 +485,6 @@ class TangTang(object):
         return soup
 
     def get_formhash(self, tid):
-        print("获取hash值")
         url = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1"
         payload = {}
         headers = {
@@ -556,6 +555,7 @@ class TangTang(object):
             if not commit_txt:
                 continue
             form_hash = self.get_formhash(value)
+            print(f"开始评论：{value} : {commit_txt} : {form_hash}")
             if sleep:
                 self.random_sleep_second()
             res = self.post_commit(value, commit_txt, form_hash)

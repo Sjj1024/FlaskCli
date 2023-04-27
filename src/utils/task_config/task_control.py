@@ -62,10 +62,11 @@ def del_tangtang_sign_article(user_name):
     return task_id
 
 
-def add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *"):
+def add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *", run_time="White"):
     print(f"添加1024评论任务: {user_name}")
     task_id = f"commit-1024-{user_name}"
-    arguments = (user_name, cookie, user_agent)
+    # one_commit(user_name="", cookie="", user_agent="", sleep=True, run_time="White")
+    arguments = (user_name, cookie, user_agent, True, run_time)
     scheduler.add_job(one_commit, CronTrigger.from_crontab(corn_tab), args=arguments, id=task_id)
     return task_id
 

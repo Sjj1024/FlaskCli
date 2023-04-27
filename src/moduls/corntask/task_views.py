@@ -35,6 +35,7 @@ def add_caoliu_commit_local():
     cookie = param_dict.get("cookie")
     user_agent = param_dict.get("user_agent")
     corn_tab = param_dict.get("corn", None) or "05 */3 * * *"
+    run_time = param_dict.get("run_time", None)
     try:
         update_user_list = CaoliuUsers.query.filter_by(user_name=user_name)
         if update_user_list:
@@ -43,7 +44,7 @@ def add_caoliu_commit_local():
             return jsonify(code=207, message="没有查找到该用户")
         if update_user["task_file_sha"] and user_name in update_user["task_file_sha"]:
             return jsonify(code=205, message="任务已存在", data=f"任务已存在")
-        task_id = add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab)
+        task_id = add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab, run_time)
         update_user["task_file_sha"] = task_id
         update_user["task_status"] = "已开启"
         try:
