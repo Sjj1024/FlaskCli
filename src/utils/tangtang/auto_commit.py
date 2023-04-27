@@ -438,7 +438,7 @@ class TangTang(object):
                 else:
                     com = com.replace("\xa0", "").replace(" ", "")
                     commit_res.append(com)
-            if "下一页" in article_soup.decode() and page <= 15:
+            if "下一页" in article_soup.decode() and page <= 10:
                 page += 1
             else:
                 commit_result = list(set(commit_res))
