@@ -77,10 +77,11 @@ def run_caoliu_commit_task(user_name, cookie, user_agent):
     return True
 
 
-def add_tang_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *"):
+def add_tang_commit_task(user_name, cookie, user_agent, corn_tab="05 */3 * * *", run_time="White"):
     print(f"添加98堂评论任务: {user_name}")
     task_id = f"commit-98-{user_name}"
-    arguments = (user_name, cookie, user_agent)
+    # auto_commit_tang(user_name, cookie, user_agent, sleep=True, run_time="White")
+    arguments = (user_name, cookie, user_agent, True, run_time)
     scheduler.add_job(auto_commit_tang, CronTrigger.from_crontab(corn_tab), args=arguments, id=task_id)
     return task_id
 
@@ -129,7 +130,7 @@ def run_tang_sign_article(user_name, cookie, user_agent):
 
 def run_tang_commit_article(user_name, cookie, user_agent):
     print(f"运行98堂评论任务: {user_name}")
-    auto_commit_tang(user_name, cookie, user_agent, sleep=False)
+    auto_commit_tang(user_name, cookie, user_agent, sleep=False, run_time="White")
     return True
 
 

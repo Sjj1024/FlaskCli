@@ -582,23 +582,25 @@ def auto_sign_tang(user_name, cookie, user_agent, sleep=True):
         print(f"签到异常: {qiandao}")
 
 
-def check_white_day(min, max):
+def check_white_day(run_time):
     print("判断是不是白天....")
-    print("当前时间是", datetime.datetime.now())
     current_hour = datetime.datetime.now().hour
-    if min <= current_hour <= max:
+    if 6 <= current_hour <= 14 and run_time == "White":
         print(f"{current_hour} 点是白天")
         return True
+    elif 15 <= current_hour <= 23 and run_time == "Black":
+        print(f"{current_hour} 点是下午")
+        return True
     else:
-        print(f"{current_hour} 点是晚上，黑夜啊")
+        print(f"{run_time}点不符合执行时间，所以退出")
         return False
 
 
-def auto_commit_tang(user_name, cookie, user_agent, sleep=True):
+def auto_commit_tang(user_name, cookie, user_agent, sleep=True, run_time="White"):
     # 定时评论的函数
-    print("当前时间是", datetime.datetime.now())
+    print(f"{user_name}只评论一个文章，定时评论任务: {user_name}")
     # 判断是不是白天，是的话再评论，否则退出
-    if not check_white_day(8, 21):
+    if not check_white_day(run_time) and sleep:
         print(f"是黑夜，所以不参与发表评论，直接退出.......")
         return
     tang = TangTang()

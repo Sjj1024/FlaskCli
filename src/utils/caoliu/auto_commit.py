@@ -532,7 +532,7 @@ def check_white_day(run_time):
         print(f"{current_hour} 点是白天")
         return True
     elif 15 <= current_hour <= 23 and run_time == "Black":
-        print(f"{current_hour} 点是晚上")
+        print(f"{current_hour} 点是下午")
         return True
     else:
         print(f"{run_time}点不符合执行时间，所以退出")
