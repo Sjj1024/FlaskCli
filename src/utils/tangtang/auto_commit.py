@@ -15,8 +15,9 @@ from bs4 import BeautifulSoup
 
 class TangTang(object):
     def __init__(self):
-        self.commit_strs = []
         self.id_list = []
+        self.commit_strs = []
+        self.score_strs = []
         self.name = ""
         self.cookie = ""
         self.user_name = ""
@@ -356,7 +357,8 @@ class TangTang(object):
     def update_commit_json(self):
         commit_json = {
             "id_list": self.id_list,
-            "commit_strs": self.commit_strs
+            "commit_strs": self.commit_strs,
+            "score_strs": self.score_strs
         }
         with open(self.json_path, "w", encoding="utf-8") as f:
             json.dump(commit_json, f)
@@ -369,6 +371,7 @@ class TangTang(object):
                 commit_json = json.load(f)
                 self.id_list = commit_json.get("id_list", [])
                 self.commit_strs = commit_json.get("commit_strs", [])
+                self.score_strs = commit_json.get("score_strs", [])
         else:
             # 给评论过的文章id和评论内容赋值
             # self.id_list = []
@@ -376,7 +379,8 @@ class TangTang(object):
             self.get_commenteds()
             commit_json = {
                 "id_list": self.id_list,
-                "commit_strs": self.commit_strs
+                "commit_strs": self.commit_strs,
+                "score_strs": self.score_strs,
             }
             with open(self.json_path, "w", encoding="utf-8") as f:
                 json.dump(commit_json, f)
@@ -461,6 +465,80 @@ class TangTang(object):
                 return random_commit
             random_chouse_num += 1
 
+    def get_user_article(self, uid, all_page=False):
+        uid = "369910"
+        page = 1
+        article_list = []
+        while True:
+            url = f"{self.source_url}/home.php?mod=space&uid={uid}&do=thread&view=me&type=thread&order=dateline&from=space&page={page}"
+            # url = f"https://www.hghg58.com/home.php?mod=space&uid={uid}&do=thread&view=me&from=space&type=reply"
+            payload = {}
+            headers = {
+                'authority': 'www.hghg58.com',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+                'referer': f'{self.source_url}/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
+                'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'cookie': self.cookie,
+                'user-agent': self.user_agent
+            }
+            response = requests.request("GET", url, headers=headers, data=payload)
+            soup = BeautifulSoup(response.content.decode(), "lxml")
+            td_list = soup.select("td.icn > a")
+            # https://www.hghg58.com/forum.php?mod=viewthread&tid=1317131
+            article_list += [td.get("href").split("tid=")[1].replace("&highlight=", "") for td in td_list]
+            print(article_list)
+            if "下一页" in soup.decode() and all_page:
+                page += 1
+            else:
+                return article_list
+
+    def get_user_replay(self, uid, all_page=False):
+        uid = "369910"
+        page = 1
+        replay_list = []
+        while True:
+            url = f"{self.source_url}/home.php?mod=space&uid={uid}&do=thread&view=me&type=reply&order=dateline&from=space&page={page}"
+            # url = f"https://www.hghg58.com/home.php?mod=space&uid={uid}&do=thread&view=me&from=space&type=reply"
+            payload = {}
+            headers = {
+                'authority': 'www.hghg58.com',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+                'referer': f'{self.source_url}/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
+                'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'cookie': self.cookie,
+                'user-agent': self.user_agent
+            }
+            response = requests.request("GET", url, headers=headers, data=payload)
+            soup = BeautifulSoup(response.content.decode(), "lxml")
+            td_list = soup.select("td.xg1 > a")
+            # forum.php?mod=redirect&amp;goto=findpost&amp;ptid=1317218&amp;pid=10975945
+            # 存储的是元组:(tid, pid)
+            for td in td_list:
+                tid = td.get("href").split("tid=")[1].split("&pid=")[0]
+                pid = td.get("href").split("tid=")[1].split("&pid=")[1]
+                replay_list.append((tid, pid))
+            print(replay_list)
+            if "下一页" in soup.decode() and all_page:
+                page += 1
+            else:
+                return replay_list
+
     def get_soup(self, page_url):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
         time.sleep(1)
@@ -495,9 +573,13 @@ class TangTang(object):
             'user-agent': self.user_agent
         }
         response = requests.request("GET", url, headers=headers, data=payload)
+        if "本帖要求阅读权限高于" in response.text:
+            print("阅读权限不够，请换下一篇")
+            return "", ""
         # print(response.text)
         form_hash = re.search(r'formhash=(.*?)">退出</a>', response.text).group(1)
-        return form_hash
+        pid = re.search(r'table id="pid(.*?)"', response.text).group(1)
+        return form_hash, pid
 
     def random_sleep_second(self, min_second=2, max_second=30):
         sleep_time = random.randint(min_second * 60, max_second * 60)
@@ -541,6 +623,75 @@ class TangTang(object):
             print("评论失败了")
             return False
 
+    def click_ping(self, forhash, tid, pid):
+        url = f"{self.source_url}/forum.php?mod=misc&action=rate&tid={tid}&pid={pid}&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate"
+        # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&tid=1315802&pid=10966843&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate"
+        payload = {}
+        headers = {
+            'authority': 'www.hghg58.com',
+            'accept': '*/*',
+            'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+            'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'cookie': self.cookie,
+            'user-agent': self.user_agent
+        }
+        response = requests.request("GET", url, headers=headers, data=payload)
+        # print(response.text)
+        # 判断是否是自己的文章，是否评过分，是否可以评分，是否有权限阅读
+        if "评分区间" in response.text:
+            print("可以评分")
+            self.send_ping(forhash, tid, pid)
+        elif "您不能对同一个帖子重复评分" in response.text:
+            print("你已经给这个评过分数了")
+        elif "您不能给自己发表的帖子评分" in response.text:
+            print("你不能给自己的文章评分")
+        else:
+            print(f"{self.user_name}评分文章{tid}点击评分其他原因：{response.text}")
+
+    def send_ping(self, forhash, tid, pid):
+        print("发送评分")
+        # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
+        # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
+        # # 欧美
+        # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
+        # 综合区
+        url = f"{self.source_url}/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
+        referer = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&page=0#pid{pid}"
+        score = "1"
+        payload = f'formhash={forhash}&tid={tid}&pid={pid}&referer={referer}&handlekey=rate&score8={score}&reason='
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'cache-control': 'max-age=0',
+            'content-type': 'application/x-www-form-urlencoded',
+            'origin': 'https://www.hghg58.com',
+            'referer': f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1",
+            'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'iframe',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
+            'cookie': self.cookie,
+            'user-agent': self.user_agent
+        }
+        response = requests.request("POST", url, headers=headers, data=payload)
+        # print(response.text)
+        if "感谢您的参与" in response.text:
+            print(f"{self.user_name}评分文章{tid}评分成功")
+        else:
+            print(f"{self.user_name}评分文章{tid}失败: {response.text}")
+        # 将评分的tid保存到本地记录
+        self.score_strs.append(tid)
+        self.update_commit_json()
+
     def start_commit_one(self, sleep=True):
         # 获取评论过的文章
         self.get_commit_json()
@@ -554,12 +705,17 @@ class TangTang(object):
             commit_txt = self.get_comment_from_articl(value)
             if not commit_txt:
                 continue
-            form_hash = self.get_formhash(value)
+            form_hash, pid = self.get_formhash(value)
+            if not form_hash:
+                continue
             print(f"开始评论：{value} : {commit_txt} : {form_hash}")
             if sleep:
                 self.random_sleep_second()
+            # 评论文章
             res = self.post_commit(value, commit_txt, form_hash)
             if res:
+                # 文章评分
+                self.click_ping(form_hash, value, pid)
                 break
             else:
                 continue
@@ -610,6 +766,24 @@ def auto_commit_tang(user_name, cookie, user_agent, sleep=True, run_time="White"
     tang.user_agent = user_agent
     tang.get_user_info()
     tang.start_commit_one(sleep)
+
+
+def auto_ping_score(user_name, cookie, user_agent, uid_list, category, all_page=False, sleep=True):
+    print("自动给文章或者评论评分")
+    tang = TangTang()
+    tang.contCommit = ["编辑中", "沙发", "感谢分享", "板凳"]
+    tang.user_name = user_name
+    tang.cookie = cookie
+    tang.user_agent = user_agent
+    tang.get_user_info()
+    if category == "全部":
+        print("评论所有的文章和评论")
+    elif category == "文章":
+        print("评论文章")
+    elif category == "评论":
+        print("评论文章")
+    else:
+        print("分类错误")
 
 
 def run():
