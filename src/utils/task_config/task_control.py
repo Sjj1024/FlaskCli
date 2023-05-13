@@ -6,7 +6,7 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from tzlocal import get_localzone
 from src import config_obj
 from src.utils.caoliu.auto_commit import *
-from src.utils.tangtang.auto_commit import auto_sign_tang, auto_commit_tang
+from src.utils.tangtang.auto_commit import auto_sign_tang, auto_commit_tang, auto_ping_score
 
 # 存储位置
 SCHEDULER_JOBSTORES = {'default': SQLAlchemyJobStore(url=config_obj.SQLALCHEMY_DATABASE_URI)}
@@ -43,6 +43,24 @@ def add_tang_sign_article(user_name, cookie, user_agent, corn_tab="30 17 * * *")
     task_id = f"sign-98-{user_name}"
     arguments = (user_name, cookie, user_agent)
     scheduler.add_job(auto_sign_tang, CronTrigger.from_crontab(corn_tab), args=arguments, id=task_id)
+    return task_id
+
+
+def add_tang_ping_article(user_name, cookie, user_agent, uid_list, category, corn_tab="30 17 * * *"):
+    print(f"添加98评分任务: {user_name}")
+    # 每天早上8点23执行一次
+    task_id = f"score-98-{user_name}"
+    arguments = (user_name, cookie, user_agent, uid_list, category, False, True)
+    # user_name, cookie, user_agent, uid_list, category, all_page=False, sleep=True
+    scheduler.add_job(auto_ping_score, CronTrigger.from_crontab(corn_tab), args=arguments, id=task_id)
+    return task_id
+
+
+def del_tang_ping_article(user_name):
+    print(f"删除98自动评分任务: {user_name}")
+    # 每天早上8点23执行一次
+    task_id = f"score-98-{user_name}"
+    scheduler.remove_job(task_id)
     return task_id
 
 
@@ -131,6 +149,12 @@ def run_tang_sign_article(user_name, cookie, user_agent):
 def run_tang_commit_article(user_name, cookie, user_agent):
     print(f"运行98堂评论任务: {user_name}")
     auto_commit_tang(user_name, cookie, user_agent, sleep=False, run_time="White")
+    return True
+
+
+def run_tang_ping_score(user_name, cookie, user_agent, uid_list, category):
+    print(f"运行98堂评分任务: {user_name}")
+    auto_ping_score(user_name, cookie, user_agent, uid_list, category, all_page=True, sleep=False)
     return True
 
 

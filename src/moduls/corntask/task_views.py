@@ -249,6 +249,88 @@ def run_tangtang_commit():
         return jsonify(code=205, message="error", data=f"出错消息: {e}")
 
 
+@task_blu.route("/runTangPing", methods=["GET", "POST"])
+def run_tangtang_ping():
+    param_dict = request.json
+    print(f"运行98评分任务: {param_dict}")
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    uids = param_dict.get("uids", "")
+    category = param_dict.get("category")
+    # corn = param_dict.get("corn")
+    try:
+        if not uids:
+            return jsonify(code=205, message="error", data=f"请添加作者id")
+        uid_list = uids.split(",")
+        run_tang_ping_score(user_name, cookie, user_agent, uid_list, category)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/addTangPing", methods=["GET", "POST"])
+def add_tangtang_ping():
+    param_dict = request.json
+    print(f"添加98自动评分任务: {param_dict}")
+    user_name = param_dict.get("user_name")
+    cookie = param_dict.get("cookie")
+    user_agent = param_dict.get("user_agent")
+    uids = param_dict.get("uids", "")
+    category = param_dict.get("category")
+    corn_tab = param_dict.get("corn", None) or "50 17 * * *"
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if update_user["check_file_sha"]:
+            return jsonify(code=205, message="error", data=f"任务已存在")
+        uid_list = uids.split(",")
+        task_id = add_tang_ping_article(user_name, cookie, user_agent, uid_list, category, corn_tab)
+        update_user["check_file_sha"] = task_id
+        update_user["check_status"] = "已开启"
+        update_user["check_link"] = uids
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
+@task_blu.route("/delTangPing", methods=["DELETE"])
+def del_tang_ping():
+    print(f"删除98自动评分任务: ")
+    param_dict = request.json
+    user_name = param_dict.get("user_name")
+    try:
+        update_user_list = Tang98Users.query.filter_by(user_name=user_name)
+        if update_user_list:
+            update_user = update_user_list.all()[0].to_json()
+        else:
+            return jsonify(code=207, message="没有查找到该用户")
+        if not update_user["check_file_sha"]:
+            return jsonify(code=205, message="error", data=f"任务不存在")
+        del_tang_ping_article(user_name)
+        update_user["check_file_sha"] = ""
+        update_user["check_status"] = "未开启"
+        update_user["check_link"] = json.dumps([])
+        try:
+            update_user_list.update(update_user)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return jsonify(code=212, message="更新数据库操作失败", data=e)
+        return jsonify(code=200, message="success")
+    except Exception as e:
+        return jsonify(code=205, message="error", data=f"出错消息: {e}")
+
+
 @task_blu.route("/delCaoliuSign", methods=["DELETE"])
 def del_caoliu_sign():
     print(f"删除1024签到任务: ")

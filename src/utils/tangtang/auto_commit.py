@@ -15,6 +15,8 @@ from bs4 import BeautifulSoup
 
 class TangTang(object):
     def __init__(self):
+        self.residue_score = 10
+        self.last_score = 1
         self.id_list = []
         self.commit_strs = []
         self.score_strs = []
@@ -60,11 +62,15 @@ class TangTang(object):
         self.user_group = re.search(r'用户组: (.*?)</a>', response.text).group(1)
         self.user_money = re.search(r'金钱: </em>(.*?)  &nbsp;', response.text).group(1)
         self.ji_fei = re.search(r'积分: </em>(.*?) </li>', response.text).group(1)
+        forhash, pid = self.get_formhash("1293427")
+        self.click_ping(forhash, "1293427", pid, True)
         self.user_info = {
             "用户名": self.user_name,
             "用户组": self.user_group,
             "金钱": self.user_money,
             "积分": re.search(r'积分: </em>(.*?) </li>', response.text).group(1),
+            "最大评分": self.last_score,
+            "今日剩余分": self.residue_score
         }
         print(f"今日用户信息: {self.user_info}")
         return self.user_info
@@ -466,7 +472,6 @@ class TangTang(object):
             random_chouse_num += 1
 
     def get_user_article(self, uid, all_page=False):
-        uid = "369910"
         page = 1
         article_list = []
         while True:
@@ -491,28 +496,35 @@ class TangTang(object):
             }
             response = requests.request("GET", url, headers=headers, data=payload)
             soup = BeautifulSoup(response.content.decode(), "lxml")
-            td_list = soup.select("td.icn > a")
-            # https://www.hghg58.com/forum.php?mod=viewthread&tid=1317131
-            article_list += [td.get("href").split("tid=")[1].replace("&highlight=", "") for td in td_list]
-            print(article_list)
+            table = soup.select_one("form#delform > table")
+            td_list = table.select("td.icn > a")
+            type_list = table.select("td > a.xg1")
+            for index, td in enumerate(td_list):
+                cate = type_list[index].get_text()
+                if cate not in ["求片问答悬赏区", "投稿送邀请码", "资源出售区", "禁言申诉区", "投诉建议区",
+                                "求片问答悬赏区"]:
+                    tid = td.get("href").split("tid=")[1].replace("&highlight=", "")
+                    article_list.append(tid)
+                    # article_list += [td.get("href").split("tid=")[1].replace("&highlight=", "") for td in td_list]
+            # print(article_list)
             if "下一页" in soup.decode() and all_page:
                 page += 1
             else:
                 return article_list
 
     def get_user_replay(self, uid, all_page=False):
-        uid = "369910"
+        # uid = "369910"
         page = 1
         replay_list = []
+        cate_cont_list = ["求片问答悬赏区", "投稿送邀请码", "资源出售区", "禁言申诉区", "投诉建议区", "求片问答悬赏区"]
         while True:
             url = f"{self.source_url}/home.php?mod=space&uid={uid}&do=thread&view=me&type=reply&order=dateline&from=space&page={page}"
-            # url = f"https://www.hghg58.com/home.php?mod=space&uid={uid}&do=thread&view=me&from=space&type=reply"
             payload = {}
             headers = {
                 'authority': 'www.hghg58.com',
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-                'referer': f'{self.source_url}/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
+                'referer': 'https://www.hghg58.com/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
                 'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
@@ -526,14 +538,26 @@ class TangTang(object):
             }
             response = requests.request("GET", url, headers=headers, data=payload)
             soup = BeautifulSoup(response.content.decode(), "lxml")
-            td_list = soup.select("td.xg1 > a")
-            # forum.php?mod=redirect&amp;goto=findpost&amp;ptid=1317218&amp;pid=10975945
-            # 存储的是元组:(tid, pid)
-            for td in td_list:
-                tid = td.get("href").split("tid=")[1].split("&pid=")[0]
-                pid = td.get("href").split("tid=")[1].split("&pid=")[1]
-                replay_list.append((tid, pid))
-            print(replay_list)
+            formhash = soup.select_one("input[name='formhash']").get("value")
+            current_type = ""
+            icn_img_url = ""
+            tr_list = soup.select("form#delform > table > tr")
+            for tr in tr_list:
+                if tr.get("class") == ["bw0_all"]:
+                    # 获取文章类型：只要文件夹类型的帖子
+                    icn_img_url = tr.select_one("td.icn > a > img").get("src")
+                    current_type = tr.select_one("td > a.xg1").get_text()
+                    print(f"是分类:{current_type} ， 文章类型图标：{icn_img_url}")
+                elif tr.get("class") == ["th"]:
+                    continue
+                else:
+                    if current_type not in cate_cont_list and "folder_new.gif" in icn_img_url:
+                        td_a = tr.select_one("td.xg1 > a")
+                        if td_a:
+                            tid = td_a.get("href").split("tid=")[1].split("&pid=")[0]
+                            pid = td_a.get("href").split("tid=")[1].split("&pid=")[1]
+                            replay_list.append((formhash, tid, pid))
+            # print(replay_list)
             if "下一页" in soup.decode() and all_page:
                 page += 1
             else:
@@ -623,7 +647,7 @@ class TangTang(object):
             print("评论失败了")
             return False
 
-    def click_ping(self, forhash, tid, pid):
+    def click_ping(self, forhash, tid, pid, get=False):
         url = f"{self.source_url}/forum.php?mod=misc&action=rate&tid={tid}&pid={pid}&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate"
         # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&tid=1315802&pid=10966843&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate"
         payload = {}
@@ -642,18 +666,31 @@ class TangTang(object):
         }
         response = requests.request("GET", url, headers=headers, data=payload)
         # print(response.text)
+        soup_score = BeautifulSoup(response.content.decode(), "lxml")
+        self.last_score = int(soup_score.select_one("ul#scoreoption8 > li").get_text().replace("+", ""))
+        self.residue_score = int(soup_score.select_one("table.mbm > tr:last-child > td:last-child").get_text())
+        if get is True:
+            return self.last_score
         # 判断是否是自己的文章，是否评过分，是否可以评分，是否有权限阅读
         if "评分区间" in response.text:
             print("可以评分")
-            self.send_ping(forhash, tid, pid)
+            if self.residue_score and self.residue_score > 1 and self.residue_score > self.last_score:
+                self.send_ping(forhash, tid, pid, self.last_score)
+            else:
+                print(
+                    f"{self.user_name}今日剩余积分不足，评分最大是: {self.last_score}, 但是今日还剩：{self.residue_score}")
         elif "您不能对同一个帖子重复评分" in response.text:
             print("你已经给这个评过分数了")
+            self.score_strs.append(tid)
+            self.update_commit_json()
         elif "您不能给自己发表的帖子评分" in response.text:
             print("你不能给自己的文章评分")
+            self.score_strs.append(tid)
+            self.update_commit_json()
         else:
             print(f"{self.user_name}评分文章{tid}点击评分其他原因：{response.text}")
 
-    def send_ping(self, forhash, tid, pid):
+    def send_ping(self, forhash, tid, pid, score=1):
         print("发送评分")
         # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
         # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
@@ -662,7 +699,6 @@ class TangTang(object):
         # 综合区
         url = f"{self.source_url}/forum.php?mod=misc&action=rate&ratesubmit=yes&infloat=yes&inajax=1"
         referer = f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&page=0#pid{pid}"
-        score = "1"
         payload = f'formhash={forhash}&tid={tid}&pid={pid}&referer={referer}&handlekey=rate&score8={score}&reason='
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -701,21 +737,21 @@ class TangTang(object):
         need_post = [i for i in article_list if i not in self.id_list]
         # 发起评论: 随机对列表重新排序
         random.shuffle(need_post)
-        for index, value in enumerate(need_post):
-            commit_txt = self.get_comment_from_articl(value)
+        for index, tid in enumerate(need_post):
+            commit_txt = self.get_comment_from_articl(tid)
             if not commit_txt:
                 continue
-            form_hash, pid = self.get_formhash(value)
+            form_hash, pid = self.get_formhash(tid)
             if not form_hash:
                 continue
-            print(f"开始评论：{value} : {commit_txt} : {form_hash}")
+            print(f"开始评论：{tid} : {commit_txt} : {form_hash}")
             if sleep:
                 self.random_sleep_second()
             # 评论文章
-            res = self.post_commit(value, commit_txt, form_hash)
+            res = self.post_commit(tid, commit_txt, form_hash)
             if res:
                 # 文章评分
-                self.click_ping(form_hash, value, pid)
+                self.click_ping(form_hash, tid, pid)
                 break
             else:
                 continue
@@ -776,12 +812,59 @@ def auto_ping_score(user_name, cookie, user_agent, uid_list, category, all_page=
     tang.cookie = cookie
     tang.user_agent = user_agent
     tang.get_user_info()
+    # 获取评论过的文章
+    tang.get_commit_json()
+    # 随机睡眠
+    ping_sleep = [i for i in range(6, 60)]
+    # 开启随机睡眠
+    if sleep:
+        tang.random_sleep_second()
     if category == "全部":
-        print("评论所有的文章和评论")
+        print("评分所有的文章和评论")
+        for uid in uid_list:
+            # 评分文章
+            tid_list = tang.get_user_article(uid, all_page)
+            print(f"开始评分文章：{len(tid_list)} 篇文章, 文章列表: {tid_list}")
+            for tid in tid_list:
+                if tid not in tang.score_strs:
+                    form_hash, pid = tang.get_formhash(tid)
+                    if not form_hash:
+                        continue
+                    else:
+                        tang.click_ping(form_hash, tid, pid)
+                        time.sleep(random.choice(ping_sleep))
+            # 评分评论内容
+            tid_list = tang.get_user_replay(uid, all_page)
+            print(f"开始评分评论内容：{len(tid_list)} 篇文章, 文章列表: {tid_list}")
+            for formhash_tid_pid in tid_list:
+                formhash, tid, pid = formhash_tid_pid
+                if tid not in tang.score_strs:
+                    tang.click_ping(formhash, tid, pid)
+                    time.sleep(random.choice(ping_sleep))
+
     elif category == "文章":
-        print("评论文章")
+        print("评分文章")
+        for uid in uid_list:
+            # 评分文章
+            tid_list = tang.get_user_article(uid, all_page)
+            print(f"开始评分文章：{len(tid_list)} 篇文章, 文章列表: {tid_list}")
+            for tid in tid_list:
+                if tid not in tang.score_strs:
+                    form_hash, pid = tang.get_formhash(tid)
+                    if not form_hash:
+                        continue
+                    else:
+                        tang.click_ping(form_hash, tid, pid)
+                        time.sleep(random.choice(ping_sleep))
     elif category == "评论":
-        print("评论文章")
+        for uid in uid_list:
+            tid_list = tang.get_user_replay(uid, all_page)
+            print(f"开始评分评论内容：{len(tid_list)} 篇文章, 文章列表: {tid_list}")
+            for formhash_tid_pid in tid_list:
+                formhash, tid, pid = formhash_tid_pid
+                if tid not in tang.score_strs:
+                    tang.click_ping(formhash, tid, pid)
+                    time.sleep(random.choice(ping_sleep))
     else:
         print("分类错误")
 
