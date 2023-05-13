@@ -292,6 +292,7 @@ def add_tangtang_ping():
         update_user["check_file_sha"] = task_id
         update_user["check_status"] = "已开启"
         update_user["check_link"] = uids
+        update_user["contribute_link"] = category
         try:
             update_user_list.update(update_user)
             db.session.commit()
@@ -319,7 +320,8 @@ def del_tang_ping():
         del_tang_ping_article(user_name)
         update_user["check_file_sha"] = ""
         update_user["check_status"] = "未开启"
-        update_user["check_link"] = json.dumps([])
+        update_user["check_link"] = ""
+        update_user["contribute_link"] = "全部"
         try:
             update_user_list.update(update_user)
             db.session.commit()

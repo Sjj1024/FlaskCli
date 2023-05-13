@@ -841,7 +841,6 @@ def auto_ping_score(user_name, cookie, user_agent, uid_list, category, all_page=
                 if tid not in tang.score_strs:
                     tang.click_ping(formhash, tid, pid)
                     time.sleep(random.choice(ping_sleep))
-
     elif category == "文章":
         print("评分文章")
         for uid in uid_list:
