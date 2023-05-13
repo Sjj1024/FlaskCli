@@ -81,7 +81,7 @@ def send_ping(forhash, tid, pid):
 
 
 def get_user_article(uid, all_page=False):
-    uid = "369910"
+    # uid = "369910"
     page = 1
     article_list = []
     while True:
@@ -106,9 +106,16 @@ def get_user_article(uid, all_page=False):
         }
         response = requests.request("GET", url, headers=headers, data=payload)
         soup = BeautifulSoup(response.content.decode(), "lxml")
-        td_list = soup.select("td.icn > a")
-        # https://www.hghg58.com/forum.php?mod=viewthread&tid=1317131
-        article_list += [td.get("href").split("tid=")[1].replace("&highlight=", "") for td in td_list]
+        table = soup.select_one("form#delform > table")
+        td_list = table.select("td.icn > a")
+        type_list = table.select("td > a.xg1")
+        for index, td in enumerate(td_list):
+            cate = type_list[index].get_text()
+            if cate not in ["求片问答悬赏区", "投稿送邀请码", "资源出售区", "禁言申诉区", "投诉建议区",
+                            "求片问答悬赏区"]:
+                tid = td.get("href").split("tid=")[1].replace("&highlight=", "")
+                article_list.append(tid)
+                # article_list += [td.get("href").split("tid=")[1].replace("&highlight=", "") for td in td_list]
         print(article_list)
         if "下一页" in soup.decode() and all_page:
             page += 1
@@ -142,14 +149,24 @@ def get_user_replay(uid, all_page=False):
         }
         response = requests.request("GET", url, headers=headers, data=payload)
         soup = BeautifulSoup(response.content.decode(), "lxml")
-        td_list = soup.select("td.xg1 > a")
-        # forum.php?mod=redirect&amp;goto=findpost&amp;ptid=1317218&amp;pid=10975945
-        # 存储的是元组:(tid, pid)
-        for td in td_list:
-            tid = td.get("href").split("tid=")[1].split("&pid=")[0]
-            pid = td.get("href").split("tid=")[1].split("&pid=")[1]
-            replay_list.append((tid, pid))
-        print(replay_list)
+        formhash = soup.select_one("input[name='formhash']").get("value")
+        current_type = ""
+        tr_list = soup.select("form#delform > table > tr")
+        for tr in tr_list:
+            if tr.get("class") == ["bw0_all"]:
+                current_type = tr.select_one("td > a.xg1").get_text()
+                print(f"是分类:{current_type}")
+            elif tr.get("class") == ["th"]:
+                continue
+            else:
+                if current_type not in ["求片问答悬赏区", "投稿送邀请码", "资源出售区", "禁言申诉区", "投诉建议区",
+                                        "求片问答悬赏区"]:
+                    td_a = tr.select_one("td.xg1 > a")
+                    if td_a:
+                        tid = td_a.get("href").split("tid=")[1].split("&pid=")[0]
+                        pid = td_a.get("href").split("tid=")[1].split("&pid=")[1]
+                        replay_list.append((formhash, tid, pid))
+        # print(replay_list)
         if "下一页" in soup.decode() and all_page:
             page += 1
         else:
@@ -161,6 +178,6 @@ if __name__ == '__main__':
     tid = "1317218"
     pid = "10975945"
     # click_ping(formhash, tid, pid)
-    # all_tid = get_user_article()
-    all_tid = get_user_replay()
+    all_tid = get_user_article("369910", True)
+    # all_tid = get_user_replay("438864")
     print(len(all_tid))
