@@ -43,7 +43,7 @@ def add_caoliu_commit_local():
         else:
             return jsonify(code=207, message="没有查找到该用户")
         if update_user["task_file_sha"] and user_name in update_user["task_file_sha"]:
-            return jsonify(code=205, message="任务已存在", data=f"任务已存在")
+            del_caoliu_commit_article(user_name)
         task_id = add_caoliu_commit_task(user_name, cookie, user_agent, corn_tab, run_time)
         update_user["task_file_sha"] = task_id
         update_user["task_status"] = "已开启"
@@ -88,7 +88,7 @@ def add_tang_commit_local():
         else:
             return jsonify(code=207, message="没有查找到该用户")
         if update_user["task_file_sha"] and user_name in update_user["task_file_sha"]:
-            return jsonify(code=205, message="任务已存在", data=f"任务已存在")
+            del_tang_commit_article(user_name)
         task_id = add_tang_commit_task(user_name, cookie, user_agent, corn_tab, run_time)
         update_user["task_file_sha"] = task_id
         update_user["task_status"] = "已开启"
@@ -114,8 +114,6 @@ def del_caoliu_commit():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if not update_user["task_file_sha"]:
-            return jsonify(code=205, message="error", data=f"任务不存在")
         del_caoliu_commit_article(user_name)
         update_user["task_file_sha"] = ""
         update_user["task_status"] = "未开启"
@@ -141,8 +139,6 @@ def del_tang_commit():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if not update_user["task_file_sha"]:
-            return jsonify(code=205, message="error", data=f"任务不存在")
         del_tang_commit_article(user_name)
         update_user["task_file_sha"] = ""
         update_user["task_status"] = "未开启"
@@ -286,7 +282,9 @@ def add_tangtang_ping():
         else:
             return jsonify(code=207, message="没有查找到该用户")
         if update_user["check_file_sha"]:
-            return jsonify(code=205, message="error", data=f"任务已存在")
+            # 任务存在就更新
+            del_tang_ping_article(user_name)
+            # return jsonify(code=205, message="error", data=f"任务已存在")
         uid_list = uids.split(",")
         task_id = add_tang_ping_article(user_name, cookie, user_agent, uid_list, category, corn_tab)
         update_user["check_file_sha"] = task_id
@@ -315,8 +313,6 @@ def del_tang_ping():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if not update_user["check_file_sha"]:
-            return jsonify(code=205, message="error", data=f"任务不存在")
         del_tang_ping_article(user_name)
         update_user["check_file_sha"] = ""
         update_user["check_status"] = "未开启"
@@ -344,8 +340,6 @@ def del_caoliu_sign():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if not update_user["sign_task_id"]:
-            return jsonify(code=205, message="error", data=f"任务不存在")
         del_caoliu_sign_article(user_name)
         update_user["sign_task_id"] = ""
         update_user["sign_task_status"] = "未开启"
@@ -371,8 +365,6 @@ def del_tang_sign():
             update_user = update_user_list.all()[0].to_json()
         else:
             return jsonify(code=207, message="没有查找到该用户")
-        if not update_user["sign_task_id"]:
-            return jsonify(code=205, message="error", data=f"任务不存在")
         del_tangtang_sign_article(user_name)
         update_user["sign_task_id"] = ""
         update_user["sign_task_status"] = "未开启"
