@@ -336,7 +336,7 @@ class TangTang(object):
         res = requests.request("GET", page_url, headers=headers, data=payload)
         try:
             html = res.content.decode()
-            if "登录" in html:
+            if "立即注册" in html:
                 print(html)
                 self.send_email(f"{self.user_name}评论异常", html)
                 raise Exception("cookie无效...")
