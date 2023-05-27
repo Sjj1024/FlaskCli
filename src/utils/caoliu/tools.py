@@ -606,7 +606,7 @@ def get_ref_commit_list(cookie, user_agent, page):
     return {"total": 0, "items": article_list}
 
 
-def regist_caoliu(user_name, password, yaoqingma, youxiang):
+def regist_caoliu(user_name, password, yaoqingma, youxiang, userAgent):
     print("开始注册")
     while True:
         paylod = {
@@ -631,7 +631,7 @@ def regist_caoliu(user_name, password, yaoqingma, youxiang):
             'origin': f"{get_source()}",
             "cookie": "PHPSESSID=4nh5edfvkj472orqp471q9rs4b;227c9_lastvisit=0%091673152222%09%2Fregister.php%3F",
             'referer': f"{get_source()}/register.php",
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+            'user-agent': userAgent
         }
         response = requests.request("POST", url, headers=headers, data=encode_paylod)
         time.sleep(time_sleep)
