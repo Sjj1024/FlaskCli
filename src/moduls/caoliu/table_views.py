@@ -54,7 +54,7 @@ def table_list():
 
 def get_caoliu_user(username="", password="", cookie="", user_agent="", desc=""):
     if password:
-        cookie, user_agent = login_get_cookie(username, password)
+        cookie, user_agent = login_get_cookie(username, password, user_agent=user_agent)
     if len(user_agent) < 10:
         return user_agent
     user_info = get_userinfo_by_cookie(cookie, user_agent)
@@ -136,9 +136,9 @@ def add_user():
     desc = param_dict.get("desc", None)
     if invcode:
         print("注册逻辑")
-        res = regist_caoliu(username, password, invcode, email)
+        res = regist_caoliu(username, password, invcode, email, userAgent)
         if res:
-            caoliu_info = get_caoliu_user(username, password, desc=desc)
+            caoliu_info = get_caoliu_user(username, password, user_agent=userAgent, desc=desc)
             if isinstance(caoliu_info, str):
                 return jsonify(code=205, message=f"注册异常:{caoliu_info}")
         else:
