@@ -165,6 +165,8 @@ def add_user():
         caoliu_info.important = important
         caoliu_info.original = caoliu_info.to_dict()
         caoliu_info.desc = desc
+        caoliu_info.password = password
+        caoliu_info.email = email
         db.session.add(caoliu_info)
         db.session.commit()
         print(f"添加用户成功！")
