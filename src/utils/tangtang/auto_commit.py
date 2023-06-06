@@ -60,6 +60,9 @@ class TangTang(object):
         # print(response.text)
         self.user_name = re.search(r'访问我的空间">(.*?)</a>', response.text).group(1)
         self.user_group = re.search(r'用户组: (.*?)</a>', response.text).group(1)
+        if self.user_group == "禁止发言" or self.user_group == "禁止访问":
+            self.send_email(f"98:{self.user_name}: {self.user_group}", response.text)
+            return '禁止发言'
         self.user_money = re.search(r'金钱: </em>(.*?)  &nbsp;', response.text).group(1)
         self.ji_fei = re.search(r'积分: </em>(.*?) </li>', response.text).group(1)
         forhash, pid = self.get_formhash("1293427")
@@ -93,7 +96,7 @@ class TangTang(object):
         url = f"{self.source_url}/plugin.php?id=dd_sign&mod=sign&mobile=2"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cookie': self.cookie,
@@ -125,7 +128,7 @@ class TangTang(object):
         url = f"{self.source_url}/misc.php?mod=secqaa&action=update&idhash={id_hash}&0.4640535681735929"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cookie': self.cookie,
@@ -149,7 +152,7 @@ class TangTang(object):
         url = f"{self.source_url}/misc.php?mod=secqaa&action=check&inajax=1&modid=&idhash=qSAEn10&secverify=15"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cookie': self.cookie,
@@ -166,7 +169,7 @@ class TangTang(object):
         url = f"{self.source_url}/plugin.php?id=dd_sign&mod=sign&mobile=2"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cookie': self.cookie,
@@ -199,16 +202,13 @@ class TangTang(object):
         url = f"{self.source_url}/plugin.php?id=dd_sign&mod=sign&signsubmit=yes&signhash=&handlekey=signform_&inajax=1"
         payload = f"formhash={params.get('formhash')}&signtoken={params.get('signtoken')}&secqaahash={params.get('secqaahash')}&secanswer={params.get('secanswer')}"
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': 'application/xml, text/xml, */*; q=0.01',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
             'cookie': params.get("cookie"),
             'origin': f'{self.source_url}',
             'referer': f'{self.source_url}/plugin.php?id=dd_sign&mod=sign&mobile=2',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
             'user-agent': "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
             'x-requested-with': 'XMLHttpRequest'
         }
@@ -228,19 +228,12 @@ class TangTang(object):
         url = f"{self.source_url}/plugin.php?id=dd_sign:index"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://www.", ""),
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cache-control': 'max-age=0',
             'cookie': self.cookie,
             'referer': f'{self.source_url}/forum.php',
-            'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'document',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-user': '?1',
             'upgrade-insecure-requests': '1',
             'user-agent': self.user_agent
         }
@@ -267,17 +260,11 @@ class TangTang(object):
         url = f"{self.source_url}/misc.php?mod=secqaa&action=check&inajax=1&modid=&idhash={id_hash}&secverify={da_an}"
         payload = {}
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url.replace("https://", ""),
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cookie': self.cookie,
             'referer': f'{self.source_url}/plugin.php?id=dd_sign:index',
-            'sec-ch-ua': '"Not_A Brand";v="99", "Google Chrome";v="109", "Chromium";v="109"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
             'user-agent': self.user_agent,
             'x-requested-with': 'XMLHttpRequest'
         }
@@ -479,17 +466,10 @@ class TangTang(object):
             # url = f"https://www.hghg58.com/home.php?mod=space&uid={uid}&do=thread&view=me&from=space&type=reply"
             payload = {}
             headers = {
-                'authority': 'www.hghg58.com',
+                'authority': self.source_url.replace("https://", ""),
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
                 'referer': f'{self.source_url}/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
-                'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
                 'cookie': self.cookie,
                 'user-agent': self.user_agent
@@ -521,17 +501,10 @@ class TangTang(object):
             url = f"{self.source_url}/home.php?mod=space&uid={uid}&do=thread&view=me&type=reply&order=dateline&from=space&page={page}"
             payload = {}
             headers = {
-                'authority': 'www.hghg58.com',
+                'authority': self.source_url.replace("https://", ""),
                 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-                'referer': 'https://www.hghg58.com/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
-                'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
+                'referer': f'{self.source_url}/home.php?mod=space&uid=369910&do=thread&view=me&from=space&type=thread',
                 'upgrade-insecure-requests': '1',
                 'cookie': self.cookie,
                 'user-agent': self.user_agent
@@ -567,6 +540,7 @@ class TangTang(object):
         # 获取单张我的评论页面中的所有评论过的文章id和标题
         time.sleep(1)
         header = {
+            'authority': self.source_url.replace("https://", ""),
             "user-agent": self.user_agent,
             "cookie": self.cookie,
             "referer": self.source_url + "/index.php"
@@ -624,7 +598,7 @@ class TangTang(object):
         }
         payload = parse.urlencode(body)
         headers = {
-            'authority': 'zxfdsfdsf.online',
+            'authority': self.source_url,
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-language': 'zh-CN,zh;q=0.9,zh-HK;q=0.8,zh-TW;q=0.7',
             'cache-control': 'max-age=0',
@@ -652,15 +626,9 @@ class TangTang(object):
         # url = "https://www.hghg58.com/forum.php?mod=misc&action=rate&tid=1315802&pid=10966843&infloat=yes&handlekey=rate&inajax=1&ajaxtarget=fwin_content_rate"
         payload = {}
         headers = {
-            'authority': 'www.hghg58.com',
+            'authority': self.source_url.replace("https://", ""),
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-            'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-origin',
             'cookie': self.cookie,
             'user-agent': self.user_agent
         }
@@ -705,15 +673,8 @@ class TangTang(object):
             'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'cache-control': 'max-age=0',
             'content-type': 'application/x-www-form-urlencoded',
-            'origin': 'https://www.hghg58.com',
+            'origin': self.source_url,
             'referer': f"{self.source_url}/forum.php?mod=viewthread&tid={tid}&extra=page%3D1",
-            'sec-ch-ua': '"Google Chrome";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'iframe',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-user': '?1',
             'upgrade-insecure-requests': '1',
             'cookie': self.cookie,
             'user-agent': self.user_agent
@@ -762,7 +723,9 @@ def auto_sign_tang(user_name, cookie, user_agent, sleep=True):
     tang.user_name = user_name
     tang.cookie = cookie
     tang.user_agent = user_agent
-    tang.get_user_info()
+    res = tang.get_user_info()
+    if res == "禁止发言":
+        return
     qiandao = tang.has_signed()
     if qiandao == "今日未签到，点击签到":
         if sleep:
@@ -800,7 +763,9 @@ def auto_commit_tang(user_name, cookie, user_agent, sleep=True, run_time="White"
     tang.user_name = user_name
     tang.cookie = cookie
     tang.user_agent = user_agent
-    tang.get_user_info()
+    res = tang.get_user_info()
+    if res == "禁止发言":
+        return
     tang.start_commit_one(sleep)
 
 
@@ -811,7 +776,9 @@ def auto_ping_score(user_name, cookie, user_agent, uid_list, category, all_page=
     tang.user_name = user_name
     tang.cookie = cookie
     tang.user_agent = user_agent
-    tang.get_user_info()
+    res = tang.get_user_info()
+    if res == "禁止发言":
+        return
     # 获取评论过的文章
     tang.get_commit_json()
     # 随机睡眠
@@ -873,7 +840,9 @@ def run():
     tang.user_name = name
     tang.cookie = cookie
     tang.user_agent = user_agent
-    tang.get_user_info()
+    res = tang.get_user_info()
+    if res == "禁止发言":
+        return
     tang.start_commit_one()
     # qiandao = tang.has_signed()
     # if qiandao == "今日未签到，点击签到":
@@ -888,11 +857,11 @@ def run():
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
         name = "无敌小浪货"
-        cookie = "cPNj_2132_saltkey=LYgJ7Ts5; _safe=vqd37pjm4p5uodq339yzk6b7jdt6oich; cPNj_2132_lastvisit=1679708908; cPNj_2132_atarget=1; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_auth=c1fdCTCyxO5zbM52EYUfgKrC8SYmJzAQcNrBvmRwdllFLF4r%2B%2Fp1kEH%2F0PiW8iXpYz1kFXnqnB4GUa6Ky7%2BBDqeHDbs; cPNj_2132_smile=1D1; cPNj_2132_nofavfid=1; cPNj_2132_resendemail=1679713392; PHPSESSID=7djspibh5jpi4171lgd9v626pt; cPNj_2132_secqaaqSAmbi0=5813.11e7d3d12c2ffefbf9; cPNj_2132_home_diymode=1; cPNj_2132_sid=0; cPNj_2132_st_t=446206%7C1680696197%7Ca5408b579d6983a3ecd53f857c7fc017; cPNj_2132_forum_lastvisit=D_95_1680696197; cPNj_2132_visitedfid=95D155D143D96D150D142; cPNj_2132_st_p=446206%7C1680696207%7C704b0e8c270d019db2e2dbed088c7ca9; cPNj_2132_viewid=tid_1247942; cPNj_2132_ulastactivity=1680703122%7C0; cPNj_2132_lastact=1680703123%09home.php%09spacecp; cPNj_2132_checkpm=1"
-        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"
+        cookie = "_safe=vqd37pjm4p5uodq339yzk6b7jdt6oich; cPNj_2132_lastfp=66abe79b56fe4d1db0defa055279da8b; cPNj_2132_saltkey=OIWUctit; cPNj_2132_lastvisit=1680915276; cPNj_2132__refer=%252Fhome.php%253Fmod%253Dspacecp%2526ac%253Dusergroup; cPNj_2132_lastact=1683767868%09member.php%09logging; cPNj_2132_auth=9c1fSi08tZhW5KUnsGo5c03iFt7aajT6UNhsPAhl6D3BldNFYpBq5wspvhSPE3PuBIy%2B%2F17vx%2BOu65yRblqH1jo%2Bkb0; cPNj_2132_checkfollow=1; cPNj_2132_creditbase=0D0D0D1D0D57D0D0D0; cPNj_2132_creditnotice=0D0D0D0D0D1D0D0D0D419008; cPNj_2132_creditrule=%E6%AF%8F%E5%A4%A9%E7%99%BB%E5%BD%95; cPNj_2132_lastcheckfeed=419008%7C1683767868; cPNj_2132_lip=112.32.130.128%2C1683731815; cPNj_2132_ulastactivity=1683767868%7C0"
+        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35"
     else:
         name = sys.argv[1]
         cookie = sys.argv[2]
         user_agent = sys.argv[3]
-    source_url = "https://www.hghg58.com/"
+    source_url = "https://www.xj4sds.com/"
     run()
