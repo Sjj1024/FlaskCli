@@ -350,7 +350,7 @@ class TangTang(object):
     def get_articales(self):
         # 获取前十页内容
         article_list = []
-        for i in range(2, 10):
+        for i in range(2, 5):
             print(f"获取第{i}页文章列表......")
             page_url = f"{self.source_url}/forum.php?mod=forumdisplay&fid=95&page={i}"
             html = self.get_html(page_url)
@@ -751,7 +751,7 @@ class TangTang(object):
             res = self.post_commit(tid, commit_txt, form_hash)
             if res:
                 # 文章评分
-                self.click_ping(form_hash, tid, pid)
+                # self.click_ping(form_hash, tid, pid)
                 break
             else:
                 continue

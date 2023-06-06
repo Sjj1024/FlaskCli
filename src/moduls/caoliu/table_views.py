@@ -186,7 +186,10 @@ def del_user():
         requests.delete("http://localhost:5000/api1/table/delUpdateUser", json=param_dict)
     if param_dict.get("check_file_sha"):
         requests.delete("http://localhost:5000/api1/table/delCheckUser", json=param_dict)
-    CaoliuUsers.query.filter_by(id=param_dict.get("id")).update({"isDeleted": True})
+    # 逻辑删除
+    # CaoliuUsers.query.filter_by(id=param_dict.get("id")).update({"isDeleted": True})
+    # 物理删除
+    CaoliuUsers.query.filter_by(id=param_dict.get("id")).delete()
     db.session.commit()
     return jsonify(code=200, message="success")
 

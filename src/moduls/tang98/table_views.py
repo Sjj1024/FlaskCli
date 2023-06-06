@@ -122,7 +122,7 @@ def temp_add_user_98():
 def add_user_98():
     logging.info("开始添加用户")
     param_dict = request.json
-    print(param_dict)
+    # print(param_dict)
     username = param_dict.get("username", None)
     password = param_dict.get("password", None)
     email = param_dict.get("email", None)
@@ -164,6 +164,8 @@ def add_user_98():
         tang_original_dict = deepcopy(tang_info)
         tang_original_dict.grade = tang_original_dict.grade.split(" ")[0]
         tang_info.original = tang_original_dict.to_dict()
+        tang_info.email = email
+        tang_info.password = password
         tang_info.desc = desc
         db.session.add(tang_info)
         db.session.commit()
