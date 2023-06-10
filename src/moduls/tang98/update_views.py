@@ -1,5 +1,6 @@
 import copy
 import datetime
+import json
 import logging
 from flask import jsonify, request
 from src.moduls.tang98 import tang98_blu
@@ -83,15 +84,16 @@ def get_new_userinfo_98():
     update_user_list = Tang98Users.query.filter_by(user_name=username)
     if update_user_list and user_info:
         user_caoliu = update_user_list.all()[0].to_json()
+        user_caoliu["user_name"] = user_info.get("user_name")
         user_caoliu["article_number"] = user_info.get("fatie")
         user_caoliu["cookie"] = cookie
-        user_caoliu["contribute"] = user_info.get("gongxian")
+        user_caoliu["contribute"] = int(user_info.get("gongxian", 0))
         user_caoliu["contribute_link"] = user_info.get("gongxian_link")
         user_caoliu["grade"] = user_info.get("dengji")
         user_caoliu["important"] = 5 if "永久禁言" in user_info["desc"] else important
         user_caoliu["money"] = user_info.get("money")
         user_caoliu["user_id"] = user_info.get("user_id")
-        user_caoliu["weiwang"] = user_info.get("weiwang")
+        user_caoliu["weiwang"] = int(user_info.get("weiwang", 0))
         user_caoliu["desc"] = user_info.get("desc") if "永久禁言" in user_info["desc"] else user_caoliu[
                                                                                                 "desc"] + user_info.get(
             "desc")
@@ -102,31 +104,31 @@ def get_new_userinfo_98():
     else:
         return jsonify(code=207, message="没有查找到该用户或获取该用户详细信息出错，可能是Cookie无效")
     # 如果工作流存储为空，则获取工作流详情
-    if not user_caoliu.get("task_file_sha"):
-        task_workflow = get_repo_action(username, "Commit")
-        if task_workflow:
-            task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/", "")}'
-            task_file_sha = get_file_sha(task_workflow.get("path"))
-            task_status = "已开启"
-            user_caoliu["task_link"] = task_link
-            user_caoliu["task_file_sha"] = task_file_sha
-            user_caoliu["task_status"] = task_status
-        else:
-            task_status = "未开启"
-            user_caoliu["task_status"] = task_status
-    # 如果工作流存储为空，则获取工作流详情
-    if not user_caoliu.get("check_file_sha"):
-        check_workflow = get_repo_action(username, "Check")
-        if check_workflow:
-            check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/", "")}'
-            check_file_sha = get_file_sha(check_workflow.get("path"))
-            check_status = "已开启"
-            user_caoliu["check_link"] = check_link
-            user_caoliu["check_file_sha"] = check_file_sha
-            user_caoliu["check_status"] = check_status
-        else:
-            check_status = "未开启"
-            user_caoliu["check_status"] = check_status
+    # if not user_caoliu.get("task_file_sha"):
+    #     task_workflow = get_repo_action(username, "Commit")
+    #     if task_workflow:
+    #         task_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{task_workflow.get("path").replace(".github/", "")}'
+    #         task_file_sha = get_file_sha(task_workflow.get("path"))
+    #         task_status = "已开启"
+    #         user_caoliu["task_link"] = task_link
+    #         user_caoliu["task_file_sha"] = task_file_sha
+    #         user_caoliu["task_status"] = task_status
+    #     else:
+    #         task_status = "未开启"
+    #         user_caoliu["task_status"] = task_status
+    # # 如果工作流存储为空，则获取工作流详情
+    # if not user_caoliu.get("check_file_sha"):
+    #     check_workflow = get_repo_action(username, "Check")
+    #     if check_workflow:
+    #         check_link = f'{config_obj.GIT_URL}/{config_obj.GIT_USERNAME}/{config_obj.GIT_REPOS}/actions/{check_workflow.get("path").replace(".github/", "")}'
+    #         check_file_sha = get_file_sha(check_workflow.get("path"))
+    #         check_status = "已开启"
+    #         user_caoliu["check_link"] = check_link
+    #         user_caoliu["check_file_sha"] = check_file_sha
+    #         user_caoliu["check_status"] = check_status
+    #     else:
+    #         check_status = "未开启"
+    #         user_caoliu["check_status"] = check_status
     # 判断是不是被禁言了，然后删除升级的工作流，并且降级到5级
     if "禁止發言" in user_info.get("desc") and paylod.get("task_file_sha"):
         user = {
@@ -137,7 +139,7 @@ def get_new_userinfo_98():
         del_caoliu_task_file(f".github/workflows/{username}.yml", user)
     try:
         if not original or isinstance(original, int):
-            user_caoliu["original"] = copy.deepcopy(user_caoliu)
+            user_caoliu["original"] = json.dumps(copy.deepcopy(user_caoliu))
         update_user_list.update(user_caoliu)
         db.session.commit()
     except Exception as e:
