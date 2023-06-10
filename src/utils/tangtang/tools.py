@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import time
 import re
 
-source_url = "https://www.hghg58.com"
+source_url = ""
 time_sleep = 3
 
 
@@ -45,7 +45,6 @@ def get_soup(page_url, tang_cookie, user_agent, ignore=True):
         'Connection': 'keep-alive',
         'Cookie': tang_cookie,
         'Pragma': 'no-cache',
-        'Referer': 'https://www.hghg58.com/home.php?mod=spacecp&ac=usergroup',
         'Sec-Fetch-Dest': 'document',
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-Site': 'same-origin',
@@ -110,6 +109,22 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         user_name = soup.select_one("strong.vwmy").get_text().strip()
         user_id = soup.select_one("div.avt > a").get("href").split("uid=")[1].strip()
         dengji = soup.select_one("a#g_upmine").get_text().replace("用户组: ", "").strip()
+        if dengji == "禁止访问" or dengji == "禁止发言" or dengji == "禁止申诉":
+            user_info = {
+                "user_name": user_name,
+                "user_id": user_id,
+                "dengji": dengji,
+                "jifen": 0,
+                "fatie": 0,
+                "weiwang": 0,
+                "money": 0,
+                "gongxian": 0,
+                "gongxian_link": "",
+                "email": "",
+                "desc": "",
+                "able_invate": "",
+            }
+            return user_info
         # 通过详情找到更详细的信息：https://www.hghg58.com/home.php?mod=space&uid=446206
         info_url = f"{get_source()}/home.php?mod=space&uid={user_id}"
         soup_info = get_soup(info_url, cookie, user_agent)
