@@ -137,8 +137,8 @@ def get_userinfo_by_cookie(cookie, user_agent, has_email=False):
         for li in soup_info.select("ul.pf_l > li"):
             if "金钱" in li.get_text():
                 weiwang = li.get_text().replace("金钱", "").strip()
-            elif "色币" in li.get_text():
-                money = li.get_text().replace("色币", "").strip()
+            elif "评分" in li.get_text():
+                money = li.get_text().replace("评分", "").strip()
             elif "积分" in li.get_text():
                 gongxian = li.get_text().replace("积分", "").strip()
         # weiwang = soup_info.select("ul.pf_l > li")[11].get_text().replace("金钱", "").strip()

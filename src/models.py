@@ -148,14 +148,14 @@ class Tang98Users(db.Model, BaseModel):
     password = db.Column(db.String(255), unique=False, nullable=True)  # 表名称
     grade = db.Column(db.String(255), unique=False, nullable=True)  # jsonschema
     email = db.Column(db.String(255), unique=False, nullable=True)  # 是否可用
-    weiwang = db.Column(db.String(255), unique=False, nullable=True)  # 描述信息
+    weiwang = db.Column(db.String(255), unique=False, nullable=True)  # 金钱
     article_number = db.Column(db.Integer, unique=False, nullable=True)
-    contribute = db.Column(db.String(255), unique=False, nullable=True)
+    contribute = db.Column(db.String(255), unique=False, nullable=True) # 积分
     desc = db.Column(db.String(255), unique=False, nullable=True)
     creat_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 添加时间
     regist_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 账号注册时间
     update_time = db.Column(db.DateTime(), default=datetime.datetime.now())  # 更新时间
-    money = db.Column(db.Integer, unique=True, nullable=False)  # 拥有的金钱
+    money = db.Column(db.Integer, unique=True, nullable=False)  # 评分
     cookie = db.Column(db.String(5000), unique=False, nullable=True)
     user_agent = db.Column(db.String(255), unique=False, nullable=True)
     current_money = db.Column(db.Integer, unique=False, nullable=True)
